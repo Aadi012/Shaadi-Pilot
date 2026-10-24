@@ -1,0 +1,5 @@
+* text=auto eol=lf
+
+# Preserve archived source documents and extracted images as binary data.
+*.docx binary
+*.png binary
