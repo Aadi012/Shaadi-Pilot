@@ -110,6 +110,9 @@ phases; they are not consumed or validated by this scaffold.
 
 ## Project documents
 
+Implementation milestones, verification results and remaining work are tracked
+in [project status](docs/project-status.md). Update it alongside each major feature.
+
 The PRD, system design, database design and API design are readable Markdown at
 `docs/prd.md`, `docs/system-design.md`, `docs/database-design.md` and
 `docs/api-design.md`. Their headings, tables, lists, code examples and architecture

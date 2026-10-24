@@ -3,6 +3,11 @@
 - Read the four Markdown source documents and `docs/architecture-decisions.md`
   before changing relevant behavior. Original Word inputs are archived under
   `docs/source`. Surface conflicts; do not silently resolve product decisions.
+- Read `docs/project-status.md` before starting a major feature. Add or update its
+  milestone entry in the same change, before handoff, with dates, status, delivered
+  scope, actual checks, limitations and remaining work. Preserve milestone history,
+  link commits or PRs when available, and never mark unfinished work complete.
+  Keep product approvals and architectural decisions in their existing documents.
 - Keep one TypeScript Next.js App Router application with Node.js Route Handlers,
   Mongoose and the approved external services.
 - Stay within approved V1 scope. Do not add authentication frameworks, another
