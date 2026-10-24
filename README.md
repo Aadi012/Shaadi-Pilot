@@ -1,7 +1,7 @@
 # ShaadiPilot
 
 ShaadiPilot is a collaborative Indian wedding-planning application. This
-repository currently contains the approved minimal application scaffold.
+repository contains the approved application foundation and public homepage preview.
 
 ## Local development
 
@@ -48,6 +48,9 @@ peers or bypass checks.
 ## Structure and boundaries
 
 - `src/app`: Next.js pages, layouts and future HTTP Route Handlers.
+- `src/components/marketing`: responsive homepage sections, local example data,
+  and the mobile navigation interaction.
+- `public/marketing` and `public/fonts`: local marketing imagery and licensed fonts.
 - `src/modules`: feature modules introduced when their behavior is implemented;
   see [module conventions](src/modules/README.md).
 - `src/lib`: shared API, configuration, database and logging infrastructure.
@@ -66,6 +69,15 @@ alone manages membership. Guests have scoped bearer links and no accounts. Email
 verification is not required in V1.
 
 ## Scaffold scope
+
+The public homepage follows the approved Stitch reference with V1-only content.
+Wedding names, tasks, headcounts, expenses and theme previews are fictional
+marketing examples; they never read from wedding records. Account creation and
+login are marked as coming soon. In-page navigation works, but the previews do
+not create accounts, send invitations, publish websites or upload photos.
+Images and fonts are served locally, so the homepage requires no external
+services, runtime provider requests or service credentials. Font licenses and
+asset provenance are included under `public`.
 
 Included: a simple app shell, strict TypeScript, ESLint, Prettier, Vitest, CI,
 on-demand environment validation, a lazy cached Mongoose connection, and API

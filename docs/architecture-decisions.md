@@ -93,8 +93,15 @@ approval to create the scaffold does not resolve the product choices below.
 
 ## Feature approval gates
 
-The approved work remains foundation improvements. No product feature or
-provisional policy is implemented by recording these gates.
+The public marketing homepage was approved on 25 October 2026. This UI-only
+milestone uses the approved Stitch homepage direction, local fictional wedding
+examples and clearly unavailable account actions. It excludes budgets, room
+allocation, transport, seating, realtime presence, unverified platform claims
+and business integrations. It does not resolve the pending contracts below.
+
+The foundation and marketing homepage are approved. Authentication and other
+business features still require the affected decisions below; recording these
+gates does not approve provisional policies.
 
 Before the first organizer authentication slice:
 
