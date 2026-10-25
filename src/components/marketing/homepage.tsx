@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Brand } from './brand';
 import { CelebrationSections } from './celebration-sections';
 import { exampleWedding, features, navigation } from './homepage-data';
@@ -33,9 +34,9 @@ export function MarketingHomepage() {
                   everything together with the people who matter.
                 </p>
                 <div className={styles.heroActions}>
-                  <a href="#get-started" className={styles.primaryButton}>
+                  <Link href="/signup" className={styles.primaryButton}>
                     Start planning <MarketingIcon name="arrow" size={17} />
-                  </a>
+                  </Link>
                   <a href="#how-it-works" className={styles.textLink}>
                     See how it works <MarketingIcon name="arrow" size={17} />
                   </a>
@@ -152,16 +153,15 @@ export function MarketingHomepage() {
           <p>
             Bring your people, plans and celebrations into one beautiful place.
           </p>
-          <button
-            type="button"
-            disabled
-            className={styles.comingSoonButton}
+          <Link
+            href="/signup"
+            className={styles.signupButton}
             aria-describedby="signup-note"
           >
             Start planning <MarketingIcon name="arrow" size={17} />
-          </button>
+          </Link>
           <p id="signup-note" className={styles.closingNote}>
-            Organizer accounts are coming soon. For now, explore what’s ahead.
+            Create your organizer account. Wedding setup is coming next.
           </p>
         </section>
       </main>

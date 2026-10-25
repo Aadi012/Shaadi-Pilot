@@ -63,23 +63,18 @@
 .headerActions {
   gap: 24px;
 }
-.loginButton {
+.loginLink {
+  text-decoration: none;
   border: 0;
   background: none;
   padding: 8px 0;
   color: var(--muted);
   font-size: 12px;
 }
-.loginButton span {
-  margin-left: 4px;
-  font-size: 9px;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--border);
-}
 .smallButton,
 .primaryButton,
 .textLink,
-.comingSoonButton {
+.signupButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1310,7 +1305,7 @@
   font-size: 12px;
   margin: 20px 0 24px;
 }
-.comingSoonButton {
+.signupButton {
   padding: 13px 25px;
   border: 1px solid #fff;
   background: #fff;
@@ -1658,7 +1653,8 @@
     width: 29px;
     height: 31px;
   }
-  .headerActions .loginButton {
+  .headerActions .loginLink {
+    text-decoration: none;
     display: none;
   }
   .headerActions .smallButton {

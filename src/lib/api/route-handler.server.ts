@@ -36,6 +36,7 @@ export function withApiHandler<Context = unknown>(
     const headers = new Headers(response.headers);
     headers.set('X-Request-Id', requestId);
     headers.set('Cache-Control', 'no-store');
+    if (response.status === 429) headers.set('Retry-After', '900');
 
     logRequest({
       requestId,

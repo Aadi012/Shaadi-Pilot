@@ -101,7 +101,7 @@ All organizer-owned resource lookups use both _id and weddingId from the session
 
 - Mutating organizer requests require a trusted Origin/Referer check and a CSRF token header bound to the session. Require fresh authentication for password changes or other sensitive account operations where appropriate.
 
-- Rate-limit login, password reset, registration, invitation redemption and token-exchange endpoints by IP and a normalized account or capability key. Apply bounded backoff. Login and password-reset responses must not reveal account existence; signup's EMAIL_ALREADY_EXISTS response is an explicit UX trade-off.
+- Rate-limit login, password reset, registration, invitation redemption and token-exchange endpoints by IP and a normalized account or capability key. Apply bounded backoff. Login and password-reset responses must not reveal account existence; registration returns the same generic 202 response for new and existing emails, without starting a session (security follow-up, 25 October 2026).
 
 - Session lookup checks expiry, revocation and user status on every request. Log out revokes the session. Password reset invalidates all active sessions for that User.
 
@@ -130,7 +130,7 @@ The server stores a hash for secret lookup and an encrypted copy for authorized 
 | POST   | /weddings                     | Organizer without wedding | Create wedding and become first Admin                             |
 | POST   | /member-invites/accept        | Organizer without wedding | Consume invitation and join one wedding                           |
 
-Register requires email, password and displayName. Normalize email before unique lookup, hash passwords using Argon2id and never return them. Return 201 with session established if registration succeeds. Duplicate normalized email returns 409 EMAIL_ALREADY_EXISTS. Login uses a generic INVALID_CREDENTIALS response for incorrect credentials and nonexistent accounts.
+Register requires email, password and displayName. Normalize email before unique lookup, hash passwords using Argon2id and never return them. Return 202 with the same generic message for new and duplicate normalized email. Do not return a user DTO or set a session cookie. Users continue to login; duplicate attempts never replace existing credentials or profile fields. This supersedes the original 201/409 trade-off after the manual-test security review. Without email verification, subsequent login with a chosen signup password can still expose whether account creation succeeded; complete enumeration resistance is not claimed. Login uses a generic INVALID_CREDENTIALS response for incorrect credentials and nonexistent accounts.
 
 Wedding creation accepts slug, displayNames, timezone, defaultLocation? and websiteTheme?. Creation and attaching the first Admin are one MongoDB transaction. A User already attached to a wedding gets 409 USER_ALREADY_IN_WEDDING. Slug collision returns 409 SLUG_TAKEN. Idempotency-Key is required so retries do not create two weddings.
 
@@ -482,7 +482,6 @@ GET /api/v1/tasks?status=todo&limit=25&cursor={opaqueCursor}
 | 403  | FORBIDDEN                       | Role lacks privilege, including Manager trying Admin action   |
 | 403  | CSRF_FAILED                     | Cross-origin or missing session-bound CSRF defense            |
 | 404  | NOT_FOUND                       | Missing or cross-wedding object; also unpublished public site |
-| 409  | EMAIL_ALREADY_EXISTS            | Normalized organizer email already claimed                    |
 | 409  | USER_ALREADY_IN_WEDDING         | Account cannot join/create a second wedding                   |
 | 409  | SLUG_TAKEN                      | Slug uniqueness collision                                     |
 | 409  | DUPLICATE_INVITE or RSVP_CLOSED | Request conflicts with business state                         |
@@ -506,7 +505,7 @@ For public capability exchange, do not distinguish a nonexistent publicId from a
 
 3. Authorization service injects weddingId into all database queries and validates every referenced record. Foreign resources map to 404.
 
-4. Mongo duplicate-key exceptions are mapped to stable business 409 codes, never leaked raw.
+4. Mongo duplicate-key exceptions are mapped to stable business 409 codes, except registration, which returns its generic 202 outcome. Raw exceptions are never leaked.
 
 5. Upstream errors are classified as retryable/nonretryable. They are logged with requestId, not dumped to callers.
 
@@ -536,7 +535,7 @@ The RSVP is a single conditional EventInvitation update. The API checks the invi
 
 ### Organizer registration and wedding creation
 
-1. Anonymous client POSTs /auth/register. Server validates email/password, creates User without wedding membership, starts session.
+1. Anonymous client POSTs /auth/register. Server validates email/password and creates User without wedding membership if the email is new. New and existing emails receive the same generic 202 response with no session. The client continues to login to establish a session.
 
 2. Signed-in user POSTs /weddings with a stable Idempotency-Key. A transaction creates Wedding and joins the User as Admin.
 
@@ -574,32 +573,32 @@ The RSVP is a single conditional EventInvitation update. The API checks the invi
 
 ## 18 Failure modes and acceptance tests
 
-| Situation                                                             | Expected API behavior                                          |
-| --------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Organizer signs up using an existing normalized email                 | 409, never duplicate User                                      |
-| Member invite link forwarded to other signed-in email                 | 403 or 410, cannot join using mismatched account               |
-| Unverified email account receives password reset                      | Generic request response; real inbox owner can reset           |
-| User already belongs to another wedding                               | 409, no membership change                                      |
-| Admin attempts to remove last remaining Admin                         | 409, preserve minimum one Admin                                |
-| Manager calls a member-management mutation                            | 403, no state change                                           |
-| Cross-wedding event ID appears in Task, Expense or Invitation request | 404, no foreign data disclosure                                |
-| Duplicate event invitation creation races                             | Unique index guarantees one pair; idempotent response          |
-| Guest tries to RSVP for different event using original bearer         | 403/404, strict event scope                                    |
-| Guest submits negative, fractional, NaN or unsafe additionalGuests    | 422, existing RSVP unchanged                                   |
-| Guest repeatedly submits same RSVP                                    | Same state and headcount, no duplicate invitation              |
-| Guest RSVP after configured cutoff                                    | 409 RSVP_CLOSED                                                |
-| Public visitor requests private gallery or RSVP record                | 401/404, never expose user or guest data                       |
-| Guest shares gallery URL                                              | Receiver has bearer access; organizer can rotate/revoke        |
-| R2 upload intent expires or file is aborted                           | 410/422; pending record eventually reconciled                  |
-| Uploaded bytes do not match size/type                                 | 422, mark rejected and clean staging object                    |
-| Gallery access revoked during an upload                               | Completion rechecks capability and rejects                     |
-| Double-click on email dispatch                                        | Application idempotency returns one logical batch              |
-| Cron overlaps or retries after timeout                                | Atomic leasing and provider batch key avoid routine duplicates |
-| Resend outcome unknown beyond 24 hours                                | Quarantine for review, do not automatically resend             |
-| Google Places quota or provider failure                               | 429/502 with retry guidance; saved vendor list unaffected      |
-| Public wedding is unpublished or deleted                              | 404; old guest links blocked immediately                       |
-| Concurrent update with stale If-Match                                 | 412, return no partial mutation                                |
-| Organizer tries URL injection or arbitrary R2 key                     | 400/403; no signed access to arbitrary object                  |
+| Situation                                                             | Expected API behavior                                            |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Organizer signs up using an existing normalized email                 | Generic 202 without a session; never duplicate or overwrite User |
+| Member invite link forwarded to other signed-in email                 | 403 or 410, cannot join using mismatched account                 |
+| Unverified email account receives password reset                      | Generic request response; real inbox owner can reset             |
+| User already belongs to another wedding                               | 409, no membership change                                        |
+| Admin attempts to remove last remaining Admin                         | 409, preserve minimum one Admin                                  |
+| Manager calls a member-management mutation                            | 403, no state change                                             |
+| Cross-wedding event ID appears in Task, Expense or Invitation request | 404, no foreign data disclosure                                  |
+| Duplicate event invitation creation races                             | Unique index guarantees one pair; idempotent response            |
+| Guest tries to RSVP for different event using original bearer         | 403/404, strict event scope                                      |
+| Guest submits negative, fractional, NaN or unsafe additionalGuests    | 422, existing RSVP unchanged                                     |
+| Guest repeatedly submits same RSVP                                    | Same state and headcount, no duplicate invitation                |
+| Guest RSVP after configured cutoff                                    | 409 RSVP_CLOSED                                                  |
+| Public visitor requests private gallery or RSVP record                | 401/404, never expose user or guest data                         |
+| Guest shares gallery URL                                              | Receiver has bearer access; organizer can rotate/revoke          |
+| R2 upload intent expires or file is aborted                           | 410/422; pending record eventually reconciled                    |
+| Uploaded bytes do not match size/type                                 | 422, mark rejected and clean staging object                      |
+| Gallery access revoked during an upload                               | Completion rechecks capability and rejects                       |
+| Double-click on email dispatch                                        | Application idempotency returns one logical batch                |
+| Cron overlaps or retries after timeout                                | Atomic leasing and provider batch key avoid routine duplicates   |
+| Resend outcome unknown beyond 24 hours                                | Quarantine for review, do not automatically resend               |
+| Google Places quota or provider failure                               | 429/502 with retry guidance; saved vendor list unaffected        |
+| Public wedding is unpublished or deleted                              | 404; old guest links blocked immediately                         |
+| Concurrent update with stale If-Match                                 | 412, return no partial mutation                                  |
+| Organizer tries URL injection or arbitrary R2 key                     | 400/403; no signed access to arbitrary object                    |
 
 ### Verification strategy
 

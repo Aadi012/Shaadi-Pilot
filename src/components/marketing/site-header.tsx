@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Brand } from './brand';
 import { navigation } from './homepage-data';
 import { MarketingIcon } from './icon';
@@ -33,17 +34,12 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className={styles.headerActions}>
-          <button
-            type="button"
-            disabled
-            className={styles.loginButton}
-            aria-label="Log in — coming soon"
-          >
-            Log in <span>Soon</span>
-          </button>
-          <a href="#get-started" className={styles.smallButton}>
+          <Link href="/login" className={styles.loginLink}>
+            Log in
+          </Link>
+          <Link href="/signup" className={styles.smallButton}>
             Start planning <MarketingIcon name="arrow" size={15} />
-          </a>
+          </Link>
         </div>
         <button
           id="menu-toggle"
@@ -72,10 +68,13 @@ export function SiteHeader() {
             {item.label}
           </a>
         ))}
-        <a href="#get-started" onClick={() => setMenuOpen(false)}>
+        <Link href="/signup" onClick={() => setMenuOpen(false)}>
           Start planning <MarketingIcon name="arrow" size={16} />
-        </a>
-        <span>Organizer login coming soon</span>
+        </Link>
+        <Link href="/login" onClick={() => setMenuOpen(false)}>
+          Log in
+        </Link>
+        <span>Your celebration starts here</span>
       </nav>
     </header>
   );

@@ -91,6 +91,59 @@ approval to create the scaffold does not resolve the product choices below.
   upgrades or an indefinite deferral.
 - CI installs npm 11.19.1, matching `package.json`, before `npm ci`.
 
+## Organizer authentication slice — 25 October 2026
+
+The user authorized MongoDB-backed registration, login, logout and sessions after
+the UI preview. This slice adopts the previously proposed seven-day idle and
+30-day absolute session policy and the API document's `register`, `login`,
+`logout` and `session` endpoints under `/api/v1/auth`.
+
+- Production cookie: `__Host-shaadipilot_session`, Secure, HttpOnly, host-only,
+  Path=/, SameSite=Lax; local HTTP: `shaadipilot_session`. This intentionally
+  replaces the API source's historical `__Host-mm_session` name.
+- Session storage adds `absoluteExpiresAt`; `expiresAt` is the rolling idle limit
+  capped at the absolute limit. TTL is cleanup, never the authorization check.
+- GET session also supports anonymous CSRF bootstrap (`user: null`), an explicit
+  extension to the API source's organizer-only access row. Tokens are HMAC-derived
+  from an HttpOnly random anonymous secret before login and from the session
+  secret afterward. Mutations require a matching header and exact trusted Origin.
+- Argon2id uses 19 MiB, two iterations and one lane. New passwords require at
+  least 15 Unicode code points and at most 128 UTF-16 code units, preserving
+  whitespace. This supersedes the earlier eight-character UI preview guideline.
+- MongoDB fixed 15-minute windows: login 10/account, 50/network; registration
+  5/account, 20/network. Network identity trusts only Vercel's overwritten header;
+  other environments share a conservative network bucket. No raw identifiers
+  appear in bucket keys. Revisit limits against pilot traffic before launch.
+- Unique email and session-token indexes are mandatory. A versioned additive
+  setup script creates them; runtime fails closed if required indexes are absent.
+  User/session creation and reauthentication rotation are MongoDB transactions.
+- Registration does not verify email, assign a role or create a wedding.
+  `/account` is a minimal protected account confirmation, not a dashboard.
+- Random opaque sessions need no `SESSION_SECRET`; future token-signing or
+  encryption will use separately defined keys. This clarifies the source's
+  provisional general-purpose secret variable.
+
+Recovery remains a separate feature and a prerequisite for public onboarding.
+Breached-password screening and hosting abuse controls also remain release work.
+No other open product decisions are resolved by this slice.
+
+### Manual-test follow-up — 25 October 2026
+
+The user requested removal of registered-email disclosure and redirects away from
+login/signup for authenticated users. This supersedes the original API document's
+201-with-session / 409-duplicate registration trade-off: both accepted signup
+attempts now return 202 with the same generic message and no session or user DTO.
+Users continue to login. Existing account details are never overwritten, and a
+duplicate request never authenticates the caller. Both paths perform password
+hashing; no claim of identical timing or complete enumeration prevention is made.
+Without email verification, subsequent login with an attacker-chosen signup
+password can still reveal whether account creation succeeded. V1's no-verification
+policy remains unchanged; recovery is still a public-launch prerequisite.
+
+A dynamic server layout checks the stored session before rendering either auth
+page, redirects valid users to `/account`, and fails safely during database outages.
+This does not grant tenant access or alter API authentication requirements.
+
 ## Feature approval gates
 
 The public marketing homepage was approved on 25 October 2026. This UI-only
@@ -99,9 +152,10 @@ examples and clearly unavailable account actions. It excludes budgets, room
 allocation, transport, seating, realtime presence, unverified platform claims
 and business integrations. It does not resolve the pending contracts below.
 
-The foundation and marketing homepage are approved. Authentication and other
-business features still require the affected decisions below; recording these
-gates does not approve provisional policies.
+The foundation, marketing homepage and the core authentication slice above are
+authorized. The following original authentication checklist is retained for
+traceability; items 1–5 are addressed by the slice above, while item 6 remains a
+public-launch gate. Other business features still require their affected decisions.
 
 Before the first organizer authentication slice:
 
@@ -109,8 +163,8 @@ Before the first organizer authentication slice:
    `/api/v1/auth/login`, `/api/v1/auth/logout` and `/api/v1/auth/session`; the
    system design uses `signup` instead of `register`. Use one canonical contract,
    not aliases added implicitly.
-2. Confirm session policy. The proposed defaults are a 7-day idle limit and a
-   30-day absolute limit; they remain pending. Define timestamps and indexes that
+2. Confirm session policy. The adopted defaults above are a 7-day idle limit and a
+   30-day absolute limit. Define timestamps and indexes that
    enforce both independently of asynchronous TTL cleanup.
 3. Confirm the host-only cookie name and its Secure, HttpOnly, SameSite and local
    development behavior, plus trusted-origin and session-bound CSRF controls.

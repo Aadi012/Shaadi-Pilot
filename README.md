@@ -1,7 +1,8 @@
 # ShaadiPilot
 
 ShaadiPilot is a collaborative Indian wedding-planning application. This
-repository contains the approved application foundation and public homepage preview.
+repository contains the application foundation, public homepage and core organizer
+authentication.
 
 ## Local development
 
@@ -18,26 +19,38 @@ Open <http://localhost:3000>. The initial page works without environment files o
 external services. If Windows cannot find npm, add your existing Node.js
 installation to your shell's PATH, then open a new terminal.
 
-For future database-backed work, copy `.env.example` to `.env.local` and supply
+For account access, copy `.env.example` to `.env.local` and supply
 development-only MongoDB credentials and a database name. Never commit secrets.
 The database helper validates configuration and connects only when called; imports
 and production builds do not contact Atlas.
 
+Before using registration, run `npm run db:auth:indexes`. This idempotently creates
+the v1 indexes without dropping existing indexes or records. Authentication fails
+closed if its required indexes are absent. Atlas must support transactions.
+Set `APP_BASE_URL` to the exact application origin (HTTPS in production).
+Local development accepts `localhost` and `127.0.0.1` on the configured port.
+
 ## Commands
 
-| Command              | Purpose                                      |
-| -------------------- | -------------------------------------------- |
-| `npm run dev`        | Start Next.js development server             |
-| `npm run check`      | Check formatting, lint, types and unit tests |
-| `npm run build`      | Produce and type-check the production build  |
-| `npm start`          | Serve the completed production build         |
-| `npm run format`     | Format project source and configuration      |
-| `npm run test:watch` | Run unit tests in watch mode                 |
+| Command                    | Purpose                                      |
+| -------------------------- | -------------------------------------------- |
+| `npm run dev`              | Start Next.js development server             |
+| `npm run check`            | Check formatting, lint, types and unit tests |
+| `npm run build`            | Produce and type-check the production build  |
+| `npm start`                | Serve the completed production build         |
+| `npm run format`           | Format project source and configuration      |
+| `npm run test:watch`       | Run unit tests in watch mode                 |
+| `npm run db:auth:indexes`  | Create required authentication indexes       |
+| `npm run test:integration` | Test auth against an isolated Atlas database |
 
 Type checking runs Next.js type generation first, so it also works on a clean
 checkout. CI uses `npm ci` and runs all checks plus a production build without
 service credentials. The initial tests exercise safe errors and environment
-validation, not live MongoDB or providers.
+validation and authentication policies. The separate integration command loads
+local MongoDB credentials and creates a uniquely named `sp_auth_test_*` database,
+then removes only that generated database. It never resets the configured
+development database. Its database user needs permission to create/drop this
+isolated database. Integration tests are opt-in; credentialless CI runs unit tests.
 
 TypeScript is pinned to the 6.0 line supported by Next.js's bundled lint parser.
 ESLint 9 is retained for the React plugin's declared peer compatibility; npm marks
@@ -47,9 +60,12 @@ peers or bypass checks.
 
 ## Structure and boundaries
 
-- `src/app`: Next.js pages, layouts and future HTTP Route Handlers.
+- `src/app`: Next.js pages, layouts and HTTP Route Handlers.
 - `src/components/marketing`: responsive homepage sections, local example data,
   and the mobile navigation interaction.
+- `src/components/auth`: organizer login/signup forms and reusable form fields.
+- `src/modules/auth`: strict contracts, identity/session models, queries,
+  authentication services, password/CSRF controls and HTTP adapters.
 - `public/marketing` and `public/fonts`: local marketing imagery and licensed fonts.
 - `src/modules`: feature modules introduced when their behavior is implemented;
   see [module conventions](src/modules/README.md).
@@ -72,9 +88,11 @@ verification is not required in V1.
 
 The public homepage follows the approved Stitch reference with V1-only content.
 Wedding names, tasks, headcounts, expenses and theme previews are fictional
-marketing examples; they never read from wedding records. Account creation and
-login are marked as coming soon. In-page navigation works, but the previews do
-not create accounts, send invitations, publish websites or upload photos.
+marketing examples; they never read from wedding records. The `/signup` and
+`/login` pages now create accounts and authenticate using MongoDB-backed opaque
+sessions. Successful authentication opens the protected `/account` page. Refresh
+restores the session; logout revokes it in MongoDB and clears the cookie.
+Recovery is marked as coming soon; wedding setup is a separate milestone.
 Images and fonts are served locally, so the homepage requires no external
 services, runtime provider requests or service credentials. Font licenses and
 asset provenance are included under `public`.
@@ -83,8 +101,8 @@ Included: a simple app shell, strict TypeScript, ESLint, Prettier, Vitest, CI,
 on-demand environment validation, a lazy cached Mongoose connection, and API
 response/error/tracing helpers.
 
-Business API routes, authentication, database models/index scripts, provider
-integrations, cron processing and deployment are later implementation phases.
+Wedding business routes, provider integrations, cron processing and deployment
+remain later implementation phases.
 `withApiHandler` supplies tracing, safe error responses and private cache headers;
 it **does not authenticate, authorize, enforce CSRF or validate request input**.
 Those controls are required before future protected routes call services. Public
@@ -99,9 +117,59 @@ are never copied into diagnostics. These fields share the response's request ID.
 Always pass fixed route templates into the wrapper.
 
 The connection helper disables automatic index creation in production. Versioned
-index scripts, replica-set integration tests and live connection validation must
-accompany the first persistence feature. Database credentials never belong in
+indexes are applied explicitly by the authentication setup script. Database credentials never belong in
 client components or `NEXT_PUBLIC_*` variables.
+
+## Organizer authentication
+
+- `POST /api/v1/auth/register`: `{ displayName, email, password }`, returns the
+  same generic 202 response for new and existing emails, without a session.
+  Continue to `/login` afterward. Existing passwords and profiles are never replaced.
+- `POST /api/v1/auth/login`: `{ email, password }`, returns 200.
+- `GET /api/v1/auth/session`: `{ user, csrfToken }` inside the standard `data`
+  envelope; anonymous requests return `user: null` and bootstrap CSRF.
+- `POST /api/v1/auth/logout`: revokes the current session, returns 200.
+
+Mutations require the configured `Origin` and `X-CSRF-Token` from the session
+endpoint. Tokens are bound to the current session, or an HttpOnly anonymous CSRF
+cookie before authentication. JSON bodies are bounded to 8 KiB. No CORS origins
+are enabled. Responses use `Cache-Control: no-store` and safe error envelopes.
+
+Passwords use Argon2id (19 MiB, two iterations, parallelism one), with a 15-character
+minimum and 128 UTF-16 code-unit maximum; passwords are never trimmed or truncated.
+Email is trimmed/lowercased and uniquely indexed. Registration status, public body
+and cookies do not disclose whether the email was already registered. Invalid
+login is generic. New users have null wedding
+and role, and no email-verification requirement.
+
+Authenticated visitors to `/login` and `/signup` redirect server-side to
+`/account`. Expired/revoked sessions see the forms; database outages show a safe
+unavailable message. These pages are dynamic and do not cache identity publicly.
+Generic signup responses reduce direct enumeration; without email verification,
+registration followed by a login attempt with the chosen password can still
+distinguish a new account from an existing one. Timing is not guaranteed identical.
+
+Only SHA-256 hashes of 256-bit random session secrets are stored. Session cookies
+are HttpOnly, SameSite=Lax, host-only and Path=/; production uses Secure and
+`__Host-shaadipilot_session`, local HTTP uses `shaadipilot_session`. The server
+enforces seven-day idle and 30-day absolute expiry independently of TTL cleanup.
+Successful reauthentication rotates and revokes the presented session; other
+devices remain signed in. Session reads check user status and extend activity at
+most once per minute. Never use a session DTO as a cached authorization decision.
+
+MongoDB fixed-window limits apply per normalized email and trusted network key:
+login 10/account and 50/network; registration 5/account and 20/network per 15
+minutes. Vercel's overwritten `x-vercel-forwarded-for` supplies the network key.
+Outside Vercel, a conservative shared bucket is used; arbitrary forwarded headers
+are ignored. Review this adapter before hosting behind another proxy. Fixed
+windows permit boundary bursts; hosting-level abuse controls remain necessary
+before public launch. Password hashing is additionally bounded per process.
+
+**Public onboarding is not release-ready until password recovery is implemented.**
+Email delivery, breached-password screening, membership, tenant authorization and
+wedding creation are not supplied by this authentication slice. A random opaque
+session needs no `SESSION_SECRET`; future signed/encrypted links need separate
+purpose-specific key configuration. Do not add a public auth secret variable.
 
 Use isolated databases, R2 buckets and provider credentials for development,
 preview/staging and production. Store deployment secrets in the appropriate
