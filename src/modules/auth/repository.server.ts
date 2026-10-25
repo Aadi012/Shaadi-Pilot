@@ -1,5 +1,5 @@
 import 'server-only';
-import type { ClientSession } from 'mongoose';
+import type { ClientSession, Types } from 'mongoose';
 import { ApiError } from '@/lib/api/errors';
 import { connectDatabase } from '@/lib/db/mongoose.server';
 import { authIndexes } from './indexes';
@@ -151,5 +151,23 @@ export const revokeSession = (
   Session.updateOne(
     { tokenHash: hashSecret(token), revokedAt: null },
     { $set: { revokedAt: now, expiresAt: now } },
+    { session: transaction },
+  );
+
+export const findOrganizerForWedding = (
+  userId: string,
+  transaction?: ClientSession,
+) =>
+  User.findOne({ _id: userId, status: 'active' })
+    .session(transaction ?? null)
+    .lean();
+export const claimWeddingMembership = (
+  userId: string,
+  weddingId: Types.ObjectId,
+  transaction: ClientSession,
+) =>
+  User.updateOne(
+    { _id: userId, status: 'active', weddingId: null, role: null },
+    { $set: { weddingId, role: 'admin' } },
     { session: transaction },
   );

@@ -20,6 +20,43 @@ approval to create the scaffold does not resolve the product choices below.
   behavior is implemented. Do not add a monorepo, backend server, other ORM,
   authentication framework or queue infrastructure.
 
+## Wedding creation slice — 25 October 2026
+
+The user approved the supplied wedding onboarding/overview design prompts and
+finalized Stitch screens, then authorized implementation. This accepts the PRD's
+explicit wedding date alongside timezone and resolves the earlier missing-date
+contract for creation: `weddingDate` is a validated `YYYY-MM-DD` calendar string,
+never an inferred UTC timestamp. Required fields are the two partner names,
+wedding date, manually entered location, IANA timezone and unique slug; the intro
+is optional (200 characters). The API accepts `location` as a string and persists
+it as `defaultLocation.name`; richer venue details and theme selection are later.
+The date may be past or future; no invented product cutoff is imposed.
+
+Creation and first-Admin assignment are one transaction. The client supplies a
+UUID `Idempotency-Key`, scoped to its authenticated user; a durable hashed receipt
+replays matching requests and rejects changed payloads. Receipts have no automatic
+expiry and must follow account/wedding deletion policy before release. A fresh
+conditional write against null membership enforces one wedding even under races.
+No client wedding ID or role is accepted. The creator is Admin; this does not
+resolve second-Admin, transfer or last-Admin membership policies.
+
+`POST /api/v1/weddings`, `GET /api/v1/weddings/current` and authenticated
+`GET /api/v1/weddings/slug-availability?slug=...` are the creation/read contracts.
+Availability reveals only reservation status, never owner or wedding details.
+Writes require trusted Origin and session-bound CSRF. MongoDB limits apply per
+user: 20 creation attempts and 60 availability checks per 15-minute window.
+Apply `npm run db:wedding:indexes` before enabling this slice in each environment.
+
+The initial private overview derives tenant identity from current User membership,
+never a query parameter. Cross-module dashboard reads only count documents scoped
+to that wedding. Planning CRUD, populated summaries, member invites, publishing
+and recovery are outside this slice. Existing nonempty expense records produce an
+unavailable-total indicator until the expense module defines exact aggregation;
+only an empty ledger displays ₹0. Disabled future controls are labelled honestly.
+User-approved layouts override generated claims about encryption, billing,
+concierge, offline cache and public join codes. The brand and reduced-motion
+behavior take precedence over generic Stitch skill styling defaults.
+
 ## Open product and contract decisions
 
 | Topic                  | Conflict or missing decision                                                                                                     | Proposal awaiting confirmation                                                   |
@@ -27,7 +64,6 @@ approval to create the scaffold does not resolve the product choices below.
 | Admin policy           | PRD leaves Admin onboarding and transfer open; later contracts provisionally support it                                          | Admin may manage other Admins, with last-Admin protection                        |
 | Guest entry            | PRD shows multiple invited functions from one link; technical contracts issue per-event capabilities and a separate gallery link | Confirm the entry experience before implementing capability contracts            |
 | Guest email            | PRD requires email; API permits manually shared contacts without email                                                           | Confirm requiredness; duplicate family emails also need a policy                 |
-| Wedding date           | Required in PRD but absent from detailed Wedding storage and creation contracts                                                  | Model an explicit wedding calendar date with wedding timezone                    |
 | Public website images  | PRD permits image customization; only private gallery media is modeled                                                           | Define separately published website assets and authorization                     |
 | Expense corrections    | PRD permits edits/deletions; later contracts introduce refunds/reversals                                                         | Confirm editable entries versus reversal semantics                               |
 | Currency               | PRD includes currency; database/API choose INR-only                                                                              | Confirm INR-only scope                                                           |

@@ -9,27 +9,38 @@ resolve an open product decision.
 
 ## Current position
 
+Wedding onboarding and the initial private overview are complete for their first
+slice following the user's approval of the desktop/mobile Stitch designs. The implementation
+covers creation and the empty workspace; populated planning modules remain later
+features. Verification: 42 unit/render tests and 24 isolated MongoDB integration
+tests pass, along with formatting, lint, types and a production build. Browser
+checks covered creation, persistence, repeat-setup redirects, validation, slug
+availability and mobile navigation, with no page overflow at 320px and 390px.
+The user reviewed and accepted this slice and authorized its commit and push to
+GitHub on 25 October 2026. No additional feature implementation is authorized by
+this delivery approval.
+
 The application foundation and public marketing homepage are complete for their
 approved scope. Organizer registration and MongoDB-backed login/session/logout
 are complete for the core authentication slice. New and duplicate signup attempts
 receive the same generic response without automatic sign-in; users continue to
 login. Valid signed-in visitors to login/signup redirect to `/account`.
 The user confirmed manual testing and code review are complete and approved this
-work for commit and push on 25 October 2026. Latest automated verification passed:
+work for commit and push on 25 October 2026. That authentication milestone passed:
 34 unit/render tests, 12 isolated MongoDB integration tests, formatting, lint,
 type checking and the production build.
-Wedding onboarding, tenant-owned
-planning features and external provider integrations remain unimplemented.
+Tenant-owned planning CRUD and external provider integrations remain unimplemented.
 No production deployment is recorded.
 
 ## Milestone history
 
-| Completed       | Milestone                                   | Status                | Commit                                                                                             |
-| --------------- | ------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------- |
-| 24 October 2026 | Project scaffold and engineering foundation | Complete              | [21f0dd6](https://github.com/Aadi012/Shaadi-Pilot/commit/21f0dd6372aeef4ee39c71a0337e402c89f00410) |
-| 25 October 2026 | Public marketing homepage                   | Complete — UI preview | [13beba3](https://github.com/Aadi012/Shaadi-Pilot/commit/13beba33431a5ece8136ecc9b996cd22c48bd323) |
-| 25 October 2026 | Organizer login and signup                  | Complete — UI preview | Included in this change                                                                            |
-| 25 October 2026 | MongoDB-backed organizer authentication     | Complete — core auth  | Included in this change                                                                            |
+| Completed       | Milestone                                   | Status                 | Commit                                                                                             |
+| --------------- | ------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
+| 24 October 2026 | Project scaffold and engineering foundation | Complete               | [21f0dd6](https://github.com/Aadi012/Shaadi-Pilot/commit/21f0dd6372aeef4ee39c71a0337e402c89f00410) |
+| 25 October 2026 | Public marketing homepage                   | Complete — UI preview  | [13beba3](https://github.com/Aadi012/Shaadi-Pilot/commit/13beba33431a5ece8136ecc9b996cd22c48bd323) |
+| 25 October 2026 | Organizer login and signup                  | Complete — UI preview  | [6bccc20](https://github.com/Aadi012/Shaadi-Pilot/commit/6bccc20dd6b44e1938b64ab509f4c0e343d83403) |
+| 25 October 2026 | MongoDB-backed organizer authentication     | Complete — core auth   | [6bccc20](https://github.com/Aadi012/Shaadi-Pilot/commit/6bccc20dd6b44e1938b64ab509f4c0e343d83403) |
+| 25 October 2026 | Wedding onboarding and initial overview     | Complete — first slice | Included in this change                                                                            |
 
 Milestones 1–3 describe behavior at their original delivery date. Milestone 4 and
 its follow-up supersede the UI preview's account restrictions and password rules.
@@ -130,11 +141,38 @@ The feature commit is recorded in Git history; no production deployment is impli
   login without email verification. Hashing, cookie and revocation checks are
   automated integration evidence, not claims about the user's manual testing.
 
+### 5. Wedding onboarding and initial overview — 25 October 2026
+
+- Approved Stitch welcome, wedding details and desktop/mobile overview references
+  retrieved and inspected. Connection fallback and local references documented.
+- Two-step setup, private wedding creation, first-Admin membership, trusted tenant
+  reads and responsive empty overview implemented. Loading, pending, validation
+  and safe error/retry states are included. No guest accounts, publication,
+  planning CRUD, membership invitations or email integration in this slice.
+- Wedding date is an explicit calendar date, paired with the wedding timezone;
+  approved setup fields include manually entered location, slug and optional intro.
+- Verification: `npm run check` passes (42 unit/render tests); the separate MongoDB
+  suite passes all 24 integration tests, including concurrent creation, duplicate
+  slug rollback, replay/conflict handling, membership refresh and tenant isolation.
+  `npm run build` passes with database credentials blanked. Browser checks covered
+  welcome/details/overview, field errors, address availability, successful creation,
+  native date entry, refresh, repeat-setup redirects and mobile drawer focus.
+- The developer `npm run design:check` fallback successfully retrieved the live
+  project with 14 screens; its export-refresh command also passed. Eight approved
+  design exports are stored locally.
+  Exposed MCP tools still returned an authentication error; their root cause is
+  not claimed resolved. No credentials were copied or configuration rewritten.
+- Boundaries: no populated demo records, planning actions or member invitation
+  workflow. Nonempty expense totals and detailed planning summaries remain later
+  work. Disposable test fixtures were removed after verification. The user accepted
+  the delivered feature and authorized commit/push on 25 October 2026; the commit
+  is recorded in Git history. No production deployment is included.
+
 ## Next milestone
 
 Plan password recovery as the smallest next feature; implementation is not started
 and requires its own approval. Complete recovery before public onboarding.
-Wedding creation/joining follows its own affected
+Membership invitations, joining and planning writes follow their affected
 [feature contracts](architecture-decisions.md#feature-approval-gates). This entry
 does not authorize those later features or a production release.
 

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './auth.module.css';
 
-export function LogoutButton() {
+export function LogoutButton({ className }: { className?: string } = {}) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -34,7 +34,7 @@ export function LogoutButton() {
   return (
     <>
       <button
-        className={styles.submitButton}
+        className={className ?? styles.submitButton}
         disabled={pending}
         onClick={logout}
       >

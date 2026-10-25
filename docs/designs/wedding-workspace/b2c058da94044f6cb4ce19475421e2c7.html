@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "inverse-primary": "#e5bbcd", "on-error-container": "#93000a", "surface-tint": "#765564", "on-surface": "#1c1b22", "on-tertiary-fixed-variant": "#4d453e", "on-tertiary-fixed": "#201b15", "error": "#ba1a1a", "primary-container": "#4c2f3d", "inverse-on-surface": "#f3eff9", "primary-fixed": "#ffd8e8", "tertiary-fixed": "#ede0d6", "surface": "#fcf8ff", "tertiary": "#28221b", "surface-container-lowest": "#ffffff", "outline": "#807478", "secondary": "#705b3d", "outline-variant": "#d2c3c7", "on-secondary-fixed": "#271903", "tertiary-fixed-dim": "#d0c4bb", "secondary-container": "#fbdeb8", "inverse-surface": "#312f37", "on-tertiary-container": "#aaa096", "on-tertiary": "#ffffff", "on-secondary": "#ffffff", "surface-container-highest": "#e5e1ea", "secondary-fixed": "#fbdeb8", "on-primary-fixed-variant": "#5c3e4c", "background": "#fcf8ff", "primary-fixed-dim": "#e5bbcd", "primary": "#341a27", "on-secondary-fixed-variant": "#564428", "on-background": "#1c1b22", "on-surface-variant": "#4e4448", "surface-container-high": "#ebe6f0", "on-primary": "#ffffff", "on-primary-container": "#be96a7", "error-container": "#ffdad6", "secondary-fixed-dim": "#dec29e", "surface-dim": "#dcd8e2", "surface-variant": "#e5e1ea", "tertiary-container": "#3e3730", "surface-container": "#f0ecf6", "surface-bright": "#fcf8ff", "on-secondary-container": "#766143", "surface-container-low": "#f6f2fc", "on-primary-fixed": "#2c1320", "on-error": "#ffffff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-lg": "1.5rem", "space-xs": "0.25rem", "margin": "3rem", "space-xl": "2.5rem", "gutter": "1.5rem", "gutter-mobile": "1rem", "space-md": "1rem", "space-sm": "0.5rem", "margin-mobile": "1.25rem" }, "fontFamily": { "display-lg": ["Newsreader"], "headline-lg-mobile": ["Newsreader"], "headline-sm": ["Newsreader"], "title-md": ["Manrope"], "headline-lg": ["Newsreader"], "headline-md": ["Newsreader"], "title-lg": ["Manrope"], "label-md": ["Manrope"], "label-sm": ["Manrope"], "body-sm": ["Manrope"], "body-lg": ["Manrope"], "body-md": ["Manrope"], "display-lg-mobile": ["Newsreader"] }, "fontSize": { "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }], "headline-sm": ["22px", { "lineHeight": "28px", "fontWeight": "500" }], "title-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.015em", "fontWeight": "400" }], "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "500" }], "title-lg": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(76,47,61,0.03)]"><div class="h-16 w-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[20px]">temple_hindu</span></div><span class="font-headline-sm text-headline-sm tracking-tight text-primary">ShaadiPilot</span></div><nav class="hidden sm:flex items-center gap-space-md" data-active-classes="bg-surface-container text-on-surface font-semibold rounded-lg"><a class="px-3 py-1.5 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="welcome-overview" href="#">Overview</a><a aria-current="page" class="px-3 py-1.5 transition-colors bg-surface-container text-on-surface font-semibold rounded-lg" data-path="create-wedding" href="#">Create Wedding</a><a class="px-3 py-1.5 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="join-wedding" href="#">Join with Code</a></nav><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center gap-space-sm bg-surface-container-low px-3 py-1.5 rounded-full shadow-[0_1px_4px_rgba(76,47,61,0.04)]"><span class="w-2 h-2 rounded-full bg-secondary"></span><span class="font-label-md text-label-md text-on-surface">Ananya Kapoor</span><span class="font-body-sm text-body-sm text-on-surface-variant">· ananya@celebration.in</span></div><a class="font-label-md text-label-md text-on-surface-variant hover:text-error transition-colors" data-path="login" href="#">Sign Out</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 flex-1 flex flex-col items-center justify-center bg-background px-4 py-8"><div class="flex flex-col w-full max-w-6xl mx-auto px-4 lg:px-8 py-6">
+<!-- Breadcrumb & Multi-step Stepper -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</span>
+<span class="font-label-md text-label-md text-on-surface-variant line-through decoration-outline-variant">Workspace setup</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm">2</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">Wedding details</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-label-sm text-label-sm">3</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Ready</span>
+</div>
+</div>
+<!-- Interactive State Demonstrator Bar -->
+<div class="flex items-center gap-1.5 p-1 bg-surface-container-high rounded-xl self-start sm:self-auto shadow-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant px-2.5 hidden md:inline">Inspect State:</span>
+<button class="px-3 py-1.5 rounded-lg font-label-md text-label-md transition-all bg-surface-container-lowest text-primary font-bold shadow-sm" id="btn-state-valid" onclick="setFormState('valid')" type="button">
+        Default / Validated
+      </button>
+<button class="px-3 py-1.5 rounded-lg font-label-md text-label-md transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="btn-state-error" onclick="setFormState('error')" type="button">
+        Inline &amp; API Error
+      </button>
+<button class="px-3 py-1.5 rounded-lg font-label-md text-label-md transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="btn-state-loading" onclick="setFormState('loading')" type="button">
+        Submitting...
+      </button>
+</div>
+</div>
+<!-- Editorial Header Zone -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-10">
+<div class="lg:col-span-8 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-secondary font-label-md text-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+<span>Stage 02 • Core Itinerary &amp; Registry</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">
+        Tell us about your celebration.
+      </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+        These details establish your shared planning workspace. You can update dates, locations, and ceremony specifics at any time in your wedding management settings.
+      </p>
+</div>
+<!-- Editorial Accent Card -->
+<div class="lg:col-span-4 bg-surface-container-low rounded-xl p-5 shadow-[0_4px_20px_-2px_rgba(76,47,61,0.04)] relative overflow-hidden flex flex-col justify-between min-h-[140px]">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm uppercase text-secondary font-bold tracking-widest">Organizer Session</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+          Lead Host
+        </span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary font-serif">3</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Functions to be scheduled post-setup (Mehendi, Sangeet &amp; Varmala)</span>
+</div>
+<div class="mt-3 pt-3 flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm bg-surface-container-lowest/60 rounded-lg px-3 py-2">
+<span>Workspace ID</span>
+<span class="font-mono text-primary font-semibold">IN-JP-2027-X</span>
+</div>
+</div>
+</div>
+<!-- Top Global Error Banner (Hidden by default, shown in 'error' state) -->
+<div class="hidden mb-6 p-4 rounded-xl bg-error-container text-on-error-container shadow-md flex-col sm:flex-row sm:items-center justify-between gap-4" id="api-error-banner">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-error text-on-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md font-bold">Unable to save wedding workspace</h4>
+<p class="font-body-sm text-body-sm opacity-90">Network latency timed out while reserving your custom domain slug. Please check your connection and retry.</p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-lowest text-error font-label-md text-label-md font-bold shadow-sm hover:bg-surface-container transition-colors" onclick="setFormState('valid')" type="button">
+        Retry
+      </button>
+<button class="p-1 rounded-md text-on-error-container hover:bg-black/5" onclick="document.getElementById('api-error-banner').classList.add('hidden')" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Top Privacy Callout Banner -->
+<div class="mb-8 p-4 sm:p-5 rounded-xl bg-surface-container-low shadow-[0_2px_8px_rgba(76,47,61,0.03)] flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<h3 class="font-title-md text-title-md text-primary font-bold">Strictly Private Workspace</h3>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm uppercase">Protected</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        Creating your workspace does not publish a public website. Your plans, functions, budget allocation, and guest lists remain strictly private to you and co-organizers you explicitly invite.
+      </p>
+</div>
+</div>
+<!-- Main Multi-Group Form Container -->
+<form class="flex flex-col gap-8" id="wedding-details-form" onsubmit="event.preventDefault(); handleFormSubmit();">
+<!-- Group 1: The Couple -->
+<div class="p-6 lg:p-8 rounded-xl bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(76,47,61,0.04)] flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high text-primary flex items-center justify-center font-bold font-serif text-[15px]">
+            1
+          </div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary">The Couple</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">The primary names that personalize cards, run-sheets, and digital stationery.</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider px-2.5 py-1 rounded-md bg-secondary-container text-on-secondary-container font-bold">
+          Required
+        </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Partner One -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="partner-one">
+              Partner One's Full Name <span class="text-error">*</span>
+</label>
+<span class="font-body-sm text-body-sm text-on-surface-variant">E.g., Bride</span>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px] pointer-events-none">person</span>
+<input class="w-full pl-11 pr-10 py-3 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md placeholder-outline-variant transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:bg-surface" id="partner-one" name="partner_one" placeholder="Enter legal or ceremonial full name" required="" type="text" value="Ananya Sharma"/>
+<span class="material-symbols-outlined absolute right-3.5 text-secondary text-[20px]" id="partner-one-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="partner-one-helper">Will appear first on ceremonial invitations and timeline headings.</p>
+</div>
+<!-- Partner Two -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="partner-two">
+              Partner Two's Full Name <span class="text-error">*</span>
+</label>
+<span class="font-body-sm text-body-sm text-on-surface-variant">E.g., Groom</span>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px] pointer-events-none">person</span>
+<input class="w-full pl-11 pr-10 py-3 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md placeholder-outline-variant transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:bg-surface" id="partner-two" name="partner_two" placeholder="Enter legal or ceremonial full name" required="" type="text" value="Aarav Kapoor"/>
+<span class="material-symbols-outlined absolute right-3.5 text-secondary text-[20px]" id="partner-two-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="partner-two-helper">Can be adjusted alongside titles in workspace administration.</p>
+</div>
+</div>
+</div>
+<!-- Group 2: Date & Location -->
+<div class="p-6 lg:p-8 rounded-xl bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(76,47,61,0.04)] flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high text-primary flex items-center justify-center font-bold font-serif text-[15px]">
+            2
+          </div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary">Ceremony &amp; Destination</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Anchor dates and geographical coordinate base for multi-day itineraries.</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider px-2.5 py-1 rounded-md bg-secondary-container text-on-secondary-container font-bold">
+          Required
+        </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Main Wedding Date -->
+<div class="md:col-span-6 flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex items-center justify-between" for="wedding-date">
+<span>Main Wedding Date <span class="text-error">*</span></span>
+<span class="font-body-sm text-body-sm text-secondary font-medium">Shubh Muhurat</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px] pointer-events-none">calendar_month</span>
+<input class="w-full pl-11 pr-10 py-3 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md placeholder-outline-variant transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:bg-surface" id="wedding-date" name="wedding_date" placeholder="DD Month YYYY" required="" type="text" value="14 March 2027"/>
+<button aria-label="Open calendar picker" class="absolute right-3.5 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">event</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Main muhurat / ceremony day. Individual function dates (Mehendi, Sangeet, Reception) can be independently tuned on your timeline.
+          </p>
+</div>
+<!-- Wedding Location -->
+<div class="md:col-span-6 flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex items-center justify-between" for="wedding-location">
+<span>Wedding Location / Destination <span class="text-error">*</span></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Manual Input</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px] pointer-events-none">location_on</span>
+<input class="w-full pl-11 pr-10 py-3 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md placeholder-outline-variant transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:bg-surface" id="wedding-location" name="wedding_location" placeholder="e.g. Udaipur, Rajasthan or South Mumbai" required="" type="text" value="Jaipur, Rajasthan, India"/>
+<span class="material-symbols-outlined absolute right-3.5 text-secondary text-[20px]">pin_drop</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            City or resort hub. Detailed venue sub-addresses (palaces, lawns) can be allocated per function later.
+          </p>
+</div>
+<!-- Timezone Field -->
+<div class="md:col-span-12 flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="wedding-timezone">
+            Primary Planning Timezone <span class="text-error">*</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px] pointer-events-none">schedule</span>
+<select class="w-full pl-11 pr-10 py-3 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md appearance-none transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:bg-surface cursor-pointer" id="wedding-timezone" name="wedding_timezone">
+<option selected="" value="IST">India Standard Time (IST) — Asia/Kolkata (GMT+05:30) [Default]</option>
+<option value="GST">Gulf Standard Time (GST) — Asia/Dubai (GMT+04:00)</option>
+<option value="GMT">Greenwich Mean Time (GMT) — Europe/London (GMT+00:00)</option>
+<option value="EST">Eastern Standard Time (EST) — America/New_York (GMT-05:00)</option>
+<option value="PST">Pacific Standard Time (PST) — America/Los_Angeles (GMT-08:00)</option>
+<option value="SGT">Singapore Time (SGT) — Asia/Singapore (GMT+08:00)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3.5 text-on-surface-variant text-[20px] pointer-events-none">expand_more</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            All vendor call times, RSVP cutoff deadlines, and automated reminders will be synced to this timezone.
+          </p>
+</div>
+</div>
+</div>
+<!-- Group 3: Personalized Web Address & Story -->
+<div class="p-6 lg:p-8 rounded-xl bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(76,47,61,0.04)] flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high text-primary flex items-center justify-center font-bold font-serif text-[15px]">
+            3
+          </div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary">Personalized Address &amp; Welcome</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Reserve your bespoke URL handle and draft your warm note to family.</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant font-medium">
+          Customizable
+        </span>
+</div>
+<!-- Slug reservation input group -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex items-center justify-between" for="wedding-slug">
+<span>Proposed Wedding Address / Slug <span class="text-error">*</span></span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold flex items-center gap-1" id="slug-badge">
+<span class="material-symbols-outlined text-[14px]">check</span> Available
+          </span>
+</label>
+<div class="flex flex-col sm:flex-row items-stretch rounded-xl overflow-hidden shadow-sm bg-surface-container-lowest">
+<div class="flex items-center gap-2 px-4 py-3 bg-surface-container text-on-surface-variant font-label-md text-label-md shrink-0">
+<span class="material-symbols-outlined text-[18px]">link</span>
+<span>shaadipilot.com/w/</span>
+</div>
+<div class="relative flex-1 flex items-center">
+<input class="w-full px-4 py-3 bg-surface-container-lowest text-on-surface font-mono font-medium text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container focus:bg-surface" id="wedding-slug" name="wedding_slug" oninput="handleSlugInput(this.value)" placeholder="your-names-year" type="text" value="aarav-ananya-2027"/>
+</div>
+</div>
+<!-- Inline slug validation helper / error note -->
+<div class="flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant" id="slug-feedback">
+<span class="material-symbols-outlined text-secondary text-[16px]">info</span>
+<span>This reserves your private link. Your wedding website is <strong>NOT published</strong> until you explicitly enable it in website settings.</span>
+</div>
+</div>
+<!-- Short Introduction / Note (Optional) -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="wedding-intro">
+            Short Introduction / Note <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">(Optional)</span>
+</label>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="char-counter">109 / 200 characters</span>
+</div>
+<div class="relative">
+<textarea class="w-full p-4 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md placeholder-outline-variant transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:bg-surface" id="wedding-intro" maxlength="200" name="wedding_intro" oninput="document.getElementById('char-counter').textContent = this.value.length + ' / 200 characters'" placeholder="A brief greeting to display on your workspace overview and guest invitation portal..." rows="3">Celebrating three days of love, laughter, and heritage with our cherished family and friends at The Leela Palace.</textarea>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">This note welcomes co-planners and vendors joining your collaboration suite.</p>
+</div>
+</div>
+<!-- Visual Media Moodboard Accent Strip -->
+<div class="p-6 rounded-xl bg-surface-container-low shadow-[0_4px_20px_-2px_rgba(76,47,61,0.04)] flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 shadow-md">
+<img class="w-full h-full object-cover" data-alt="Intricate golden marigold flower garlands and soft brass lanterns bathed in warm natural afternoon sunlight at a luxury destination palace courtyard in Rajasthan with blush pink stone architecture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKw-uvkUKYLvoFaOKBGZ1a3bg-ifu_C37Z7QIw2GuQT21OqtrsVpmEc_Eh628yzlnUr8OruGmtmv2Q30Ct6fTSCH3FPgItNn-wwVCBCX2KeAMsG2Hs8ujkY6cElc_Po2qOuQtyNdr31fucRf8vZu6AHKCnCm8iwJHgIP5Qg-QHVWTDQQHJGsDQtbc5gJzuotUQJETvvHobGFlYb6b3v-sVk6ePI-Pjctz9U_EKo0l2seT6_q9VQxzZ"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Curated Theme Archetype</span>
+<span class="font-title-md text-title-md text-primary font-serif">Royal Rajputana • Warm Ivory &amp; Rose Plum</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Design system palette calibrated to Jaipur heritage palatial aesthetics.</span>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end md:self-auto">
+<span class="inline-flex w-3 h-3 rounded-full bg-primary"></span>
+<span class="inline-flex w-3 h-3 rounded-full bg-secondary"></span>
+<span class="inline-flex w-3 h-3 rounded-full bg-secondary-container"></span>
+<span class="inline-flex w-3 h-3 rounded-full bg-surface-container-high"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant ml-2">Theme v2.4</span>
+</div>
+</div>
+<!-- Primary Action & Navigation Footer -->
+<div class="pt-4 pb-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+<a class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors order-2 sm:order-1" data-path="welcome-overview" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Back to overview</span>
+</a>
+<div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto order-1 sm:order-2">
+<div class="text-center sm:text-right">
+<p class="font-label-sm text-label-sm text-on-surface-variant">No credit card or commitment required</p>
+<p class="font-body-sm text-body-sm text-secondary font-medium">Free during early access concierge</p>
+</div>
+<button class="w-full sm:w-auto h-12 px-8 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md font-semibold tracking-wide shadow-md hover:bg-primary transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2" id="btn-submit-action" type="submit">
+<span id="submit-text">Create wedding workspace</span>
+<span class="material-symbols-outlined text-[20px]" id="submit-icon">arrow_forward</span>
+</button>
+</div>
+</div>
+</form>
+<!-- Interactive JavaScript State Controller -->
+<script>
+    function setFormState(state) {
+      const btnValid = document.getElementById('btn-state-valid');
+      const btnError = document.getElementById('btn-state-error');
+      const btnLoading = document.getElementById('btn-state-loading');
+
+      const banner = document.getElementById('api-error-banner');
+      const slugInput = document.getElementById('wedding-slug');
+      const slugBadge = document.getElementById('slug-badge');
+      const slugFeedback = document.getElementById('slug-feedback');
+      const partnerOneInput = document.getElementById('partner-one');
+      const partnerOneIcon = document.getElementById('partner-one-icon');
+      const partnerOneHelper = document.getElementById('partner-one-helper');
+
+      const submitBtn = document.getElementById('btn-submit-action');
+      const submitText = document.getElementById('submit-text');
+      const submitIcon = document.getElementById('submit-icon');
+
+      const formInputs = document.querySelectorAll('#wedding-details-form input, #wedding-details-form select, #wedding-details-form textarea');
+
+      // Reset button toggles
+      [btnValid, btnError, btnLoading].forEach(b => {
+        b.className = 'px-3 py-1.5 rounded-lg font-label-md text-label-md transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container';
+      });
+
+      if (state === 'valid') {
+        btnValid.className = 'px-3 py-1.5 rounded-lg font-label-md text-label-md transition-all bg-surface-container-lowest text-primary font-bold shadow-sm';
+        banner.classList.add('hidden');
+
+        // Form elements enabled
+        formInputs.forEach(i => i.disabled = false);
+
+        // Partner 1 Valid
+        partnerOneInput.value = 'Ananya Sharma';
+        partnerOneInput.classList.remove('bg-error-container/20', 'text-error');
+        partnerOneIcon.textContent = 'check_circle';
+        partnerOneIcon.className = 'material-symbols-outlined absolute right-3.5 text-secondary text-[20px]';
+        partnerOneHelper.textContent = 'Will appear first on ceremonial invitations and timeline headings.';
+        partnerOneHelper.className = 'font-body-sm text-body-sm text-on-surface-variant';
+
+        // Slug Available
+        slugInput.value = 'aarav-ananya-2027';
+        slugBadge.className = 'px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold flex items-center gap-1';
+        slugBadge.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Available';
+        slugFeedback.innerHTML = '<span class="material-symbols-outlined text-secondary text-[16px]">info</span><span>This reserves your private link. Your wedding website is <strong>NOT published</strong> until you explicitly enable it in website settings.</span>';
+
+        // Submit Button Normal
+        submitBtn.disabled = false;
+        submitBtn.className = 'w-full sm:w-auto h-12 px-8 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md font-semibold tracking-wide shadow-md hover:bg-primary transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2';
+        submitText.textContent = 'Create wedding workspace';
+        submitIcon.textContent = 'arrow_forward';
+        submitIcon.className = 'material-symbols-outlined text-[20px]';
+      }
+      else if (state === 'error') {
+        btnError.className = 'px-3 py-1.5 rounded-lg font-label-md text-label-md transition-all bg-surface-container-lowest text-error font-bold shadow-sm';
+        banner.classList.remove('hidden');
+
+        formInputs.forEach(i => i.disabled = false);
+
+        // Partner 1 simulated missing / incomplete
+        partnerOneInput.value = '';
+        partnerOneInput.placeholder = 'Please enter partner one full name';
+        partnerOneIcon.textContent = 'error';
+        partnerOneIcon.className = 'material-symbols-outlined absolute right-3.5 text-error text-[20px]';
+        partnerOneHelper.textContent = 'This field is required to name your ceremony files.';
+        partnerOneHelper.className = 'font-body-sm text-body-sm text-error font-medium';
+
+        // Slug simulated collision
+        slugInput.value = 'aarav-ananya-2027';
+        slugBadge.className = 'px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold flex items-center gap-1';
+        slugBadge.innerHTML = '<span class="material-symbols-outlined text-[14px]">close</span> Slug unavailable';
+        slugFeedback.innerHTML = '<span class="material-symbols-outlined text-error text-[16px]">error</span><span class="text-error font-medium">This address is already registered. Try appending a surname or numeric suffix (e.g. aarav-ananya-jaipur).</span>';
+
+        submitBtn.disabled = false;
+        submitBtn.className = 'w-full sm:w-auto h-12 px-8 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md font-semibold tracking-wide shadow-md hover:bg-primary transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2';
+        submitText.textContent = 'Retry workspace creation';
+        submitIcon.textContent = 'refresh';
+      }
+      else if (state === 'loading') {
+        btnLoading.className = 'px-3 py-1.5 rounded-lg font-label-md text-label-md transition-all bg-surface-container-lowest text-primary font-bold shadow-sm';
+        banner.classList.add('hidden');
+
+        // Disable all inputs to prevent double submission
+        formInputs.forEach(i => i.disabled = true);
+
+        partnerOneInput.value = 'Ananya Sharma';
+        partnerOneIcon.textContent = 'check_circle';
+        partnerOneIcon.className = 'material-symbols-outlined absolute right-3.5 text-secondary text-[20px]';
+        partnerOneHelper.textContent = 'Will appear first on ceremonial invitations and timeline headings.';
+        partnerOneHelper.className = 'font-body-sm text-body-sm text-on-surface-variant';
+
+        slugBadge.className = 'px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold flex items-center gap-1';
+        slugBadge.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Available';
+
+        // Submit button loading animation
+        submitBtn.disabled = true;
+        submitBtn.className = 'w-full sm:w-auto h-12 px-8 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-semibold tracking-wide opacity-80 cursor-not-allowed flex items-center justify-center gap-3 shadow-sm';
+        submitText.textContent = 'Creating workspace... Please wait';
+        submitIcon.textContent = 'progress_activity';
+        submitIcon.className = 'material-symbols-outlined text-[20px] animate-spin';
+      }
+    }
+
+    function handleSlugInput(val) {
+      const slugBadge = document.getElementById('slug-badge');
+      const slugFeedback = document.getElementById('slug-feedback');
+
+      if (!val || val.length < 3) {
+        slugBadge.className = 'px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm';
+        slugBadge.innerHTML = 'Enter at least 3 characters';
+        return;
+      }
+
+      if (val === 'taken' || val === 'wedding') {
+        slugBadge.className = 'px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold flex items-center gap-1';
+        slugBadge.innerHTML = '<span class="material-symbols-outlined text-[14px]">close</span> Slug unavailable';
+        slugFeedback.innerHTML = '<span class="material-symbols-outlined text-error text-[16px]">error</span><span class="text-error">This slug is already reserved by another couple.</span>';
+      } else {
+        slugBadge.className = 'px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold flex items-center gap-1';
+        slugBadge.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Available';
+        slugFeedback.innerHTML = '<span class="material-symbols-outlined text-secondary text-[16px]">info</span><span>This reserves your private link. Your wedding website is <strong>NOT published</strong> until you explicitly enable it in website settings.</span>';
+      }
+    }
+
+    function handleFormSubmit() {
+      setFormState('loading');
+      setTimeout(() => {
+        setFormState('valid');
+        alert('Celebration workspace initialized successfully! Proceeding to Step 3.');
+      }, 2000);
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest/60 backdrop-blur-sm py-8"><div class="w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-body-sm text-body-sm"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-[16px] text-primary">ShaadiPilot</span><span>© 2025 ShaadiPilot Inc. All rights reserved.</span></div><div class="flex items-center gap-space-md"><a class="hover:text-on-surface transition-colors" href="#">Help &amp; Concierge</a><a class="hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="hover:text-on-surface transition-colors" href="#">Terms of Service</a><a class="hover:text-on-surface transition-colors" href="#">Security</a></div></div></footer></body></html>

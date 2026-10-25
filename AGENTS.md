@@ -1,5 +1,10 @@
 # ShaadiPilot development instructions
 
+- Workspace design references live in `docs/designs`; read `docs/DESIGN.md` for
+  the approved visual language. If exposed Stitch tools fail, use the documented
+  `npm run design:check` read-only fallback or local approved exports. Never log,
+  commit or copy integration credentials into design references.
+
 - Read the four Markdown source documents and `docs/architecture-decisions.md`
   before changing relevant behavior. Original Word inputs are archived under
   `docs/source`. Surface conflicts; do not silently resolve product decisions.

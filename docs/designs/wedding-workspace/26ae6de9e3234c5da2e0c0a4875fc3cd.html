@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-tertiary-container": "#aaa096", "surface": "#fcf8ff", "inverse-surface": "#312f37", "primary-container": "#4c2f3d", "surface-tint": "#765564", "primary-fixed-dim": "#e5bbcd", "secondary-fixed": "#fbdeb8", "background": "#fcf8ff", "on-primary-fixed": "#2c1320", "on-tertiary-fixed": "#201b15", "on-surface": "#1c1b22", "on-primary-fixed-variant": "#5c3e4c", "primary-fixed": "#ffd8e8", "surface-container": "#f0ecf6", "on-primary-container": "#be96a7", "error-container": "#ffdad6", "on-secondary": "#ffffff", "surface-container-highest": "#e5e1ea", "on-surface-variant": "#4e4448", "surface-bright": "#fcf8ff", "error": "#ba1a1a", "on-tertiary-fixed-variant": "#4d453e", "surface-container-lowest": "#ffffff", "tertiary-fixed": "#ede0d6", "surface-container-high": "#ebe6f0", "secondary-fixed-dim": "#dec29e", "outline": "#807478", "secondary-container": "#fbdeb8", "tertiary": "#28221b", "tertiary-container": "#3e3730", "on-secondary-fixed": "#271903", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#564428", "outline-variant": "#d2c3c7", "inverse-primary": "#e5bbcd", "on-background": "#1c1b22", "on-error": "#ffffff", "primary": "#341a27", "secondary": "#705b3d", "surface-dim": "#dcd8e2", "surface-container-low": "#f6f2fc", "inverse-on-surface": "#f3eff9", "surface-variant": "#e5e1ea", "on-secondary-container": "#766143", "on-primary": "#ffffff", "on-error-container": "#93000a", "tertiary-fixed-dim": "#d0c4bb" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter-mobile": "1rem", "space-xs": "0.25rem", "margin": "3rem", "space-md": "1rem", "space-xl": "2.5rem", "space-sm": "0.5rem", "margin-mobile": "1.25rem", "space-lg": "1.5rem", "gutter": "1.5rem" }, fontFamily: { "body-sm": ["Manrope"], "body-md": ["Manrope"], "label-sm": ["Manrope"], "display-lg-mobile": ["Newsreader"], "title-md": ["Manrope"], "display-lg": ["Newsreader"], "headline-sm": ["Newsreader"], "headline-md": ["Newsreader"], "body-lg": ["Manrope"], "title-lg": ["Manrope"], "headline-lg": ["Newsreader"], "label-md": ["Manrope"], "headline-lg-mobile": ["Newsreader"] }, fontSize: { "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }], "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "title-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }], "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "headline-sm": ["22px", { "lineHeight": "28px", "fontWeight": "500" }], "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "title-lg": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.015em", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }] } } } };</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior-y: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md antialiased relative min-h-full flex flex-col selection:bg-secondary-fixed selection:text-on-secondary-fixed"><header class="fixed top-0 w-full z-40 bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(76,47,61,0.05)] pt-safe"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-xl text-primary hover:bg-surface-container-high transition-colors active:scale-95" id="menu-trigger" onclick="document.getElementById('mobile-drawer').classList.remove('-translate-x-full');document.getElementById('drawer-scrim').classList.remove('opacity-0','pointer-events-none');" type="button"><span class="material-symbols-outlined text-[24px]">menu</span></button><div class="flex items-center gap-space-sm pl-space-xs"><div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shadow-sm"><span class="font-headline-sm font-semibold text-title-md tracking-wider leading-none text-on-primary">SP</span></div><div class="flex flex-col"><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span><span class="font-title-md text-body-sm font-semibold text-primary truncate max-w-[150px]">Aarav &amp; Ananya</span></div><span class="font-label-sm text-[10px] text-secondary tracking-widest uppercase font-semibold">Jaipur Palace</span></div></div></div><div class="flex items-center gap-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_2px_8px_rgba(52,26,39,0.15)] ring-2 ring-secondary-fixed/50"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><div class="fixed inset-0 z-50 bg-primary/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" id="drawer-scrim" onclick="document.getElementById('mobile-drawer').classList.add('-translate-x-full');this.classList.add('opacity-0','pointer-events-none');"></div><aside class="fixed top-0 bottom-0 left-0 w-[304px] z-50 bg-surface-container-lowest shadow-[0_12px_40px_rgba(52,26,39,0.18)] -translate-x-full transition-transform duration-300 ease-out flex flex-col pt-safe pb-safe" id="mobile-drawer"><div class="p-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center"><span class="font-headline-sm text-on-primary text-title-lg font-medium leading-none">SP</span></div><div><span class="font-headline-sm text-title-md text-primary font-medium tracking-tight block">ShaadiPilot</span><span class="font-label-sm text-secondary tracking-wider uppercase text-[10px]">Concierge OS</span></div></div><button class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container" onclick="document.getElementById('mobile-drawer').classList.add('-translate-x-full');document.getElementById('drawer-scrim').classList.add('opacity-0','pointer-events-none');" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button></div><div class="mx-space-lg mb-space-sm p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-wider">Active Workspace</span><span class="font-title-md text-body-sm text-primary font-semibold">Aarav &amp; Ananya</span><span class="font-body-sm text-[11px] text-secondary">Jaipur (Nov 2025)</span></div><span class="material-symbols-outlined text-secondary text-[18px]">expand_more</span></div><div class="flex-1 overflow-y-auto px-space-md py-space-xs space-y-space-md"><div class="space-y-1"><span class="px-space-sm font-label-sm text-[10px] uppercase tracking-widest text-secondary font-bold">Planning</span><nav class="space-y-1" data-active-classes="bg-primary text-on-primary"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl font-title-md transition-colors bg-primary text-on-primary" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span>Overview</a><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="functions" href="#"><span class="material-symbols-outlined text-[20px]">event</span>Functions</a><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="tasks" href="#"><span class="material-symbols-outlined text-[20px]">check_box</span>Tasks</a><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="guests-and-rsvps" href="#"><span class="material-symbols-outlined text-[20px]">group</span>Guests &amp; RSVPs</a><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="expenses" href="#"><span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>Expenses</a><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="vendors" href="#"><span class="material-symbols-outlined text-[20px]">handshake</span>Vendors</a></nav></div><div class="space-y-1"><span class="px-space-sm font-label-sm text-[10px] uppercase tracking-widest text-secondary font-bold">Celebration</span><nav class="space-y-1" data-active-classes="bg-primary text-on-primary"><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="wedding-website" href="#"><span class="material-symbols-outlined text-[20px]">web</span>Wedding Website</a><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="gallery" href="#"><span class="material-symbols-outlined text-[20px]">photo_library</span>Gallery</a><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="livestream" href="#"><span class="material-symbols-outlined text-[20px]">videocam</span>Livestream</a></nav></div><div class="space-y-1"><span class="px-space-sm font-label-sm text-[10px] uppercase tracking-widest text-secondary font-bold">Management</span><nav class="space-y-1" data-active-classes="bg-primary text-on-primary"><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="team" href="#"><span class="material-symbols-outlined text-[20px]">diversity_3</span>Team</a><a class="flex items-center gap-space-sm px-space-sm h-11 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-body-md transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span>Settings</a></nav></div></div><div class="p-space-md mx-space-md mb-space-md rounded-xl bg-surface-container-high/60 flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="flex flex-col"><span class="font-title-md text-body-sm font-semibold text-on-surface">Rhea Kapoor</span><span class="font-label-sm text-[10px] text-on-surface-variant">Lead Organizer</span></div></div><button class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-error" type="button"><span class="material-symbols-outlined text-[20px]">logout</span></button></div></aside><main class="flex flex-col relative w-full pt-16 pb-20 bg-surface min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full">
+<!-- Demo State Interactive Switcher -->
+<div class="px-gutter-mobile pt-space-xs pb-space-sm">
+<div class="bg-surface-container-high rounded-xl p-1 flex items-center justify-between shadow-sm">
+<button class="state-btn flex-1 py-1.5 px-2 rounded-lg bg-surface-container-lowest text-primary font-label-sm text-[10px] uppercase tracking-wider font-bold shadow-sm transition-all text-center" id="tab-empty" onclick="setScreenState('empty')" type="button">
+        Admin Empty
+      </button>
+<button class="state-btn flex-1 py-1.5 px-2 rounded-lg text-on-surface-variant font-label-sm text-[10px] uppercase tracking-wider font-semibold transition-all text-center hover:text-primary" id="tab-manager" onclick="setScreenState('manager')" type="button">
+        Manager View
+      </button>
+<button class="state-btn flex-1 py-1.5 px-2 rounded-lg text-on-surface-variant font-label-sm text-[10px] uppercase tracking-wider font-semibold transition-all text-center hover:text-primary" id="tab-skeleton" onclick="setScreenState('skeleton')" type="button">
+        Skeleton
+      </button>
+<button class="state-btn flex-1 py-1.5 px-2 rounded-lg text-on-surface-variant font-label-sm text-[10px] uppercase tracking-wider font-semibold transition-all text-center hover:text-error" id="tab-error" onclick="setScreenState('error')" type="button">
+        Error State
+      </button>
+</div>
+</div>
+<!-- STATE: SKELETON (Hidden by default) -->
+<div class="hidden px-gutter-mobile space-y-space-md animate-pulse" id="state-skeleton">
+<div class="h-28 bg-surface-container-high rounded-xl"></div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="h-24 bg-surface-container-high rounded-xl"></div>
+<div class="h-24 bg-surface-container-high rounded-xl"></div>
+<div class="h-24 bg-surface-container-high rounded-xl"></div>
+<div class="h-24 bg-surface-container-high rounded-xl"></div>
+</div>
+<div class="h-56 bg-surface-container-high rounded-xl"></div>
+<div class="h-36 bg-surface-container-high rounded-xl"></div>
+</div>
+<!-- STATE: ERROR (Hidden by default) -->
+<div class="hidden px-gutter-mobile py-space-xl" id="state-error">
+<div class="bg-error-container text-on-error-container p-space-lg rounded-xl shadow-sm text-center flex flex-col items-center">
+<div class="w-12 h-12 rounded-full bg-error text-on-error flex items-center justify-center mb-space-sm">
+<span class="material-symbols-outlined text-[24px]">cloud_off</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-semibold mb-1">Sync Interrupted</span>
+<p class="font-body-md text-body-md mb-space-md max-w-xs opacity-90">
+        We couldn't refresh Aarav &amp; Ananya's workspace data. Check your network connection.
+      </p>
+<button class="h-11 px-space-lg bg-error text-on-error rounded-xl font-label-md text-label-md flex items-center gap-2 active:scale-95 shadow-sm" onclick="setScreenState('empty')" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+        Retry Connection
+      </button>
+</div>
+</div>
+<!-- STATE: EMPTY / MANAGER VIEW (Active Screen) -->
+<div class="flex flex-col space-y-space-md px-gutter-mobile" id="state-main">
+<!-- Editorial Welcome Hero Banner -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm">
+<div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-secondary-fixed/30 pointer-events-none blur-2xl"></div>
+<div class="relative flex flex-col space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[10px] uppercase font-bold tracking-wider">Lead Host · Single Workspace</span>
+</div>
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-[11px] font-semibold">
+<span class="material-symbols-outlined text-[14px] text-secondary">hourglass_top</span>
+<span>42d to Jaipur</span>
+</div>
+</div>
+<div class="pt-space-xs">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">
+            Welcome, Ananya.
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant pt-1" id="welcome-body">
+            Your private wedding workspace is set up. Let's start with your first celebration.
+          </p>
+</div>
+<!-- Co-host badge showcase -->
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="flex -space-x-1.5 overflow-hidden">
+<div class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold shadow-sm ring-1 ring-surface">AK</div>
+<div class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold shadow-sm ring-1 ring-surface">AS</div>
+</div>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Aarav &amp; Ananya · 14 Mar 2027</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">verified</span>
+</div>
+</div>
+</div>
+<!-- Zero Metric Summary Cards (2x2 Grid) -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Functions Metric -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-between h-24">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Functions</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">celebration</span>
+</div>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-semibold text-primary leading-none" id="metric-functions">0</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">planned</span>
+</div>
+</div>
+<!-- Tasks Metric -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-between h-24">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Tasks</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">checklist</span>
+</div>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-semibold text-primary leading-none" id="metric-tasks">0</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">open</span>
+</div>
+</div>
+<!-- Families Metric -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-between h-24">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Families</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">group_add</span>
+</div>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-semibold text-primary leading-none" id="metric-families">0</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">enrolled</span>
+</div>
+</div>
+<!-- Expenses Metric -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-between h-24">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Expenses</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+</div>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md font-semibold text-primary leading-none" id="metric-expenses">₹0</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">allocated</span>
+</div>
+</div>
+</div>
+<!-- Empty State Note -->
+<div class="px-1 flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">shield</span>
+<span class="font-body-sm text-[11px]">Private expense tracker &amp; ledger ready for confidential entries.</span>
+</div>
+<!-- Guided Setup Action Stack (44px+ touch targets) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">flag</span>
+<h2 class="font-title-md text-title-md text-primary font-semibold">Guided Setup</h2>
+</div>
+<span class="font-label-sm text-[10px] text-secondary font-bold uppercase tracking-widest">Step 1 of 4</span>
+</div>
+<!-- Action 1: Add First Wedding Function (Hero Action) -->
+<button class="w-full text-left bg-primary-container text-on-primary rounded-xl p-3.5 shadow-sm active:scale-[0.99] transition-transform flex items-center justify-between min-h-[52px]" onclick="triggerAction('Function Added')" type="button">
+<div class="flex items-center gap-3 min-w-0 pr-2">
+<div class="w-9 h-9 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-body-md font-semibold text-on-primary truncate">Add First Wedding Function</span>
+<span class="font-body-sm text-[11px] text-on-primary-container truncate">Mehendi, Sangeet, Pheras or Reception</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary-fixed text-[20px] flex-shrink-0">arrow_forward_ios</span>
+</button>
+<!-- Action 2: Invite Co-Organizer -->
+<button class="w-full text-left bg-surface-container-low hover:bg-surface-container rounded-xl p-3 shadow-sm active:scale-[0.99] transition-transform flex items-center justify-between min-h-[48px]" onclick="triggerAction('Invite Co-Organizer Modal')" type="button">
+<div class="flex items-center gap-3 min-w-0 pr-2">
+<div class="w-9 h-9 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-title-md text-body-md font-semibold text-primary truncate">Invite Co-Organizer</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high text-primary font-label-sm text-[9px] uppercase font-bold">Admin</span>
+</div>
+<span class="font-body-sm text-[11px] text-on-surface-variant truncate">Add partner, parents or lead wedding planner</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] flex-shrink-0">add</span>
+</button>
+<!-- Action 3: Create First Task -->
+<button class="w-full text-left bg-surface-container-low hover:bg-surface-container rounded-xl p-3 shadow-sm active:scale-[0.99] transition-transform flex items-center justify-between min-h-[48px]" onclick="triggerAction('Task Builder Opened')" type="button">
+<div class="flex items-center gap-3 min-w-0 pr-2">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">add_task</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-body-md font-semibold text-primary truncate">Create First Task</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant truncate">Track vendor calls, tastings and milestones</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] flex-shrink-0">add</span>
+</button>
+<!-- Action 4: Add Guest Contacts -->
+<button class="w-full text-left bg-surface-container-low hover:bg-surface-container rounded-xl p-3 shadow-sm active:scale-[0.99] transition-transform flex items-center justify-between min-h-[48px]" onclick="triggerAction('Guest Importer Opened')" type="button">
+<div class="flex items-center gap-3 min-w-0 pr-2">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">contacts</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-body-md font-semibold text-primary truncate">Add Guest Contacts</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant truncate">Private links sent per family on WhatsApp</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] flex-shrink-0">add</span>
+</button>
+</div>
+<!-- Visual Storytelling / Venue Placeholder Card -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+<div class="relative w-full h-36 bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An ethereal high-end Indian palace courtyard in Jaipur with warm sandstone archways, draped blush-pink floral garlands, soft morning sunlight casting gentle shadows on polished marble floors, cinematic luxury wedding editorial aesthetic with muted ivory, brass, and deep plum accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEIY6LdaqK-34QY_TQ6eUAh3dK3vJXIVbpAw3Y41WUyp3Pe8usAeajsls1JozudXzg_SRJQOHeGUI05Y8rgdDCrkEb3f0ZOTJy5APn3b5gXcox6aP1vRE1Th-3qkTcDUdgo1AuW-gNV8hMw_HeaAKvQUKRAQl1Vu_OM7dwnd5miXyvt9-T8B-4AbeJCVHHmsdcLrRw3c8lw6S_Qv5rKpWUsU1HQUXup4iw8bJ3rjL8WhIMYJXYdF0Z"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent flex items-end p-space-sm">
+<div class="flex items-center justify-between w-full">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase tracking-wider text-secondary-fixed font-bold">Jaipur Palace Destination</span>
+<span class="font-headline-sm text-body-lg text-on-primary font-medium">14 March 2027 · Main Mandap</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-lowest/90 text-primary font-label-sm text-[10px] font-bold">Verified</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 1: Upcoming Functions Empty State Box -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">calendar_month</span>
+<h3 class="font-headline-sm text-title-md font-medium text-primary">Upcoming Functions</h3>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">0 of 5 added</span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-space-lg text-center flex flex-col items-center justify-center">
+<div class="w-12 h-12 rounded-full bg-surface-container-high text-secondary flex items-center justify-center mb-2 shadow-sm">
+<span class="material-symbols-outlined text-[24px]">event_busy</span>
+</div>
+<h4 class="font-title-md text-body-md font-semibold text-primary">No functions yet</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-[220px] mt-1 mb-space-sm">
+          Schedule ceremonial celebrations like Sangeet, Haldi &amp; Pheras.
+        </p>
+<button class="h-11 px-space-md bg-primary text-on-primary rounded-xl font-label-md text-label-md flex items-center gap-1.5 active:scale-95 shadow-sm transition-transform" onclick="triggerAction('Add Function Dialog')" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add Function</span>
+</button>
+</div>
+</div>
+<!-- Section 2: Tasks Placeholders -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">task_alt</span>
+<h3 class="font-headline-sm text-title-md font-medium text-primary">Tasks &amp; Milestones</h3>
+</div>
+<button class="font-label-sm text-[11px] text-secondary font-bold uppercase tracking-wider hover:underline" onclick="triggerAction('Add Task Dialog')" type="button">
+          + Add
+        </button>
+</div>
+<div class="p-space-sm rounded-xl bg-surface-container-low flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high text-secondary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-body-sm font-semibold text-primary">All caught up!</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Add to-dos and vendor follow-ups as they arise.</span>
+</div>
+</div>
+</div>
+<!-- Section 3: RSVP Summary Empty State -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm mb-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">pie_chart</span>
+<h3 class="font-headline-sm text-title-md font-medium text-primary">RSVP Summary</h3>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">0 confirmed</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col items-center text-center">
+<!-- Visual Progress Ring (Inline SVG with currentColor / theme colors) -->
+<div class="relative w-20 h-20 mb-2 flex items-center justify-center">
+<svg class="w-20 h-20 -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-secondary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="0, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-sm text-title-md font-bold text-primary leading-none">0%</span>
+<span class="font-label-sm text-[8px] text-on-surface-variant uppercase">RSVP</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-[240px]">
+          Per-function RSVPs and dietary counts will appear once functions are scheduled.
+        </p>
+</div>
+</div>
+<!-- Quick Toast Notification Container -->
+<div class="fixed bottom-24 left-4 right-4 z-50 pointer-events-none transform translate-y-8 opacity-0 transition-all duration-300" id="toast">
+<div class="bg-primary text-on-primary py-2.5 px-space-md rounded-xl shadow-lg flex items-center justify-between text-body-sm font-title-md">
+<span id="toast-message">Action triggered</span>
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function setScreenState(state) {
+    const mainState = document.getElementById('state-main');
+    const skeletonState = document.getElementById('state-skeleton');
+    const errorState = document.getElementById('state-error');
+    
+    // Reset buttons
+    document.querySelectorAll('.state-btn').forEach(btn => {
+      btn.className = 'state-btn flex-1 py-1.5 px-2 rounded-lg text-on-surface-variant font-label-sm text-[10px] uppercase tracking-wider font-semibold transition-all text-center hover:text-primary';
+    });
+
+    const activeBtn = document.getElementById('tab-' + state);
+    if (activeBtn) {
+      activeBtn.className = 'state-btn flex-1 py-1.5 px-2 rounded-lg bg-surface-container-lowest text-primary font-label-sm text-[10px] uppercase tracking-wider font-bold shadow-sm transition-all text-center';
+    }
+
+    // Toggle container display
+    if (state === 'skeleton') {
+      mainState.classList.add('hidden');
+      errorState.classList.add('hidden');
+      skeletonState.classList.remove('hidden');
+    } else if (state === 'error') {
+      mainState.classList.add('hidden');
+      skeletonState.classList.add('hidden');
+      errorState.classList.remove('hidden');
+    } else {
+      skeletonState.classList.add('hidden');
+      errorState.classList.add('hidden');
+      mainState.classList.remove('hidden');
+
+      const funcCount = document.getElementById('metric-functions');
+      const taskCount = document.getElementById('metric-tasks');
+      const familyCount = document.getElementById('metric-families');
+      const expCount = document.getElementById('metric-expenses');
+      const welcomeBody = document.getElementById('welcome-body');
+
+      if (state === 'manager') {
+        funcCount.textContent = '4';
+        taskCount.textContent = '12';
+        familyCount.textContent = '86';
+        expCount.textContent = '₹42.5L';
+        welcomeBody.textContent = 'Workspace synchronized with Royal Mansingh Palace team.';
+      } else {
+        funcCount.textContent = '0';
+        taskCount.textContent = '0';
+        familyCount.textContent = '0';
+        expCount.textContent = '₹0';
+        welcomeBody.textContent = 'Your private wedding workspace is set up. Let\'s start with your first celebration.';
+      }
+    }
+  }
+
+  function triggerAction(actionName) {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toast-message');
+    toastMsg.textContent = actionName;
+    toast.classList.remove('translate-y-8', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+    
+    setTimeout(() => {
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('translate-y-8', 'opacity-0');
+    }, 2200);
+  }
+</script></main><nav class="fixed bottom-0 w-full z-40 bg-surface/85 backdrop-blur-xl shadow-[0_-1px_16px_rgba(76,47,61,0.06)] pb-safe" data-active-classes="text-primary font-semibold"><div class="h-20 px-space-xs flex items-center justify-around"><a aria-current="page" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] h-12 transition-colors active:scale-95 text-primary font-semibold" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-md text-[11px] leading-tight">Overview</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary active:scale-95" data-path="functions" href="#"><span class="material-symbols-outlined text-[22px]">event</span><span class="font-label-md text-[11px] leading-tight">Functions</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary active:scale-95" data-path="tasks" href="#"><span class="material-symbols-outlined text-[22px]">checklist</span><span class="font-label-md text-[11px] leading-tight">Tasks</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary active:scale-95" data-path="guests-and-rsvps" href="#"><span class="material-symbols-outlined text-[22px]">group</span><span class="font-label-md text-[11px] leading-tight">Guests</span></a><button class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] h-12 text-on-surface-variant transition-colors hover:text-primary active:scale-95" onclick="document.getElementById('mobile-drawer').classList.remove('-translate-x-full');document.getElementById('drawer-scrim').classList.remove('opacity-0','pointer-events-none');" type="button"><span class="material-symbols-outlined text-[22px]">grid_view</span><span class="font-label-md text-[11px] leading-tight">Menu</span></button></div></nav></body></html>

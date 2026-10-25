@@ -161,7 +161,7 @@ export function MarketingHomepage() {
             Start planning <MarketingIcon name="arrow" size={17} />
           </Link>
           <p id="signup-note" className={styles.closingNote}>
-            Create your organizer account. Wedding setup is coming next.
+            Create your organizer account and start your wedding workspace.
           </p>
         </section>
       </main>

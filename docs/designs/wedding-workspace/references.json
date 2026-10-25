@@ -1,0 +1,61 @@
+{
+  "projectId": "7444919587454097178",
+  "references": [
+    {
+      "name": "projects/7444919587454097178/screens/31b94ee50f7f4beb8bdafe370793f3b0",
+      "title": "ShaadiPilot — Wedding Overview (Desktop · Populated Active Workspace)",
+      "deviceType": "DESKTOP",
+      "screenshot": "31b94ee50f7f4beb8bdafe370793f3b0.png",
+      "html": "31b94ee50f7f4beb8bdafe370793f3b0.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/3b1f002a21254bcebffb2a6ada7ce6fe",
+      "title": "ShaadiPilot — Welcome & Start Wedding Setup (Mobile)",
+      "deviceType": "MOBILE",
+      "screenshot": "3b1f002a21254bcebffb2a6ada7ce6fe.png",
+      "html": "3b1f002a21254bcebffb2a6ada7ce6fe.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/b1ee2a034d89479dba2d43017ded0f51",
+      "title": "ShaadiPilot — Wedding Details Setup (Mobile)",
+      "deviceType": "MOBILE",
+      "screenshot": "b1ee2a034d89479dba2d43017ded0f51.png",
+      "html": "b1ee2a034d89479dba2d43017ded0f51.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/7b116fe812154ca8aa3f8a030c352c2d",
+      "title": "ShaadiPilot — Wedding Overview (Desktop · Newly Created Empty State)",
+      "deviceType": "DESKTOP",
+      "screenshot": "7b116fe812154ca8aa3f8a030c352c2d.png",
+      "html": "7b116fe812154ca8aa3f8a030c352c2d.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/b2c058da94044f6cb4ce19475421e2c7",
+      "title": "ShaadiPilot — Wedding Details Setup (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "b2c058da94044f6cb4ce19475421e2c7.png",
+      "html": "b2c058da94044f6cb4ce19475421e2c7.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/be8f44bb33814faaa4d691f67bbb0b78",
+      "title": "ShaadiPilot — Wedding Overview (Mobile · Populated Active Workspace)",
+      "deviceType": "MOBILE",
+      "screenshot": "be8f44bb33814faaa4d691f67bbb0b78.png",
+      "html": "be8f44bb33814faaa4d691f67bbb0b78.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/26ae6de9e3234c5da2e0c0a4875fc3cd",
+      "title": "ShaadiPilot — Wedding Overview (Mobile · Newly Created Empty State)",
+      "deviceType": "MOBILE",
+      "screenshot": "26ae6de9e3234c5da2e0c0a4875fc3cd.png",
+      "html": "26ae6de9e3234c5da2e0c0a4875fc3cd.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/d8823c800b774bb492dc498096c840c3",
+      "title": "ShaadiPilot — Welcome & Start Wedding Setup (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "d8823c800b774bb492dc498096c840c3.png",
+      "html": "d8823c800b774bb492dc498096c840c3.html"
+    }
+  ]
+}

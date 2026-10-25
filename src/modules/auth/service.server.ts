@@ -11,6 +11,8 @@ import {
   recordLogin,
   createSession,
   revokeSession,
+  findOrganizerForWedding,
+  claimWeddingMembership,
 } from './repository.server';
 import {
   ABSOLUTE_MS,
@@ -117,3 +119,9 @@ export async function logout(token: string) {
   const now = new Date();
   await revokeSession(token, now);
 }
+
+// Cross-module identity operations re-read current membership; callers never
+// supply a role or use a cached session DTO to authorize tenant access.
+export const loadOrganizerMembership = findOrganizerForWedding;
+export const attachCreatedWedding = claimWeddingMembership;
+export const enforceIdentityLimit = consumeLimit;

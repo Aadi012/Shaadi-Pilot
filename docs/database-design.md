@@ -69,20 +69,27 @@ All domain collections have _id, createdAt and updatedAt. ObjectId references ar
 
 ### 4.1 weddings
 
-| Field           | Type                       | Rule                                            |
-| --------------- | -------------------------- | ----------------------------------------------- |
-| _id             | ObjectId                   | Permanent tenant identifier                     |
-| slug            | string                     | Lowercase, globally unique, stable              |
-| displayNames    | embedded object            | Couple display names and optional intro         |
-| timezone        | string                     | Valid IANA timezone, e.g. Asia/Kolkata          |
-| defaultLocation | Venue object or null       | Venue name, address, GeoJSON, Google Place ID   |
-| websiteTheme    | enum                       | One of three V1 theme IDs                       |
-| isPublished     | boolean                    | Controls public homepage and event visibility   |
-| youtubeLiveId   | string or null             | Validate ID; do not store arbitrary iframe HTML |
-| status          | active, archived, deleting | Archived/deleting denies guest access           |
-| createdBy       | User ObjectId              | First Admin                                     |
+| Field           | Type                       | Rule                                                                   |
+| --------------- | -------------------------- | ---------------------------------------------------------------------- |
+| _id             | ObjectId                   | Permanent tenant identifier                                            |
+| slug            | string                     | Lowercase, globally unique, stable                                     |
+| displayNames    | embedded object            | Couple display names and optional intro                                |
+| timezone        | string                     | Valid IANA timezone, e.g. Asia/Kolkata                                 |
+| weddingDate     | YYYY-MM-DD string          | Main ceremony calendar date; validated independently of UTC timestamps |
+| defaultLocation | Venue object or null       | Venue name, address, GeoJSON, Google Place ID                          |
+| websiteTheme    | enum                       | One of three V1 theme IDs                                              |
+| isPublished     | boolean                    | Controls public homepage and event visibility                          |
+| youtubeLiveId   | string or null             | Validate ID; do not store arbitrary iframe HTML                        |
+| status          | active, archived, deleting | Archived/deleting denies guest access                                  |
+| createdBy       | User ObjectId              | First Admin                                                            |
 
 Return public wedding data through a dedicated projection, never by serializing the whole wedding document. Published event schedule and homepage are public; private RSVPs, guest emails and expenses are not.
+
+The approved 25 October onboarding slice stores manually entered location in
+`defaultLocation.name`, leaves publication false and defers website theme selection.
+`weddingCreations` stores a SHA-256 user/key-scoped `_id`, normalized request hash,
+userId and weddingId in the same transaction as wedding creation and first-Admin
+membership. Keep receipts for safe retries; lifecycle deletion must clean them up.
 
 ### 4.2 users
 

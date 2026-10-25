@@ -13,3 +13,6 @@ next-env.d.ts
 # Archived Word inputs and extracted binary images.
 docs/source/*.docx
 docs/assets/*.png
+
+# Preserve approved Stitch exports byte-for-byte as reference material.
+docs/designs/wedding-workspace/*.html

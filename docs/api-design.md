@@ -132,7 +132,7 @@ The server stores a hash for secret lookup and an encrypted copy for authorized 
 
 Register requires email, password and displayName. Normalize email before unique lookup, hash passwords using Argon2id and never return them. Return 202 with the same generic message for new and duplicate normalized email. Do not return a user DTO or set a session cookie. Users continue to login; duplicate attempts never replace existing credentials or profile fields. This supersedes the original 201/409 trade-off after the manual-test security review. Without email verification, subsequent login with a chosen signup password can still expose whether account creation succeeded; complete enumeration resistance is not claimed. Login uses a generic INVALID_CREDENTIALS response for incorrect credentials and nonexistent accounts.
 
-Wedding creation accepts slug, displayNames, timezone, defaultLocation? and websiteTheme?. Creation and attaching the first Admin are one MongoDB transaction. A User already attached to a wedding gets 409 USER_ALREADY_IN_WEDDING. Slug collision returns 409 SLUG_TAKEN. Idempotency-Key is required so retries do not create two weddings.
+Wedding creation accepts slug, displayNames (partnerOne, partnerTwo, optional intro), weddingDate (YYYY-MM-DD), location (manually entered string) and timezone. The 25 October approved onboarding slice adds the PRD-required calendar date; location is persisted as defaultLocation.name. Theme selection and richer venues are deferred. Creation and attaching the first Admin are one MongoDB transaction. A User already attached to a wedding gets 409 USER_ALREADY_IN_WEDDING. Slug collision returns 409 SLUG_TAKEN. A UUID Idempotency-Key is required: new creation returns 201, matching replays return 200, and changed payload reuse returns 409 IDEMPOTENCY_CONFLICT. GET /weddings/current returns current membership and wedding or null for an unjoined organizer; caller-supplied tenant identifiers cannot change its scope. GET /weddings/slug-availability?slug=... returns only authenticated reservation status, not wedding details.
 
 Member-invite acceptance requires the organizer to be signed in and not already attached to a wedding. The invitation token is single-use, must not be expired or revoked, and its target emailNormalized must match the signed-in user's normalized email. Account email is not verified separately. A transaction consumes the token and assigns weddingId and role atomically.
 
@@ -151,8 +151,9 @@ Idempotency-Key: 3df6b8d1-a910-4a87-94d8-17e3d0b2f851
 {
   "slug": "aarav-ki-shaadi",
   "displayNames": {"partnerOne": "Aarav", "partnerTwo": "Ananya"},
-  "timezone": "Asia/Kolkata",
-  "websiteTheme": "classic"
+  "weddingDate": "2027-03-14",
+  "location": "Jaipur",
+  "timezone": "Asia/Kolkata"
 }
 ```
 

@@ -92,7 +92,9 @@ marketing examples; they never read from wedding records. The `/signup` and
 `/login` pages now create accounts and authenticate using MongoDB-backed opaque
 sessions. Successful authentication opens the protected `/account` page. Refresh
 restores the session; logout revokes it in MongoDB and clears the cookie.
-Recovery is marked as coming soon; wedding setup is a separate milestone.
+Unjoined organizers continue to `/onboarding`, then `/onboarding/details` to create
+their wedding; joined organizers see the private overview at `/account`.
+Recovery is marked as coming soon and remains a public-launch prerequisite.
 Images and fonts are served locally, so the homepage requires no external
 services, runtime provider requests or service credentials. Font licenses and
 asset provenance are included under `public`.
@@ -101,7 +103,7 @@ Included: a simple app shell, strict TypeScript, ESLint, Prettier, Vitest, CI,
 on-demand environment validation, a lazy cached Mongoose connection, and API
 response/error/tracing helpers.
 
-Wedding business routes, provider integrations, cron processing and deployment
+Planning CRUD, provider integrations, cron processing and deployment
 remain later implementation phases.
 `withApiHandler` supplies tracing, safe error responses and private cache headers;
 it **does not authenticate, authorize, enforce CSRF or validate request input**.
@@ -166,8 +168,9 @@ windows permit boundary bursts; hosting-level abuse controls remain necessary
 before public launch. Password hashing is additionally bounded per process.
 
 **Public onboarding is not release-ready until password recovery is implemented.**
-Email delivery, breached-password screening, membership, tenant authorization and
-wedding creation are not supplied by this authentication slice. A random opaque
+Email delivery, breached-password screening and membership invitations remain
+future features. Wedding creation and tenant-scoped overview reads are supplied
+by the onboarding slice below. A random opaque
 session needs no `SESSION_SECRET`; future signed/encrypted links need separate
 purpose-specific key configuration. Do not add a public auth secret variable.
 
@@ -175,6 +178,33 @@ Use isolated databases, R2 buckets and provider credentials for development,
 preview/staging and production. Store deployment secrets in the appropriate
 Vercel environment. Provider placeholders in `.env.example` are reserved for later
 phases; they are not consumed or validated by this scaffold.
+
+## Wedding onboarding and overview
+
+Run `npm run db:wedding:indexes` once per environment before using wedding setup.
+It creates the unique wedding-slug index and durable creation-receipt collection
+without dropping records or indexes. Runtime readiness checks fail closed if the
+required setup is absent. Creation requires Atlas transactions.
+
+`POST /api/v1/weddings` accepts `displayNames: {partnerOne, partnerTwo, intro?}`,
+`weddingDate` (`YYYY-MM-DD`), `location`, `timezone` and `slug`. Supply the current
+CSRF token, trusted Origin and UUID `Idempotency-Key`. New creation returns 201;
+matching retries return 200. A changed payload with the same key returns 409.
+The wedding and its first Admin membership commit atomically; conflicting
+requests cannot attach one organizer to two weddings. Publication defaults false.
+
+`GET /api/v1/weddings/current` resolves membership from the authenticated User.
+`GET /api/v1/weddings/slug-availability?slug=...` is an authenticated reservation
+check and never returns wedding/owner details. Client tenant IDs and roles are
+not accepted. The overview counts wedding-scoped records; function/task detail,
+RSVP aggregation, nonempty expense totals and planning writes remain later slices.
+Future actions are labelled unavailable. No sample planning records are inserted.
+
+The [approved design references](docs/designs/README.md) and
+[design language](docs/DESIGN.md) document the implementation. `npm run design:check`
+checks live Stitch access without printing credentials. See those instructions
+for the read-only fallback and optional export refresh. The application never
+needs Stitch credentials or network access at runtime or build time.
 
 ## Project documents
 
