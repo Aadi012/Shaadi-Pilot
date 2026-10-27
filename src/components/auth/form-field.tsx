@@ -14,6 +14,7 @@ export function FormField({
   error,
   hint,
   onChange,
+  maxLength,
 }: {
   name: AuthFieldName;
   label: string;
@@ -24,6 +25,7 @@ export function FormField({
   error?: string;
   hint?: string;
   onChange: (value: string) => void;
+  maxLength?: number;
 }) {
   const [visible, setVisible] = useState(false);
   const password = type === 'password';
@@ -65,6 +67,7 @@ export function FormField({
           className={password ? styles.passwordInput : undefined}
           placeholder={placeholder}
           value={value}
+          maxLength={maxLength}
           onChange={(event) => onChange(event.target.value)}
           required
           aria-invalid={!!error}

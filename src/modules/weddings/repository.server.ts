@@ -9,6 +9,32 @@ import {
   type CreationRecord,
 } from './models.server';
 import { weddingIndexes } from './indexes';
+import type { EditWeddingInput } from './contracts';
+export const updateWeddingDetails = (
+  id: Types.ObjectId,
+  version: number,
+  data: EditWeddingInput,
+  transaction: ClientSession,
+) =>
+  Wedding.findOneAndUpdate(
+    {
+      _id: id,
+      status: 'active',
+      ...(version === 0
+        ? { $or: [{ __v: 0 }, { __v: { $exists: false } }] }
+        : { __v: version }),
+    },
+    {
+      $set: {
+        displayNames: data.displayNames,
+        weddingDate: data.weddingDate,
+        'defaultLocation.name': data.location,
+        timezone: data.timezone,
+      },
+      $inc: { __v: 1 },
+    },
+    { returnDocument: 'after', session: transaction, runValidators: true },
+  ).lean();
 let ready: Promise<void> | undefined;
 export async function weddingDatabase() {
   const db = await connectDatabase();

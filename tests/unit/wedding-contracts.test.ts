@@ -5,6 +5,7 @@ import {
   createWeddingSchema,
   slugSchema,
   idempotencySchema,
+  editWeddingSchema,
 } from '@/modules/weddings/contracts';
 import {
   daysUntilWedding,
@@ -12,6 +13,7 @@ import {
 } from '@/modules/weddings/calendar';
 import { WeddingForm } from '@/components/workspace/wedding-form';
 import { WorkspaceShell } from '@/components/workspace/workspace-shell';
+import { WeddingSettings } from '@/components/workspace/wedding-settings';
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ replace() {}, refresh() {} }),
 }));
@@ -23,6 +25,27 @@ const data = {
   slug: 'aarav-ananya',
 };
 describe('wedding creation contract', () => {
+  it('rejects edits to locked and protected fields', () => {
+    const editable = {
+      displayNames: data.displayNames,
+      weddingDate: data.weddingDate,
+      location: data.location,
+      timezone: data.timezone,
+    };
+    expect(editWeddingSchema.safeParse(editable).success).toBe(true);
+    for (const field of [
+      'slug',
+      'weddingId',
+      'role',
+      'isPublished',
+      'theme',
+      '__v',
+    ])
+      expect(
+        editWeddingSchema.safeParse({ ...editable, [field]: 'injected' })
+          .success,
+      ).toBe(false);
+  });
   it('normalizes names/location and defaults the optional introduction', () => {
     expect(createWeddingSchema.parse(data)).toMatchObject({
       displayNames: { partnerOne: 'अनन्या', partnerTwo: 'Aarav', intro: '' },
@@ -95,6 +118,24 @@ describe('calendar dates in the wedding timezone', () => {
     expect(formatWeddingDate('2027-03-14')).toContain('14 Mar 2027'));
 });
 describe('workspace presentation boundaries', () => {
+  it('renders settings safely before hydration with a read-only address', () => {
+    const html = renderToStaticMarkup(
+      createElement(WeddingSettings, {
+        wedding: {
+          ...createWeddingSchema.parse(data),
+          id: 'example',
+          isPublished: false,
+          version: 0,
+        },
+        name: 'Organizer',
+        role: 'manager',
+      }),
+    );
+    expect(html).toMatch(/<fieldset\b[^>]*\bdisabled=/);
+    expect(html).toMatch(/id="wedding-address"[^>]*readOnly/);
+    expect(html).not.toContain('>Team<');
+    expect(html).toContain('Discard unsaved changes?');
+  });
   it('prevents native form submission before hydration', () => {
     const html = renderToStaticMarkup(createElement(WeddingForm));
     expect(html).toMatch(/<fieldset\b[^>]*\bdisabled=/);
@@ -109,6 +150,7 @@ describe('workspace presentation boundaries', () => {
       timezone: 'Asia/Kolkata',
       slug: 'a-and-b',
       isPublished: false,
+      version: 0,
     };
     for (const role of ['admin', 'manager'] as const) {
       const html = renderToStaticMarkup(

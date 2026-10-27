@@ -204,8 +204,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         )}
         {!signup && (
           <div className={styles.recoveryRow}>
-            <span aria-disabled="true">Forgot password?</span>
-            <span className={styles.soon}>Coming soon</span>
+            <Link href="/forgot-password">Forgot password?</Link>
           </div>
         )}
         {signup && (

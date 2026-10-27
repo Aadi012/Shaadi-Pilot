@@ -10,6 +10,7 @@ import {
   createWedding,
   currentWedding,
   weddingSlugAvailable,
+  editWedding,
 } from './service.server';
 import { slugSchema } from './contracts';
 async function requireOrganizer() {
@@ -47,10 +48,43 @@ export const currentWeddingHandler = withApiHandler(
   '/api/v1/weddings/current',
   async (_request, _context, requestId) => {
     const current = await requireOrganizer();
-    return apiSuccess(
-      await currentWedding(current.user._id.toString()),
-      requestId,
+    const result = await currentWedding(current.user._id.toString());
+    const response = apiSuccess(result, requestId);
+    if (result) response.headers.set('ETag', `"${result.wedding.version}"`);
+    return response;
+  },
+);
+export const editWeddingHandler = withApiHandler(
+  '/api/v1/weddings/current',
+  async (request, _context, requestId) => {
+    requireOrigin(request);
+    const current = await requireOrganizer();
+    verifyCsrf(current.token, request.headers.get('X-CSRF-Token'));
+    await enforceIdentityLimit(`wedding-edit:${current.user._id}`, 60);
+    const match = request.headers.get('If-Match');
+    if (!match)
+      throw new ApiError({
+        status: 428,
+        code: 'PRECONDITION_REQUIRED',
+        message: 'Load the current wedding before saving.',
+      });
+    if (
+      !/^"(?:0|[1-9][0-9]*)"$/.test(match) ||
+      !Number.isSafeInteger(Number(match.slice(1, -1)))
+    )
+      throw new ApiError({
+        status: 400,
+        code: 'INVALID_PRECONDITION',
+        message: 'Provide a valid wedding version.',
+      });
+    const wedding = await editWedding(
+      current.user._id.toString(),
+      await readJson(request),
+      Number(match.slice(1, -1)),
     );
+    const response = apiSuccess({ wedding }, requestId);
+    response.headers.set('ETag', `"${wedding.version}"`);
+    return response;
   },
 );
 export const slugAvailabilityHandler = withApiHandler(

@@ -117,6 +117,20 @@ The server stores a hash for secret lookup and an encrypted copy for authorized 
 
 ## 4 Authentication and organizer onboarding
 
+Recovery implementation (26 October 2026): request accepts `{email}` and returns
+generic 202 `{data:{message},meta}` for active, unknown or disabled accounts.
+Confirm accepts `{token,password}` and returns 200 `{data:{reset:true},meta}`.
+Additional POST `/auth/password-reset/validate` accepts `{token}` and returns
+`{data:{valid:boolean},meta}` without consuming it or identifying the account.
+All three require trusted Origin and anonymous/session-bound CSRF, strict JSON,
+rate limits and no-store responses. Invalid/used/expired confirmation returns
+400 INVALID_RESET_LINK. Links expire after 30 minutes; success revokes all prior
+sessions and reset links without authenticating the caller. Link GETs never reset
+passwords. Tokens travel in the landing-page fragment and subsequent POST bodies,
+never query parameters. Missing email configuration returns a generic 503 for all
+request emails. The internal email route currently drains only reset jobs;
+invitation/reminder jobs and email-status APIs in later sections are deferred.
+
 | Method | Path                          | Access                    | Purpose                                                           |
 | ------ | ----------------------------- | ------------------------- | ----------------------------------------------------------------- |
 | POST   | /auth/register                | Anonymous                 | Create organizer account, no email-verification step              |
@@ -158,6 +172,19 @@ Idempotency-Key: 3df6b8d1-a910-4a87-94d8-17e3d0b2f851
 ```
 
 ## 5 Wedding settings and membership
+
+Implementation slice (26 October 2026): PATCH currently accepts only
+`{displayNames: {partnerOne, partnerTwo, intro?}, weddingDate, location, timezone}`.
+All fields except intro are required; intro defaults to an empty string. This is
+the complete editable-details form, not a sparse field merge. Unknown keys are
+rejected. Slug, publication, theme, livestream, status and membership are not
+editable through this endpoint. GET current and successful PATCH return the
+wedding's numeric `version` and `ETag: "<version>"`. PATCH requires that exact
+strong version in `If-Match`; missing = 428 PRECONDITION_REQUIRED, malformed =
+400 INVALID_PRECONDITION, stale = 412 PRECONDITION_FAILED. Success returns
+`{data: {wedding}, meta}` with the incremented version and no-store caching.
+The calendar date remains YYYY-MM-DD. Date/timezone changes do not modify events.
+The following source table includes deferred settings; see architecture decisions.
 
 | Method | Path                              | Access           | Request or result                                                                   |
 | ------ | --------------------------------- | ---------------- | ----------------------------------------------------------------------------------- |

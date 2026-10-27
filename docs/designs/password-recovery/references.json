@@ -1,0 +1,33 @@
+{
+  "projectId": "14249455352497050706",
+  "references": [
+    {
+      "name": "projects/14249455352497050706/screens/25f7638bc80f4eae83a7c82124749f9c",
+      "title": "ShaadiPilot — Password recovery — Forgot password — Desktop",
+      "deviceType": "DESKTOP",
+      "screenshot": "25f7638bc80f4eae83a7c82124749f9c.png",
+      "html": "25f7638bc80f4eae83a7c82124749f9c.html"
+    },
+    {
+      "name": "projects/14249455352497050706/screens/30ead7d608a64cf8ab0dfdf6d1a30800",
+      "title": "ShaadiPilot — Password recovery — Reset password — Desktop",
+      "deviceType": "DESKTOP",
+      "screenshot": "30ead7d608a64cf8ab0dfdf6d1a30800.png",
+      "html": "30ead7d608a64cf8ab0dfdf6d1a30800.html"
+    },
+    {
+      "name": "projects/14249455352497050706/screens/f89957e6aea94742b46b46ef8770ade7",
+      "title": "ShaadiPilot — Password recovery — Mobile Flow — Mobile",
+      "deviceType": "MOBILE",
+      "screenshot": "f89957e6aea94742b46b46ef8770ade7.png",
+      "html": "f89957e6aea94742b46b46ef8770ade7.html"
+    },
+    {
+      "name": "projects/14249455352497050706/screens/0f0c865d69634879858b725c4f8d499c",
+      "title": "ShaadiPilot — Password recovery — Confirmation & Statuses — Desktop",
+      "deviceType": "DESKTOP",
+      "screenshot": "0f0c865d69634879858b725c4f8d499c.png",
+      "html": "0f0c865d69634879858b725c4f8d499c.html"
+    }
+  ]
+}

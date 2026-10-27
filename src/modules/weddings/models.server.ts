@@ -11,6 +11,7 @@ export interface WeddingRecord {
   isPublished: boolean;
   status: 'active' | 'archived' | 'deleting';
   createdBy: Types.ObjectId;
+  __v?: number;
 }
 export interface CreationRecord {
   _id: string;

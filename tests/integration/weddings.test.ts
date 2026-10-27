@@ -41,6 +41,7 @@ async function call(
     origin?: string;
     cookie?: string;
     key?: string;
+    match?: string;
   } = {},
 ) {
   const cookie =
@@ -57,6 +58,7 @@ async function call(
     headers.Origin = options.origin ?? 'http://localhost:3000';
   if (options.csrf) headers['X-CSRF-Token'] = options.csrf;
   if (options.key) headers['Idempotency-Key'] = options.key;
+  if (options.match !== undefined) headers['If-Match'] = options.match;
   const response = await handler(
     new Request('http://localhost:3000' + path, {
       method: options.method ?? 'POST',
@@ -132,6 +134,7 @@ import { weddingIndexes } from '@/modules/weddings/indexes';
 import { Wedding, WeddingCreation } from '@/modules/weddings/models.server';
 import {
   createWeddingHandler,
+  editWeddingHandler,
   currentWeddingHandler,
   slugAvailabilityHandler,
 } from '@/modules/weddings/http.server';
@@ -410,6 +413,170 @@ describe('wedding creation and tenant isolation', () => {
     } finally {
       failure.mockRestore();
     }
+  });
+  it('requires edit authentication, Origin, CSRF and a valid version', async () => {
+    const body = {
+      displayNames: input.displayNames,
+      weddingDate: input.weddingDate,
+      location: input.location,
+      timezone: input.timezone,
+    };
+    const patch = (options: Parameters<typeof call>[2]) =>
+      call(editWeddingHandler, '/api/v1/weddings/current', {
+        method: 'PATCH',
+        body,
+        ...options,
+      });
+    expect((await patch({ cookie: '' })).status).toBe(401);
+    expect(
+      (
+        await patch({
+          cookie: firstCookie,
+          csrf: firstCsrf,
+          origin: 'https://evil.test',
+          match: '"0"',
+        })
+      ).status,
+    ).toBe(403);
+    expect((await patch({ cookie: firstCookie, match: '"0"' })).status).toBe(
+      403,
+    );
+    expect((await patch({ cookie: firstCookie, csrf: firstCsrf })).status).toBe(
+      428,
+    );
+    for (const match of ['0', '*', 'W/"0"', '"01"', '"9007199254740992"'])
+      expect(
+        (await patch({ cookie: firstCookie, csrf: firstCsrf, match })).status,
+      ).toBe(400);
+    for (const field of ['slug', 'weddingId', 'role', 'isPublished', 'theme'])
+      expect(
+        (
+          await patch({
+            cookie: firstCookie,
+            csrf: firstCsrf,
+            match: '"0"',
+            body: { ...body, [field]: 'injected' },
+          })
+        ).status,
+      ).toBe(422);
+  });
+  it('updates only the trusted tenant and leaves function schedules and the address intact', async () => {
+    const beforeEvent = await mongoose.connection
+      .collection('events')
+      .findOne({ weddingId: new mongoose.Types.ObjectId(firstId) });
+    const response = await call(
+      editWeddingHandler,
+      '/api/v1/weddings/current?weddingId=' + secondId,
+      {
+        method: 'PATCH',
+        cookie: firstCookie,
+        csrf: firstCsrf,
+        match: '"0"',
+        body: {
+          displayNames: input.displayNames,
+          weddingDate: '2027-04-01',
+          location: 'Udaipur',
+          timezone: 'Asia/Dubai',
+        },
+      },
+    );
+    expect(response.status).toBe(200);
+    expect(response.headers.get('ETag')).toBe('"1"');
+    expect(response.headers.get('Cache-Control')).toBe('no-store');
+    expect((await response.json()).data.wedding).toMatchObject({
+      id: firstId,
+      version: 1,
+      location: 'Udaipur',
+      slug: input.slug,
+      isPublished: false,
+    });
+    expect(
+      (await Wedding.findById(secondId).lean())?.defaultLocation.name,
+    ).toBe('Jaipur');
+    expect(
+      await mongoose.connection
+        .collection('events')
+        .findOne({ _id: beforeEvent!._id }),
+    ).toEqual(beforeEvent);
+  });
+  it('allows Managers to edit and rejects concurrent stale writes', async () => {
+    const user = await User.findOne({
+      emailNormalized: 'first@example.test',
+    }).lean();
+    await User.updateOne({ _id: user!._id }, { $set: { role: 'manager' } });
+    const responses = await Promise.all(
+      ['Mumbai', 'Delhi'].map((location) =>
+        call(editWeddingHandler, '/api/v1/weddings/current', {
+          method: 'PATCH',
+          cookie: firstCookie,
+          csrf: firstCsrf,
+          match: '"1"',
+          body: {
+            displayNames: input.displayNames,
+            weddingDate: input.weddingDate,
+            location,
+            timezone: input.timezone,
+          },
+        }),
+      ),
+    );
+    expect(responses.map((response) => response.status).sort()).toEqual([
+      200, 412,
+    ]);
+    expect(
+      (await responses.find((response) => response.status === 412)!.json())
+        .error.code,
+    ).toBe('PRECONDITION_FAILED');
+    expect((await Wedding.findById(firstId).lean())?.__v).toBe(2);
+  });
+  it('denies editing after membership removal or wedding archival', async () => {
+    const user = await User.findOne({
+      emailNormalized: 'second@example.test',
+    }).lean();
+    const body = {
+      displayNames: input.displayNames,
+      weddingDate: input.weddingDate,
+      location: 'Blocked',
+      timezone: input.timezone,
+    };
+    await Wedding.updateOne(
+      { _id: secondId },
+      { $set: { status: 'archived' } },
+    );
+    expect(
+      (
+        await call(editWeddingHandler, '/api/v1/weddings/current', {
+          method: 'PATCH',
+          cookie: secondCookie,
+          csrf: secondCsrf,
+          match: '"0"',
+          body,
+        })
+      ).status,
+    ).toBe(404);
+    await Wedding.updateOne({ _id: secondId }, { $set: { status: 'active' } });
+    await User.updateOne(
+      { _id: user!._id },
+      { $set: { weddingId: null, role: null } },
+    );
+    expect(
+      (
+        await call(editWeddingHandler, '/api/v1/weddings/current', {
+          method: 'PATCH',
+          cookie: secondCookie,
+          csrf: secondCsrf,
+          match: '"0"',
+          body,
+        })
+      ).status,
+    ).toBe(403);
+    await User.updateOne(
+      { _id: user!._id },
+      { $set: { weddingId: secondId, role: 'admin' } },
+    );
+    expect(
+      (await Wedding.findById(secondId).lean())?.defaultLocation.name,
+    ).toBe('Jaipur');
   });
   it('rechecks role and membership rather than caching them in a session', async () => {
     const user = await User.findOne({

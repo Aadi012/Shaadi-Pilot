@@ -167,7 +167,9 @@ are ignored. Review this adapter before hosting behind another proxy. Fixed
 windows permit boundary bursts; hosting-level abuse controls remain necessary
 before public launch. Password hashing is additionally bounded per process.
 
-**Public onboarding is not release-ready until password recovery is implemented.**
+**Public onboarding still requires live recovery-email verification and deployment
+delivery configuration.** Recovery is implemented with mocked provider tests; see
+[password recovery setup](docs/password-recovery.md) for the remaining release work.
 Email delivery, breached-password screening and membership invitations remain
 future features. Wedding creation and tenant-scoped overview reads are supplied
 by the onboarding slice below. A random opaque
@@ -176,8 +178,9 @@ purpose-specific key configuration. Do not add a public auth secret variable.
 
 Use isolated databases, R2 buckets and provider credentials for development,
 preview/staging and production. Store deployment secrets in the appropriate
-Vercel environment. Provider placeholders in `.env.example` are reserved for later
-phases; they are not consumed or validated by this scaffold.
+Vercel environment. Provider placeholders in `.env.example` must never hold real credentials.
+Resend and token-encryption settings are now validated lazily by recovery; other
+provider settings remain reserved for later modules.
 
 ## Wedding onboarding and overview
 

@@ -35,6 +35,11 @@ Never show a completed operation or fabricated planning activity as real data.
 
 ## 5. Layout
 
+Password recovery references live under `designs/password-recovery` from project 14249455352497050706. Use the centered, restrained form panel, brand above it and
+quiet footer. Reuse existing input, visibility and button styles. Keep confirmation,
+invalid-link and success states inside the same panel; no dashboard shell, design
+state toggles, passkey promotion, fake delivery badge or encryption claims.
+
 Welcome: centered editorial introduction, broad creation panel and smaller
 image/invitation aside. Details: contained form, progress indicator and privacy
 notice. Overview: desktop sidebar, slim header, setup cards, indicators and a
@@ -42,6 +47,13 @@ two-column content area. Mobile uses a native modal navigation drawer, stacked
 sections and two-column indicators. No page-level horizontal overflow at 320px.
 
 ## 6. Motion and interaction
+
+Wedding settings follows the approved `designs/wedding-details` references:
+existing sidebar/header, four numbered form sections and a sticky save row.
+Mobile stacks fields and wraps actions without horizontal page scrolling.
+The address is read-only. Preserve drafts on failure/conflict, use an explicit
+discard confirmation and show inline accessible validation. Design-only state
+controls, platform metrics and location photos are not product requirements.
 
 Restrained hover/press feedback. Pending forms prevent duplicate submission.
 Focus the signup/validation result when appropriate. Honor reduced motion;

@@ -8,6 +8,7 @@ import { hashSecret } from '@/modules/auth/security.server';
 import {
   createWeddingSchema,
   idempotencySchema,
+  editWeddingSchema,
   type WeddingDto,
 } from './contracts';
 import {
@@ -17,6 +18,7 @@ import {
   insertWedding,
   slugExists,
   weddingDatabase,
+  updateWeddingDetails,
 } from './repository.server';
 import type { WeddingRecord } from './models.server';
 const conflict = () =>
@@ -37,7 +39,52 @@ export const weddingDto = (wedding: WeddingRecord): WeddingDto => ({
   timezone: wedding.timezone,
   slug: wedding.slug,
   isPublished: wedding.isPublished,
+  version: wedding.__v ?? 0,
 });
+export async function editWedding(
+  userId: string,
+  input: unknown,
+  version: number,
+) {
+  const data = editWeddingSchema.parse(input);
+  const db = await weddingDatabase();
+  return db.connection.transaction(async (transaction) => {
+    const user = await loadOrganizerMembership(userId, transaction);
+    if (!user)
+      throw new ApiError({
+        status: 401,
+        code: 'UNAUTHENTICATED',
+        message: 'Please log in.',
+      });
+    if (!user.weddingId || !['admin', 'manager'].includes(user.role ?? ''))
+      throw new ApiError({
+        status: 403,
+        code: 'FORBIDDEN',
+        message: 'Wedding access is unavailable.',
+      });
+    const wedding = await updateWeddingDetails(
+      user.weddingId,
+      version,
+      data,
+      transaction,
+    );
+    if (!wedding) {
+      if (!(await findWedding(user.weddingId, transaction)))
+        throw new ApiError({
+          status: 404,
+          code: 'NOT_FOUND',
+          message: 'Wedding not found.',
+        });
+      throw new ApiError({
+        status: 412,
+        code: 'PRECONDITION_FAILED',
+        message:
+          'Wedding details changed. Load the latest details before saving again.',
+      });
+    }
+    return weddingDto(wedding);
+  });
+}
 export async function currentWedding(userId: string) {
   await weddingDatabase();
   const user = await loadOrganizerMembership(userId);

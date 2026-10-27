@@ -28,11 +28,13 @@ export function WorkspaceShell({
   wedding,
   name,
   role,
+  active = 'Overview',
 }: {
   children?: React.ReactNode;
   wedding: WeddingDto;
   name: string;
   role: 'admin' | 'manager';
+  active?: 'Overview' | 'Settings';
 }) {
   const drawer = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -55,11 +57,17 @@ export function WorkspaceShell({
             .map((item) => (
               <div key={item.label}>
                 {item.group && <p className={styles.navGroup}>{item.group}</p>}
-                {item.label === 'Overview' ? (
+                {item.label === 'Overview' || item.label === 'Settings' ? (
                   <a
-                    href="/account"
-                    aria-current="page"
-                    className={styles.navActive}
+                    href={
+                      item.label === 'Settings'
+                        ? '/account/settings/wedding'
+                        : '/account'
+                    }
+                    aria-current={item.label === active ? 'page' : undefined}
+                    className={
+                      item.label === active ? styles.navActive : undefined
+                    }
                   >
                     <MarketingIcon name={item.icon} size={17} />
                     {item.label}
@@ -89,7 +97,7 @@ export function WorkspaceShell({
   return (
     <div className={styles.workspace}>
       <a href="#workspace-content" className={styles.skipLink}>
-        Skip to overview
+        Skip to content
       </a>
       <aside className={styles.sidebar}>{nav()}</aside>
       <dialog
@@ -126,7 +134,11 @@ export function WorkspaceShell({
               {wedding.displayNames.partnerOne} &{' '}
               {wedding.displayNames.partnerTwo}
             </strong>
-            <small>Workspace overview</small>
+            <small>
+              {active === 'Settings'
+                ? 'Settings · Wedding details'
+                : 'Workspace overview'}
+            </small>
           </div>
           <span className={styles.badge}>Private workspace</span>
           <span className={styles.avatar} aria-label={name}>

@@ -177,6 +177,24 @@ The gallery QR can be printed and used repeatedly until expiry or revocation. Be
 
 ### 4.9 emailDeliveries and emailBatches
 
+26 October implementation slice: platform password resets add User
+`credentialVersion` (legacy default 0) and a `recoverySequence` write counter to
+serialize credential-sensitive transactions. `passwordResetTokens` also stores
+the credential version at issuance. Validation uses tokenHash; consumed or expired
+records never authorize a reset even before TTL cleanup.
+
+Reset emailDeliveries hold scope/kind, userId, tokenHash, logicalKey, state,
+attempts, nextAttemptAt, leaseUntil/leaseOwner, firstAttemptAt, expiresAt, purgeAt
+and optional safe provider metadata. They contain no raw token or recipient.
+Each has one emailBatch with the same ObjectId, unique idempotencyKey,
+payloadHash, encrypted payload and expiresAt. The batch payload contains the
+recipient and link under authenticated encryption. It is immutable on retry and
+erased on terminal processing; batch TTL removes it at the reset deadline.
+Delivery metadata TTL is seven days after that deadline. Current states add
+cancelled/quarantined for ineligible work and ambiguous/conflicting outcomes.
+This is a low-volume reset-only delivery slice; the broader proposed batch fields
+and wedding mail projections below remain future contracts.
+
 | Collection      | Fields                                                                                                                                   | Domain constraints                                                 |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | emailDeliveries | scope, weddingId?, logicalKey, recipient, kind, subjectData, state, nextAttemptAt, leaseUntil?, attempts, providerMessageId?, lastError? | State pending, leased, retry, submitted, failed; unique logicalKey |

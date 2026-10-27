@@ -21,6 +21,7 @@
     "test:watch": "vitest",
     "db:auth:indexes": "node scripts/auth-indexes.mjs",
     "db:wedding:indexes": "node scripts/wedding-indexes.mjs",
+    "db:recovery:indexes": "node scripts/recovery-indexes.mjs",
     "design:check": "node scripts/stitch-reference.mjs",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test"

@@ -27,6 +27,8 @@ export const createWeddingSchema = z.strictObject({
   slug: slugSchema,
 });
 export const idempotencySchema = z.uuid();
+export const editWeddingSchema = createWeddingSchema.omit({ slug: true });
+export type EditWeddingInput = z.infer<typeof editWeddingSchema>;
 export type CreateWeddingInput = z.infer<typeof createWeddingSchema>;
 export type WeddingDto = {
   id: string;
@@ -36,4 +38,5 @@ export type WeddingDto = {
   timezone: string;
   slug: string;
   isPublished: boolean;
+  version: number;
 };

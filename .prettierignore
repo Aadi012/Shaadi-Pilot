@@ -16,3 +16,5 @@ docs/assets/*.png
 
 # Preserve approved Stitch exports byte-for-byte as reference material.
 docs/designs/wedding-workspace/*.html
+docs/designs/wedding-details/*.html
+docs/designs/password-recovery/*.html

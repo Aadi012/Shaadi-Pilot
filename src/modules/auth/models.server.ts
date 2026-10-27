@@ -10,6 +10,8 @@ export interface UserRecord {
   role: 'admin' | 'manager' | null;
   status: 'active' | 'disabled';
   lastLoginAt: Date | null;
+  credentialVersion?: number;
+  recoverySequence?: number;
 }
 export interface SessionRecord {
   _id: Types.ObjectId;
@@ -35,6 +37,8 @@ const userSchema = new Schema<UserRecord>(
     role: { type: String, enum: ['admin', 'manager', null], default: null },
     status: { type: String, enum: ['active', 'disabled'], default: 'active' },
     lastLoginAt: { type: Date, default: null },
+    credentialVersion: { type: Number, default: 0 },
+    recoverySequence: { type: Number, default: 0 },
   },
   { collection: 'users', timestamps: true, autoIndex: false },
 );

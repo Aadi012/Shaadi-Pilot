@@ -1,0 +1,19 @@
+{
+  "projectId": "7444919587454097178",
+  "references": [
+    {
+      "name": "projects/7444919587454097178/screens/6e0646286f734d5b8d8613283bd403aa",
+      "title": "ShaadiPilot — Settings → Wedding details (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "6e0646286f734d5b8d8613283bd403aa.png",
+      "html": "6e0646286f734d5b8d8613283bd403aa.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/ed17826f665b43b9a96f0c436d402e3d",
+      "title": "ShaadiPilot — Settings → Wedding details (Mobile)",
+      "deviceType": "MOBILE",
+      "screenshot": "ed17826f665b43b9a96f0c436d402e3d.png",
+      "html": "ed17826f665b43b9a96f0c436d402e3d.html"
+    }
+  ]
+}

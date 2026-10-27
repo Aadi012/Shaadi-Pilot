@@ -1,6 +1,6 @@
 # ShaadiPilot project status
 
-Last updated: 25 October 2026 (Asia/Kolkata).
+Last updated: 27 October 2026 (Asia/Kolkata).
 
 This is the implementation progress record. The [PRD](prd.md) defines product
 scope; [architecture decisions](architecture-decisions.md) record accepted
@@ -8,6 +8,20 @@ contracts and unresolved choices. A status entry does not approve new scope or
 resolve an open product decision.
 
 ## Current position
+
+Password recovery is implemented and verified with mocked provider delivery.
+Final verification completed on 27 October: npm run check passes (55 unit/render
+tests), all 45 isolated MongoDB integration tests pass, and the production build
+passes with database/email credentials blanked. Live email delivery is deferred
+by the user pending Resend setup; no real email has been sent. See milestone 7
+and the [recovery setup guide](password-recovery.md). The user authorized commit
+and push to dev on 27 October 2026; no production deployment is included.
+
+Wedding details editing is complete for this slice following approval of the new
+Stitch screens on 26 October. Settings is available to Admins and Managers;
+the wedding address remains locked and existing functions are never rescheduled.
+See milestone 6 for delivered scope and verification. Wedding editing, recovery
+and the account-switch correction are included in this approved delivery.
 
 Wedding onboarding and the initial private overview are complete for their first
 slice following the user's approval of the desktop/mobile Stitch designs. The implementation
@@ -29,18 +43,21 @@ The user confirmed manual testing and code review are complete and approved this
 work for commit and push on 25 October 2026. That authentication milestone passed:
 34 unit/render tests, 12 isolated MongoDB integration tests, formatting, lint,
 type checking and the production build.
-Tenant-owned planning CRUD and external provider integrations remain unimplemented.
+Planning-module CRUD remains unimplemented. The Resend adapter is implemented
+and mock-tested; live external delivery remains unverified.
 No production deployment is recorded.
 
 ## Milestone history
 
-| Completed       | Milestone                                   | Status                 | Commit                                                                                             |
-| --------------- | ------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
-| 24 October 2026 | Project scaffold and engineering foundation | Complete               | [21f0dd6](https://github.com/Aadi012/Shaadi-Pilot/commit/21f0dd6372aeef4ee39c71a0337e402c89f00410) |
-| 25 October 2026 | Public marketing homepage                   | Complete — UI preview  | [13beba3](https://github.com/Aadi012/Shaadi-Pilot/commit/13beba33431a5ece8136ecc9b996cd22c48bd323) |
-| 25 October 2026 | Organizer login and signup                  | Complete — UI preview  | [6bccc20](https://github.com/Aadi012/Shaadi-Pilot/commit/6bccc20dd6b44e1938b64ab509f4c0e343d83403) |
-| 25 October 2026 | MongoDB-backed organizer authentication     | Complete — core auth   | [6bccc20](https://github.com/Aadi012/Shaadi-Pilot/commit/6bccc20dd6b44e1938b64ab509f4c0e343d83403) |
-| 25 October 2026 | Wedding onboarding and initial overview     | Complete — first slice | Included in this change                                                                            |
+| Completed       | Milestone                                   | Status                     | Commit                                                                                             |
+| --------------- | ------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------- |
+| 24 October 2026 | Project scaffold and engineering foundation | Complete                   | [21f0dd6](https://github.com/Aadi012/Shaadi-Pilot/commit/21f0dd6372aeef4ee39c71a0337e402c89f00410) |
+| 25 October 2026 | Public marketing homepage                   | Complete — UI preview      | [13beba3](https://github.com/Aadi012/Shaadi-Pilot/commit/13beba33431a5ece8136ecc9b996cd22c48bd323) |
+| 25 October 2026 | Organizer login and signup                  | Complete — UI preview      | [6bccc20](https://github.com/Aadi012/Shaadi-Pilot/commit/6bccc20dd6b44e1938b64ab509f4c0e343d83403) |
+| 25 October 2026 | MongoDB-backed organizer authentication     | Complete — core auth       | [6bccc20](https://github.com/Aadi012/Shaadi-Pilot/commit/6bccc20dd6b44e1938b64ab509f4c0e343d83403) |
+| 25 October 2026 | Wedding onboarding and initial overview     | Complete — first slice     | [c74af42](https://github.com/Aadi012/Shaadi-Pilot/commit/c74af422de510da0ee761958411a41428937776b) |
+| 26 October 2026 | Wedding details editing                     | Complete — first slice     | Included in this change                                                                            |
+| 27 October 2026 | Password recovery and durable reset email   | Complete — mocked delivery | Included in this change                                                                            |
 
 Milestones 1–3 describe behavior at their original delivery date. Milestone 4 and
 its follow-up supersede the UI preview's account restrictions and password rules.
@@ -168,10 +185,87 @@ The feature commit is recorded in Git history; no production deployment is impli
   the delivered feature and authorized commit/push on 25 October 2026; the commit
   is recorded in Git history. No production deployment is included.
 
+### 6. Wedding details editing — 26 October 2026
+
+- User approved the two Settings → Wedding details Stitch references and
+  authorized implementation. Desktop/mobile originals are archived under
+  docs/designs/wedding-details; the existing direct MCP fallback retrieved them.
+- Protected settings page at /account/settings/wedding, linked from the workspace
+  sidebar. Both roles may edit couple names, date, manual destination, planning
+  timezone and optional introduction. The slug is read-only. No publication,
+  website customization, membership management or external integration is added.
+- PATCH /api/v1/weddings/current uses trusted session membership, Origin/CSRF,
+  rate limiting, strict validation and atomic version comparison. Stale saves
+  return 412 and preserve the draft; review latest requires explicit discard.
+  Save failures retain draft input. Unsaved changes prompt before leaving.
+- Changing date/timezone leaves existing event records unchanged. Optional
+  introductions are limited to 200 characters. Save is disabled while pristine,
+  before hydration and while pending. Page loading uses the existing account loader.
+- Verification: npm run check passes (formatting, lint, strict types and 44
+  unit/render tests); npm run test:integration passes all 28 isolated Mongo tests.
+  The final production build passes with database credentials blanked. Browser
+  checks verify saving, persistence after reload, required-field validation,
+  two-tab conflict/review/discard, keeping and discarding unsaved edits, and
+  navigation after discard. Mobile widths 320px and 390px have no horizontal
+  page overflow; the checked page has no console warnings/errors. Disposable
+  browser fixtures were removed. A Windows/OneDrive generated-manifest cleanup
+  failure was resolved by removing only its verified generated directory.
+- Boundary: drafts are memory-only and not recoverable after closing/reloading.
+  Public website propagation awaits the website feature. No email, invitations,
+  commit, push or production deployment in this slice.
+
+- Account-switch correction (27 October): before saving wedding details, the
+  client checks that refreshed session membership matches the draft's wedding.
+  Mismatched/unjoined accounts cannot submit the draft; signed-out sessions and
+  failed session refreshes also stop before PATCH. Latest-details review rejects
+  responses from a different wedding. The draft is preserved with a clear message.
+  Regression checks cover switched wedding, null membership, logout, failed
+  refresh and the successful matching-wedding path. `npm run check` passes all
+  55 unit/render tests; the production build passes with provider credentials
+  blanked. This is a client correction; server authorization is unchanged.
+
+### 7. Password recovery — 26 October 2026
+
+Status: Complete — implementation and mocked verification (27 October); live
+email delivery deferred by user.
+
+- User approved the recovery brief and finalized Stitch project 14249455352497050706. Four desktop/mobile references were retrieved and inspected;
+  exports are in docs/designs/password-recovery. Unsupported generated passkey,
+  encryption and state-inspector content is excluded.
+- Forgot/reset pages, login link, account-safe request confirmation, validation,
+  invalid/expired outcome, password visibility, pending/error and success states
+  are implemented. Links use fragments, are cleared from the address bar and
+  remain in memory only. No automatic login or email verification is introduced.
+- REST request/validate/confirm APIs use strict schemas, trusted Origin, CSRF,
+  MongoDB rate limits, hashed 30-minute tokens and transactional password change,
+  credential-version advancement, reset invalidation and session revocation.
+- Platform email uses encrypted immutable one-message batches, bounded owner-bound
+  leases, identical Resend retry keys, bounded attempts, cancellation and terminal
+  payload removal. Next after dispatch and a protected internal drain are included.
+  No reminder/invitation features, production scheduler or external configuration.
+- User approved keeping secrets in ignored local configuration and later chose
+  mocked provider verification. The initial check misread blank assignments as
+  populated settings; corrected checks found Resend credentials/sender empty.
+  Local encryption and cron secrets were generated privately. No real email sent.
+- Current checks: 51 unit/render and 45 isolated MongoDB integration tests pass,
+  along with formatting, lint and strict types. Browser checks cover required
+  validation, login navigation, unavailable service, valid/invalid links, fragment
+  removal, same-tab link reopening and no overflow at 320px/390px. The production
+  build passes with database/email credentials blanked. Password submission/success
+  are integration evidence rather
+  than a completed manual browser password change. Disposable browser fixtures
+  were removed; the existing development accounts were not modified.
+- Remaining release work: configure Resend sender/key, validate a real email round
+  trip and email-client fragments, configure timely retry invocation and monitor
+  failures. See [setup and limits](password-recovery.md). The user authorized commit
+  and push on 27 October; no deployment is included.
+
 ## Next milestone
 
-Plan password recovery as the smallest next feature; implementation is not started
-and requires its own approval. Complete recovery before public onboarding.
+After approving this slice, configure and verify recovery delivery before public
+onboarding. Plan Manager invitations as the next product feature; implementation
+is not authorized by this recovery milestone.
+
 Membership invitations, joining and planning writes follow their affected
 [feature contracts](architecture-decisions.md#feature-approval-gates). This entry
 does not authorize those later features or a production release.

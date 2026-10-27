@@ -9,14 +9,14 @@ const email = z
   .max(254)
   .pipe(z.email())
   .transform((value) => value.toLowerCase());
-const password = z
+export const passwordSchema = z
   .string()
   .max(128)
   .refine((value) => [...value].length >= 15, 'Use at least 15 characters.');
 export const registerSchema = z.strictObject({
   displayName: z.string().trim().min(1).max(100),
   email,
-  password,
+  password: passwordSchema,
 });
 export const loginSchema = z.strictObject({
   email,
@@ -32,3 +32,12 @@ export type Organizer = {
   role: 'admin' | 'manager' | null;
 };
 export type SessionData = { user: Organizer | null; csrfToken: string };
+export const RESET_REQUEST_MESSAGE =
+  "If an account exists for that email, we'll send a password reset link.";
+export const resetRequestSchema = z.strictObject({ email });
+export const resetTokenSchema = z.string().regex(/^[a-f0-9]{64}$/);
+export const resetInspectSchema = z.strictObject({ token: resetTokenSchema });
+export const resetConfirmSchema = z.strictObject({
+  token: resetTokenSchema,
+  password: passwordSchema,
+});

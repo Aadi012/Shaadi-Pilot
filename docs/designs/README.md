@@ -11,6 +11,26 @@ scripts, import its CDN dependencies or ship its state inspector controls.
 
 ## Connection checks and fallback
 
+Password recovery project:
+https://stitch.withgoogle.com/projects/14249455352497050706
+
+Four approved recovery screens were retrieved and visually inspected on
+26 October: forgot password, reset password, confirmation/statuses (desktop) and
+a mobile flow. Originals and a sanitized manifest are in `password-recovery`.
+The exposed Stitch listing worked this time; local exports used the existing
+read-only helper logic with the supplied project ID. No transactional-email screen
+was found or claimed inspected. Generated state toggles, passkey content and
+encryption claims are excluded. The existing design:check export command still
+targets the original workspace project; it does not refresh this new project.
+
+On 26 October, the user approved the two Settings → Wedding details screens.
+Their original HTML and screenshots are archived separately in `wedding-details`
+with screen IDs in its manifest. The live exposed MCP connection again required
+authentication; the direct configured-header fallback retrieved both references.
+Generated state inspectors, platform status decorations and location photography
+are omitted from the product. The current `--export` helper still refreshes only
+the eight original workspace references, not these two settings exports.
+
 `npm run design:check` checks this exact Google MCP endpoint through a read-only
 request. `npm run design:check -- --export` refreshes the eight reference exports.
 The helper first uses a developer `STITCH_API_KEY` environment variable, then

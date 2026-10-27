@@ -57,6 +57,98 @@ User-approved layouts override generated claims about encryption, billing,
 concierge, offline cache and public join codes. The brand and reduced-motion
 behavior take precedence over generic Stitch skill styling defaults.
 
+## Wedding details editing — 26 October 2026
+
+The user approved the Settings → Wedding details desktop/mobile designs and
+authorized implementation, delegating the two proposed defaults to engineering.
+The wedding slug remains locked in this slice. Changing the main calendar date or
+planning timezone never reschedules existing events or changes their timestamps
+or explicitly stored timezones; the wedding timezone is the default for future
+events. This follows the event-owned timezone model in the database document.
+
+Admins and Managers may edit couple names, the main date, manual location,
+planning timezone and the optional 200-character introduction. Publication,
+themes, livestream and membership are excluded. The broader source PATCH row is
+delivered incrementally, not as authorization for all settings at once.
+
+`PATCH /api/v1/weddings/current` requires a strong quoted numeric `If-Match`
+version. GET and PATCH expose a private DTO `version` and matching ETag; MongoDB
+`__v` is compared and incremented atomically. Missing preconditions return 428,
+malformed versions 400 and stale writes 412. Existing records without `__v` are
+treated as version zero. A conflict preserves the local draft and requires
+explicit discard before loading the reviewed latest details. No forced overwrite
+or implicit retry with a newer version is allowed. Tenant identity and role are
+re-read server-side; caller-supplied identifiers never choose the wedding.
+
+Drafts stay in memory only. Failed saves retain them, and leaving a dirty page
+asks for confirmation. They are not persisted across closing/reloading the page.
+Public website refresh behavior will be implemented with that later feature.
+
+Account-switch follow-up (27 October): the settings client compares the refreshed
+session's weddingId with the saved draft's wedding ID before using its new CSRF
+token. A mismatch or missing wedding blocks PATCH and preserves the draft. The
+latest-details review also rejects another wedding's response. Numeric record
+versions alone do not identify a tenant. These are client workflow safeguards;
+server authorization continues to derive wedding context from the current session.
+
+## Password recovery slice — 26 October 2026
+
+The user approved the recovery design prompt, supplied finalized Stitch project
+14249455352497050706 and authorized implementation. Four recovery references were
+retrieved and inspected. Existing branding wins over generated replacements;
+passkey copy, state inspectors, encryption claims and placeholder legal links are
+excluded. No separate transactional-email screen was found; the simple email
+template follows the approved brief. The user chose mocked delivery verification;
+no actual email send or sender-domain configuration is authorized by that choice.
+
+- Canonical request and confirm APIs are the API document's
+  `/api/v1/auth/password-reset/requests` and `/confirm`. The older system-design
+  forgot/reset API names are not aliases. A narrow POST `/validate` inspects token
+  validity before showing password fields; it returns only a boolean and never
+  consumes the token or exposes account data.
+- Links contain 256-bit secrets in a URL fragment, not paths or queries. The
+  browser removes the fragment after reading it and retains the token only in
+  memory; refresh requires reopening the email link. Opening another token in
+  an existing reset tab reloads the document and clears the previous draft.
+  Recovery pages use no-referrer, no-store and noindex protections.
+- Links expire after 30 minutes. MongoDB stores SHA-256 hashes for validation and
+  checks expiry independently of TTL. Reset confirmation changes the Argon2id hash,
+  advances a credential version, consumes all prior reset tokens and revokes all
+  prior sessions atomically. It never signs the user in or changes membership.
+  A shared User write serializes competing requests, resets and login rotation.
+- Re-requesting does not invalidate an earlier unexpired link: an attacker must
+  not invalidate a mailbox owner's link merely by requesting another one. One
+  successful reset invalidates all older links. Disabled accounts cannot recover.
+- Requests use the same generic 202 for unknown, disabled and active accounts;
+  configuration failures fail consistently with 503 before account lookup.
+  Exact timing equivalence is not claimed. Origin and anonymous/session CSRF are
+  required on every recovery POST. Mongo fixed 15-minute limits: requests
+  20/network and 3/normalized account; validation 60/network and 20/token hash;
+  confirmation 20/network and 5/token hash. Limits need pilot review before launch.
+- Email delivery uses platform-scoped MongoDB delivery and batch records. In this
+  low-volume slice each immutable provider batch holds one reset email. A process
+  handles at most five due deliveries; no regrouping occurs on retry. A 60-second
+  owner-bound lease, five-attempt limit and 30-second exponential backoff bound
+  work. Provider calls use an eight-second timeout outside transactions. Stable
+  payloads and Resend idempotency keys survive lost acknowledgements. Attempts
+  outside a conservative 23-hour provider window are quarantined; reset expiry
+  normally cancels work much sooner. Submitted means provider accepted, not inbox
+  delivered. Provider webhooks and reminder dispatch are outside this slice.
+- AES-256-GCM encrypts the complete immutable email payload, including recipient
+  and link, with batch identity and key ID as authenticated data. This is separate
+  from the validation hash. Ciphertext is erased after terminal processing; the
+  batch's TTL expires at the token deadline. Delivery audit metadata expires seven
+  days later. Only the current key ID is supported: drain/expire queued jobs before
+  changing the key, or jobs fail closed. This is not a general gallery keyring.
+- Next.js `after` makes a best-effort immediate dispatch after durable acceptance.
+  `/api/internal/cron/emails` uses `CRON_SECRET` for retry/drain. No production
+  schedule is created here. Timely scheduled invocation is required before launch;
+  a daily schedule cannot serve a 30-minute recovery link.
+- Reset pages live outside the login/signup redirect layout so an existing session
+  cannot prevent mailbox-based recovery. New passwords follow the existing
+  15-code-point / 128-UTF-16-unit policy. Tests use isolated Atlas databases and a
+  mocked Resend adapter; production never substitutes a mock transport.
+
 ## Open product and contract decisions
 
 | Topic                  | Conflict or missing decision                                                                                                     | Proposal awaiting confirmation                                                   |
