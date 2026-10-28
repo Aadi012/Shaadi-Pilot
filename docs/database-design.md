@@ -4,6 +4,16 @@
 
 Version 1.0 · 24 October 2026 · MongoDB Atlas and Mongoose
 
+Implementation addendum, 27 October 2026: Manager invitations add module-owned
+`memberInvites` and durable `memberInviteRequests`, unique hashed capabilities,
+one pending invitation per wedding/email, wedding-scoped list indexes and
+`Wedding.membershipVersion` for transactional serialization. Existing email jobs
+now include wedding-scoped `member-invite` work; User attachment is conditional on
+null membership and fixes the role to Manager. See the
+[implemented persistence/setup contract](organizer-invitations.md#persistence-and-setup).
+The original broader schema below remains architectural input; unsupported Admin
+changes and member-removal operations are not silently claimed implemented.
+
 This document defines the persistence contract for the agreed TypeScript modular monolith. It specifies collection responsibilities, document fields, indexes, transactional invariants, token storage, and the failure paths that the database must support. The working product name can change without affecting the schema.
 
 ## 1 Architecture decisions
@@ -44,6 +54,13 @@ V1 excludes a general multi-tenant organization membership join table, named acc
 MongoDB does not enforce these relationships as foreign keys. The service layer validates wedding ownership for each reference before writing it. Platform-level authentication emails and sessions can exist while the User has no wedding.
 
 ## 3 Collection catalog
+
+Manager-removal addendum (27 October): `User.membershipVersion` is an independent
+join/removal generation counter, treating legacy absence as zero. Clearing a
+Manager's wedding/role, revoking their sessions and invalidating this wedding's
+pending/accepted organizer invitations commit together under the shared wedding
+membership lock. Accounts and planning records remain. No new collections or
+indexes are required; see [removal contract](organizer-invitations.md#manager-removal-follow-up--27-october-2026).
 
 | Collection          | Role                                        | Main access pattern            |
 | ------------------- | ------------------------------------------- | ------------------------------ |

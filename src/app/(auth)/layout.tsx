@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 import { randomUUID } from 'node:crypto';
 import { currentSession } from '@/modules/auth/http.server';
+import { pendingInvitation } from '@/modules/memberships/context.server';
 import { describeApiError } from '@/lib/api/error-diagnostics.server';
 import { logRequest } from '@/lib/logging/logger.server';
 
@@ -35,6 +36,6 @@ export default async function AuthLayout({
         <p>Please try again shortly.</p>
       </main>
     );
-  if (session) redirect('/account');
+  if (session) redirect((await pendingInvitation()) ? '/join' : '/account');
   return <>{children}</>;
 }

@@ -14,6 +14,7 @@ export async function loadWorkspacePage() {
     return {
       kind: 'ready',
       organizer: {
+        id: current.user._id.toString(),
         name: current.user.displayName,
         email: current.user.emailNormalized,
       },

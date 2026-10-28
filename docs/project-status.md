@@ -1,6 +1,6 @@
 # ShaadiPilot project status
 
-Last updated: 27 October 2026 (Asia/Kolkata).
+Last updated: 28 October 2026 (Asia/Kolkata).
 
 This is the implementation progress record. The [PRD](prd.md) defines product
 scope; [architecture decisions](architecture-decisions.md) record accepted
@@ -9,13 +9,25 @@ resolve an open product decision.
 
 ## Current position
 
-Password recovery is implemented and verified with mocked provider delivery.
-Final verification completed on 27 October: npm run check passes (55 unit/render
-tests), all 45 isolated MongoDB integration tests pass, and the production build
-passes with database/email credentials blanked. Live email delivery is deferred
-by the user pending Resend setup; no real email has been sent. See milestone 7
-and the [recovery setup guide](password-recovery.md). The user authorized commit
-and push to dev on 27 October 2026; no production deployment is included.
+Manager removal is complete for the approved slice following user authorization
+on 27 October. Documentation handoff resumed on 28 October after a tooling usage
+interruption. See milestone 9. The accepted real test membership is preserved.
+
+Manager invitation/revocation/acceptance is implemented. On 27 October the user
+configured Resend and confirmed receipt, explicit acceptance and overview
+navigation for one real invitation. Read-only MongoDB checks confirmed the
+accepted invitation and Manager membership. Current `npm run check` passes 64 unit/render
+tests; all 70 isolated MongoDB integration tests and six real-HTTP regression tests pass; production build passes
+with database/email credentials blanked. See milestone 8 and the
+[incremental V1 roadmap](roadmap.md). The test wedding remains available because
+it now contains the user's real test membership. Do not remove it implicitly.
+
+Password recovery remains verified with mocked provider delivery; its live email
+round trip is still unverified. See milestone 7 and the
+[recovery setup guide](password-recovery.md). Previously completed recovery/settings
+work was authorized for commit/push on 27 October and committed as
+[ff4e1a6](https://github.com/Aadi012/Shaadi-Pilot/commit/ff4e1a6357d99adb47400205342e6b6a7e0ca3a5) and pushed to origin/dev; both commit IDs were verified equal.
+No production deployment is included.
 
 Wedding details editing is complete for this slice following approval of the new
 Stitch screens on 26 October. Settings is available to Admins and Managers;
@@ -56,8 +68,8 @@ No production deployment is recorded.
 | 25 October 2026 | Organizer login and signup                  | Complete — UI preview      | [6bccc20](https://github.com/Aadi012/Shaadi-Pilot/commit/6bccc20dd6b44e1938b64ab509f4c0e343d83403) |
 | 25 October 2026 | MongoDB-backed organizer authentication     | Complete — core auth       | [6bccc20](https://github.com/Aadi012/Shaadi-Pilot/commit/6bccc20dd6b44e1938b64ab509f4c0e343d83403) |
 | 25 October 2026 | Wedding onboarding and initial overview     | Complete — first slice     | [c74af42](https://github.com/Aadi012/Shaadi-Pilot/commit/c74af422de510da0ee761958411a41428937776b) |
-| 26 October 2026 | Wedding details editing                     | Complete — first slice     | Included in this change                                                                            |
-| 27 October 2026 | Password recovery and durable reset email   | Complete — mocked delivery | Included in this change                                                                            |
+| 26 October 2026 | Wedding details editing                     | Complete — first slice     | [ff4e1a6](https://github.com/Aadi012/Shaadi-Pilot/commit/ff4e1a6357d99adb47400205342e6b6a7e0ca3a5) |
+| 27 October 2026 | Password recovery and durable reset email   | Complete — mocked delivery | [ff4e1a6](https://github.com/Aadi012/Shaadi-Pilot/commit/ff4e1a6357d99adb47400205342e6b6a7e0ca3a5) |
 
 Milestones 1–3 describe behavior at their original delivery date. Milestone 4 and
 its follow-up supersede the UI preview's account restrictions and password rules.
@@ -260,15 +272,119 @@ email delivery deferred by user.
   failures. See [setup and limits](password-recovery.md). The user authorized commit
   and push on 27 October; no deployment is included.
 
+### 8. Manager invitations — 27 October 2026
+
+Status: Complete — Manager invitation slice and one local live email flow;
+broader membership administration and production readiness remain outstanding.
+
+- After requesting commit/push of completed work, the user authorized starting
+  the next feature. The first slice is Admin invitation of Managers, pending
+  invitation list/revocation and account-bound acceptance; existing member removal
+  and second-Admin policy are outside this slice.
+- Created a [scoped implementation plan](organizer-invitations-plan.md) and
+  [ready-to-paste Stitch prompt](designs/organizer-invitations-prompt.md) covering
+  desktop/mobile Team, form, revoke, join states and an email reference.
+- User supplied finalized designs. Stitch listed 56 screens; three desktop Team,
+  invite/revoke and acceptance references were retrieved and visually inspected.
+  Exports are in docs/designs/organizer-invitations. No dedicated mobile Team
+  design was listed. Existing responsive shell/styles guide adaptation.
+- Delivered Admin Team page with real organizer/invitation lists, fixed Manager
+  form, pending revocation and truthful mail statuses. Private join states cover
+  login/signup return, wrong email, unavailable link, another wedding, explicit
+  acceptance and already-member/retry behavior. No automatic membership grants.
+- REST services, module-owned Mongoose persistence and additive explicit indexes
+  enforce fresh Admin roles, trusted wedding scoping, stale-tab context guards,
+  seven-day hashed capabilities, durable idempotency and conditional one-wedding
+  membership. Transactions serialize revoke/accept and competing memberships.
+  Temporary 15-minute HttpOnly cookies carry invitation intent through login.
+- Reused encrypted immutable email batches for wedding-scoped invitations. Newly
+  queued work uses Next after; protected drain supports two resets plus three
+  invitations. No new dependencies or production scheduler were added. Required
+  development indexes were applied without deleting existing records/indexes.
+- Checks: npm run check passes 56 unit/render tests; npm run test:integration
+  passes 63 isolated tests, including 18 membership cases. Tests cover Admin and
+  tenant isolation, concurrent deduplication and acceptance, competing weddings,
+  revoke/accept races, rollback, expiry, invalid identities, HTTP Origin/CSRF,
+  private cookies, fixed login return, pagination and immutable mock-mail retries.
+  Production build passes with database/email credentials blanked after removing
+  only the verified generated .next/server output that hit OneDrive EPERM.
+- Browser checks confirmed Admin Team navigation/list rendering, native invitation
+  dialog, required-email validation, revoke confirmation/cancel and Escape focus
+  return. Checked 320px/390px layouts have no horizontal page overflow. No console
+  warnings/errors were captured on the checked localhost page. Other join states
+  and final revocation are integration evidence rather than full manual coverage.
+  A separate 127.0.0.1 dev visit encountered Next's dev-origin restriction;
+  the exact loopback hostname was added to allowedDevOrigins for local assets/HMR.
+  A reload verified hydrated Team controls on 127.0.0.1 after this fix.
+  Email links continue to use the configured APP_BASE_URL consistently.
+  The user confirmed the actual received email, matching
+  account acceptance and overview navigation; DB checks confirmed the outcome.
+  A clearly named test wedding and synthetic review accounts are intentionally
+  retained while it contains the user's accepted membership.
+- Remaining: Admin removal of existing Managers (PRD requirement), owned verified
+  sender domain for general recipients, scheduled drain/monitoring, broader email
+  client and mobile checks, retention/deletion workflows and live recovery email
+  verification. Current Resend test sender is suitable for account-owner testing.
+  No new commit, push or deployment was performed for this slice.
+
+### 9. Admin removal of Managers — 27 October 2026
+
+Status: Complete — Manager-only removal and transaction/responsive UI verification;
+handoff finalized 28 October.
+
+- User authorized this next slice, followed by Functions/events. Reuses the
+  inspected Team design's Remove control and existing responsive native dialogs.
+- Scope: Admin removes only Managers in their current wedding. Transactionally
+  detach membership, revoke sessions and invalidate old invitations. Preserve
+  accounts, existing planning records and the user's accepted real test membership.
+- Per-user membership versions advance on join/removal; strict If-Match blocks
+  stale removal after rejoining. Legacy missing versions are zero. No new
+  dependencies, indexes, Admin-role changes or removal emails.
+- DELETE /api/v1/members/{userId} requires fresh Admin membership, Origin/CSRF,
+  expected wedding and strong quoted member-version If-Match. Managers, Admin
+  targets and foreign members are denied. Missing/malformed/stale preconditions
+  fail closed. Cancel, pending/error states and list refresh are implemented.
+- npm run check passes formatting, lint, strict types and all 57 unit/render tests.
+  All 70 isolated MongoDB integration tests pass, including seven removal cases:
+  session revocation, Admin-session preservation, accepted/pending invitation
+  invalidation, retained credentials/records, direct authorization/tenant/HTTP
+  checks, legacy versions, safe rejoining, stale generations, concurrency and
+  rollback. No real email was sent for this slice.
+- Production build passes with database/email credentials blanked. Browser checks
+  verify Manager-only buttons, named confirmation, Keep Manager/Escape focus
+  return and no horizontal overflow at 320px/390px. Actual deletion is verified
+  in isolated integration tests; no existing development membership was removed.
+- Boundaries: account and historical assignments remain; former-assignee handling
+  belongs to Tasks. Previously rendered data/in-flight authorized work cannot be
+  recalled, but old sessions are denied on subsequent requests. Admin transfer,
+  role changes and Functions/events are not implemented here. No commit/push or
+  deployment was performed.
+
+- Runtime correction (28 October): the user found that confirmation failed with
+  400 INVALID_REQUEST because Next's Node adapter supplied a non-null empty body
+  stream. The earlier direct-handler tests and Cancel/Escape browser checks did
+  not prove successful browser deletion. A new running-server test reproduced the
+  old failure for omitted, empty-string and empty-stream DELETE content.
+  The guard now reads to EOF or rejects/cancels on the first payload bytes without
+  buffering arbitrary bodies. Nonempty content, including whitespace, stays 400.
+- Corrected verification: all 64 unit/render tests and 70 existing integration
+  tests pass. `npm run test:http` builds and starts the real Next.js server against
+  a disposable Atlas database; all six HTTP cases pass. Successful removals clear
+  membership, revoke two sessions and old invitations, deny the old sessions and
+  disappear from the authenticated roster. Rejected payloads preserve all state.
+  Its child server disables sending and is stopped before the test database is
+  dropped. No preexisting development membership is removed: a before/after
+  fingerprint confirmed all 16 memberships observed at this run were unchanged.
+  Browser confirmation itself remains distinct from this real-HTTP verification.
+
 ## Next milestone
 
-After approving this slice, configure and verify recovery delivery before public
-onboarding. Plan Manager invitations as the next product feature; implementation
-is not authorized by this recovery milestone.
-
-Membership invitations, joining and planning writes follow their affected
-[feature contracts](architecture-decisions.md#feature-approval-gates). This entry
-does not authorize those later features or a production release.
+Implement Functions as the first planning module and populate its overview panel
+after review of Manager removal. Continue with
+Tasks, Guests, private invitations/RSVP and the remaining [V1 roadmap](roadmap.md).
+Resolve affected open decisions before each feature. The existing dashboard is
+partial and will gain real summaries incrementally. General-recipient email and
+live recovery verification remain release work.
 
 ## Keeping this record current
 

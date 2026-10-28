@@ -32,16 +32,24 @@ Local development accepts `localhost` and `127.0.0.1` on the configured port.
 
 ## Commands
 
-| Command                    | Purpose                                      |
-| -------------------------- | -------------------------------------------- |
-| `npm run dev`              | Start Next.js development server             |
-| `npm run check`            | Check formatting, lint, types and unit tests |
-| `npm run build`            | Produce and type-check the production build  |
-| `npm start`                | Serve the completed production build         |
-| `npm run format`           | Format project source and configuration      |
-| `npm run test:watch`       | Run unit tests in watch mode                 |
-| `npm run db:auth:indexes`  | Create required authentication indexes       |
-| `npm run test:integration` | Test auth against an isolated Atlas database |
+| Command                    | Purpose                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------- |
+| `npm run dev`              | Start Next.js development server                                                |
+| `npm run check`            | Check formatting, lint, types and unit tests                                    |
+| `npm run build`            | Produce and type-check the production build                                     |
+| `npm start`                | Serve the completed production build                                            |
+| `npm run format`           | Format project source and configuration                                         |
+| `npm run test:watch`       | Run unit tests in watch mode                                                    |
+| `npm run db:auth:indexes`  | Create required authentication indexes                                          |
+| `npm run test:integration` | Test auth against an isolated Atlas database                                    |
+| `npm run test:http`        | Build and test the real Next.js HTTP adapter against an isolated Atlas database |
+
+`test:http` needs the configured MongoDB connection URI, but creates its own
+random test database and starts a separate loopback-only production server. It
+disables email sending, checks empty/nonempty DELETE payloads and removal/session
+revocation, then stops its server and drops only that exact test database. The
+Node HTTP client supplies the trusted HTTPS origin/cookies to emulate TLS
+termination; this tests Next's request adapter, not browser/TLS behavior.
 
 Type checking runs Next.js type generation first, so it also works on a clean
 checkout. CI uses `npm ci` and runs all checks plus a production build without
@@ -170,8 +178,8 @@ before public launch. Password hashing is additionally bounded per process.
 **Public onboarding still requires live recovery-email verification and deployment
 delivery configuration.** Recovery is implemented with mocked provider tests; see
 [password recovery setup](docs/password-recovery.md) for the remaining release work.
-Email delivery, breached-password screening and membership invitations remain
-future features. Wedding creation and tenant-scoped overview reads are supplied
+Live password-recovery verification and breached-password screening remain
+release work. Manager invitations are implemented; see below. Wedding creation and tenant-scoped overview reads are supplied
 by the onboarding slice below. A random opaque
 session needs no `SESSION_SECRET`; future signed/encrypted links need separate
 purpose-specific key configuration. Do not add a public auth secret variable.
@@ -209,7 +217,23 @@ checks live Stitch access without printing credentials. See those instructions
 for the read-only fallback and optional export refresh. The application never
 needs Stitch credentials or network access at runtime or build time.
 
-## Project documents
+## Organizer collaboration
+
+Use `http://localhost:3000` consistently for local browser and emailed links,
+matching `APP_BASE_URL`. The exact loopback hostname `127.0.0.1` is also allowed
+for Next development assets/HMR; no wildcard development origins are enabled.
+
+Run `npm run db:membership:indexes` after the existing auth/wedding/recovery setup.
+The Admin Team page supports Manager invitations, pending revocation and Manager removal; matching
+accounts explicitly accept through `/join`. No membership is created from a link
+alone. See [Manager invitation setup and contracts](docs/organizer-invitations.md).
+One real email-to-acceptance flow was verified locally on 27 October. An owned,
+verified sender domain, scheduler configuration and release monitoring are still
+needed for general customer sending. Removal transactionally revokes sessions and
+old invitations; stale versions cannot remove a later rejoined membership.
+Functions are next; see the [V1 roadmap](docs/roadmap.md).
+
+## Project documents and progress
 
 Implementation milestones, verification results and remaining work are tracked
 in [project status](docs/project-status.md). Update it alongside each major feature.

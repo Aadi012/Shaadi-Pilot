@@ -12,6 +12,7 @@ export interface UserRecord {
   lastLoginAt: Date | null;
   credentialVersion?: number;
   recoverySequence?: number;
+  membershipVersion?: number;
 }
 export interface SessionRecord {
   _id: Types.ObjectId;
@@ -39,6 +40,7 @@ const userSchema = new Schema<UserRecord>(
     lastLoginAt: { type: Date, default: null },
     credentialVersion: { type: Number, default: 0 },
     recoverySequence: { type: Number, default: 0 },
+    membershipVersion: { type: Number, default: 0 },
   },
   { collection: 'users', timestamps: true, autoIndex: false },
 );

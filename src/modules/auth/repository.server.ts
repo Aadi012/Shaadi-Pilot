@@ -168,6 +168,75 @@ export const claimWeddingMembership = (
 ) =>
   User.updateOne(
     { _id: userId, status: 'active', weddingId: null, role: null },
-    { $set: { weddingId, role: 'admin' } },
+    { $set: { weddingId, role: 'admin' }, $inc: { membershipVersion: 1 } },
     { session: transaction },
   );
+export const claimInvitedMembership = (
+  userId: string,
+  weddingId: Types.ObjectId,
+  session: ClientSession,
+) =>
+  User.updateOne(
+    { _id: userId, status: 'active', weddingId: null, role: null },
+    { $set: { weddingId, role: 'manager' }, $inc: { membershipVersion: 1 } },
+    { session },
+  );
+export const listWeddingOrganizers = (
+  weddingId: Types.ObjectId,
+  cursor?: Types.ObjectId,
+) =>
+  User.find({
+    weddingId,
+    status: 'active',
+    role: { $in: ['admin', 'manager'] },
+    ...(cursor ? { _id: { $gt: cursor } } : {}),
+  })
+    .sort({ _id: 1 })
+    .limit(26)
+    .lean();
+export const existingWeddingOrganizer = (
+  weddingId: Types.ObjectId,
+  emailNormalized: string,
+  session: ClientSession,
+) =>
+  User.exists({ weddingId, emailNormalized, status: 'active' }).session(
+    session,
+  );
+
+export const findWeddingOrganizer = (
+  userId: Types.ObjectId,
+  weddingId: Types.ObjectId,
+  session: ClientSession,
+) => User.findOne({ _id: userId, weddingId }).session(session).lean();
+export async function removeManagerMembership(
+  userId: Types.ObjectId,
+  weddingId: Types.ObjectId,
+  version: number,
+  now: Date,
+  session: ClientSession,
+) {
+  const result = await User.updateOne(
+    {
+      _id: userId,
+      weddingId,
+      role: 'manager',
+      ...(version === 0
+        ? {
+            $or: [
+              { membershipVersion: 0 },
+              { membershipVersion: { $exists: false } },
+            ],
+          }
+        : { membershipVersion: version }),
+    },
+    { $set: { weddingId: null, role: null }, $inc: { membershipVersion: 1 } },
+    { session },
+  );
+  if (result.modifiedCount === 1)
+    await Session.updateMany(
+      { userId, revokedAt: null },
+      { $set: { revokedAt: now, expiresAt: now } },
+      { session },
+    );
+  return result;
+}

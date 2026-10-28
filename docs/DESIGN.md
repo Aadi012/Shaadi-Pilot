@@ -35,6 +35,14 @@ Never show a completed operation or fabricated planning activity as real data.
 
 ## 5. Layout
 
+Manager-invitation references are archived in `designs/organizer-invitations`:
+Team Management, Invite & Revoke Dialogs, and Invitation Acceptance & States.
+All three inspected references are desktop screens from project 7444919587454097178. No dedicated mobile Team screen was listed; adapt with the
+existing responsive workspace shell. Preserve the warm/plum brand, editorial
+headings, roster panels, native modal dialogs and centered join card. Exclude
+generated copy-link, existing-member removal, custom role and state-inspector
+controls from this invitation slice. Show real records and truthful mail states.
+
 Password recovery references live under `designs/password-recovery` from project 14249455352497050706. Use the centered, restrained form panel, brand above it and
 quiet footer. Reuse existing input, visibility and button styles. Keep confirmation,
 invalid-link and success states inside the same panel; no dashboard shell, design
@@ -47,6 +55,12 @@ two-column content area. Mobile uses a native modal navigation drawer, stacked
 sections and two-column indicators. No page-level horizontal overflow at 320px.
 
 ## 6. Motion and interaction
+
+Manager removal follow-up uses the existing Team reference's Manager-only Remove
+control. Reuse the native confirmation dialog with the organizer's name, explicit
+access consequences, Keep Manager and Remove Manager actions. Do not add Admin
+removal or role pickers. On mobile, wrap role/actions below the organizer identity;
+keep 44px controls, keyboard cancellation and focus restoration.
 
 Wedding settings follows the approved `designs/wedding-details` references:
 existing sidebar/header, four numbered form sections and a sticky save row.

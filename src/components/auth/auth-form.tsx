@@ -109,7 +109,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         setRegistered(true);
         return;
       }
-      router.replace('/account');
+      router.replace(body.data?.redirectTo === '/join' ? '/join' : '/account');
       router.refresh();
     } catch {
       setFailure('Could not connect. Please try again.');

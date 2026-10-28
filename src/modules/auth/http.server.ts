@@ -8,6 +8,7 @@ import { withApiHandler } from '@/lib/api/route-handler.server';
 import { findSession } from './repository.server';
 import { authenticate, logout, organizerDto } from './service.server';
 import { REGISTRATION_MESSAGE } from './contracts';
+import { pendingInvitation } from '@/modules/memberships/context.server';
 import {
   clientAddress,
   csrfToken,
@@ -91,7 +92,13 @@ export function authHandler(action: 'register' | 'login') {
         return apiSuccess({ message: REGISTRATION_MESSAGE }, requestId, 202);
       if (!result) throw new Error('Missing login session');
       const response = NextResponse.json(
-        { data: { user: result.user }, meta: { requestId } },
+        {
+          data: {
+            user: result.user,
+            redirectTo: (await pendingInvitation()) ? '/join' : '/account',
+          },
+          meta: { requestId },
+        },
         { status: 200 },
       );
       response.cookies.set(names.session, result.token, {

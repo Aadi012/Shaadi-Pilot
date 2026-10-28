@@ -19,8 +19,12 @@ import {
   slugExists,
   weddingDatabase,
   updateWeddingDetails,
+  lockMembershipWedding,
 } from './repository.server';
 import type { WeddingRecord } from './models.server';
+// Callers must first resolve the organizer or a validated invitation capability.
+export const lockWeddingMembership = lockMembershipWedding;
+export const activeWeddingForMembership = findWedding;
 const conflict = () =>
   new ApiError({
     status: 409,

@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({
   session: vi.fn(),
   redirect: vi.fn(),
   log: vi.fn(),
+  invitation: vi.fn(),
 }));
 vi.mock('server-only', () => ({}));
 vi.mock('@/modules/auth/http.server', () => ({
@@ -12,6 +13,9 @@ vi.mock('@/modules/auth/http.server', () => ({
 }));
 vi.mock('next/navigation', () => ({ redirect: mocks.redirect }));
 vi.mock('@/lib/logging/logger.server', () => ({ logRequest: mocks.log }));
+vi.mock('@/modules/memberships/context.server', () => ({
+  pendingInvitation: mocks.invitation,
+}));
 import AuthLayout from '@/app/(auth)/layout';
 
 beforeEach(() => {
@@ -21,6 +25,12 @@ beforeEach(() => {
   });
 });
 describe('login and signup server boundary', () => {
+  it('returns an authenticated invitation flow to the fixed join route', async () => {
+    mocks.session.mockResolvedValue({ user: { id: 'user' } });
+    mocks.invitation.mockResolvedValue('synthetic-context');
+    await expect(AuthLayout({ children: 'form' })).rejects.toThrow('redirect');
+    expect(mocks.redirect).toHaveBeenCalledWith('/join');
+  });
   it('redirects valid signed-in sessions before showing forms', async () => {
     mocks.session.mockResolvedValue({ user: { id: 'user' } });
     await expect(AuthLayout({ children: 'form' })).rejects.toThrow('redirect');

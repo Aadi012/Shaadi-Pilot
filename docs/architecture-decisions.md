@@ -149,7 +149,67 @@ no actual email send or sender-domain configuration is authorized by that choice
   15-code-point / 128-UTF-16-unit policy. Tests use isolated Atlas databases and a
   mocked Resend adapter; production never substitutes a mock transport.
 
-## Open product and contract decisions
+## Manager invitation slice — 27 October 2026
+
+The user supplied finalized Stitch screens and authorized implementation. This
+slice fixes invited roles to Manager with a seven-day expiry. Existing-member
+removal, second Admin, role changes and ownership transfer are not implemented.
+Admin-only writes derive the wedding from fresh server membership; expected
+wedding/account headers detect stale tabs and never select authorization scope.
+
+Invites store random-secret hashes; creation plus encrypted email work and durable
+request receipts are transactional. Acceptance requires the exact authenticated
+normalized email and atomically consumes the invitation while attaching an active,
+unjoined User. Shared `Wedding.membershipVersion` writes serialize membership
+operations; future membership/lifecycle operations must use that convention.
+
+Fragment secrets are removed immediately and staged in a 15-minute HttpOnly,
+host-only cookie (Secure `__Host-` cookie in production). This holds invitation
+intent, not authentication. Login returns only `/join` or `/account`. No invitation
+ever bypasses password authentication or auto-accepts. Reopen the email link after
+the temporary context expires. Matching accepted retries are safe within validity.
+
+The delivery worker now supports wedding-scoped member invites alongside platform
+password resets. The protected drain processes at most two resets and three
+invites; no scheduler was configured. Keep encryption keys through the seven-day
+invite window. Eligibility is checked before provider submission, but an email
+already in flight cannot be recalled; current link state still blocks revocation.
+
+The user subsequently configured Resend and explicitly authorized one real test.
+Provider submission succeeded; the user confirmed inbox receipt, acceptance and
+overview navigation. Read-only MongoDB verification confirmed accepted state and
+Manager membership in the test wedding. This is local test evidence, not verified
+production delivery or a live password-recovery test. Preserve the test wedding
+and its new real membership until the user chooses cleanup. See the
+[implementation contract](organizer-invitations.md) and [roadmap](roadmap.md).
+
+## Manager removal slice — 27 October 2026
+
+The user authorized Admin removal of Managers as the next feature. The canonical
+route is DELETE `/api/v1/members/{userId}`. Only a fresh Admin in the same active
+wedding may remove a Manager; self/Admin removal, role changes and ownership
+transfer stay excluded. The expected wedding header is a stale-tab guard only.
+
+Removal detaches User weddingId/role, revokes all existing sessions and revokes
+pending/accepted invitations for that email in this wedding, in one transaction
+using the shared wedding membership lock. Preserve account credentials and
+planning records. Removed users may log in as unjoined users; a new invitation
+and explicit acceptance are required to rejoin this wedding. Invitations to
+other weddings remain untouched. Already in-flight requests are not recalled;
+subsequent requests must recheck fresh session/membership.
+
+User.membershipVersion starts at zero (including legacy missing fields), advances
+on joining/removal, and is returned on each roster DTO. DELETE requires a strong
+quoted numeric If-Match for that member. Missing = 428, malformed = 400, stale =
+412; foreign/already-removed IDs = 404. This prevents an old tab or lost-response
+retry from removing a later membership generation. No force/retry with a fresh
+version without reloading and reviewing. No extra receipt collection is needed:
+repeated deletion safely fails after removal and cannot affect a new membership.
+
+Existing assignments are retained; the Tasks slice must define presentation and
+reassignment for former organizers without exposing another wedding's data.
+
+## Remaining open product and contract decisions
 
 | Topic                  | Conflict or missing decision                                                                                                     | Proposal awaiting confirmation                                                   |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |

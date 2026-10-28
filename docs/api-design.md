@@ -700,7 +700,25 @@ Keep a generated OpenAPI 3.1 contract as the next implementation artifact. This 
 
 These recommended defaults are not additional product approvals. They are explicitly provisional and should be signed off before API implementation tests become release gates.
 
-## Official technical references
+## Implemented Manager invitation addendum — 27 October 2026
+
+The first membership slice implements `/api/v1/members`, `/member-invites`,
+`/member-invites/{inviteId}/revoke` and `/member-invites/accept`. Invited role is
+fixed to Manager; broader Admin/removal contracts remain unimplemented. Additional
+`/api/v1/member-invites/context` GET/POST/DELETE stages a 15-minute private cookie,
+without authentication or membership grants. Strict shapes, cursor pagination,
+Origin/CSRF, stale-context guards, projections and replay semantics are in
+[Manager invitation contracts](organizer-invitations.md#contract-and-lifecycle).
+This addendum resolves this slice, not every provisional source contract.
+
+Manager-removal addendum (27 October): DELETE `/api/v1/members/{userId}` is now
+implemented for Admin removal of Managers only. Require Origin/CSRF, expected
+wedding context and strong numeric If-Match of the target's roster membershipVersion.
+No body, Admin removal or role updates are accepted. Detachment, session revocation
+and old-invitation invalidation are transactional. See
+[detailed contract](organizer-invitations.md#manager-removal-follow-up--27-october-2026).
+
+## Official technical references (source)
 
 - https://nextjs.org/docs/app/getting-started/route-handlers
 

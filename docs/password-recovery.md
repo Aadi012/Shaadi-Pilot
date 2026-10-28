@@ -22,8 +22,10 @@ Required for requests/dispatch:
 - `CRON_SECRET`: random server-only secret, at least 32 characters, for retry drain.
 
 Missing local encryption/cron secrets were generated privately during development.
-The effective Resend key and sender remained empty at verification; the user chose
-mocked delivery tests and will configure Resend later. No live message was sent.
+The effective Resend key and sender remained empty at initial recovery verification;
+the user chose mocked delivery tests. They configured these on 27 October and
+successfully tested a real Manager invitation. A real password-recovery round trip
+remains unverified. No recovery email was sent by the automated tests.
 Do not mistake a populated variable name or example assignment for usable settings.
 
 Run `npm run db:auth:indexes` and `npm run db:recovery:indexes` once per environment.
@@ -37,7 +39,8 @@ An accepted request commits its token and encrypted mail work together. Next.js
 `after` attempts that one message after the response. If the invocation fails,
 durable work remains eligible after its lease expires. The internal GET
 `/api/internal/cron/emails` requires `Authorization: Bearer <CRON_SECRET>` and drains
-at most five due reset messages. Do not put the secret in the URL.
+up to two due reset and three due Manager-invitation messages after the invitation
+slice. Do not put the secret in the URL.
 
 No Vercel schedule or external service configuration is created by this change.
 Before launch, configure a protected frequent invocation compatible with the
@@ -47,7 +50,8 @@ fragment preservation. Provider acceptance is not proof of inbox delivery.
 Each reset has its own immutable one-message Resend batch. Retries retain the
 same payload and idempotency key. Ciphertext is cleared on terminal processing
 and expires with the reset link; seven-day delivery audit metadata remains.
-Keep the current encryption key until pending work has drained or expired.
+Keep the current encryption key until pending work has drained or expired, now up
+to seven days when invitation jobs share this delivery foundation.
 Replacing it immediately makes older payloads unreadable; no keyring is included.
 
 ## Verification and limits

@@ -71,6 +71,15 @@ export const findWedding = (id: Types.ObjectId, transaction?: ClientSession) =>
   Wedding.findOne({ _id: id, status: 'active' })
     .session(transaction ?? null)
     .lean();
+export const lockMembershipWedding = (
+  id: Types.ObjectId,
+  session: ClientSession,
+) =>
+  Wedding.findOneAndUpdate(
+    { _id: id, status: 'active' },
+    { $inc: { membershipVersion: 1 } },
+    { session, returnDocument: 'after' },
+  ).lean();
 export const findCreation = (id: string, transaction?: ClientSession) =>
   WeddingCreation.findById(id)
     .session(transaction ?? null)

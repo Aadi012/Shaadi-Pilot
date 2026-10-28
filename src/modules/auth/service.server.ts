@@ -13,6 +13,11 @@ import {
   revokeSession,
   findOrganizerForWedding,
   claimWeddingMembership,
+  claimInvitedMembership,
+  listWeddingOrganizers,
+  existingWeddingOrganizer,
+  findWeddingOrganizer,
+  removeManagerMembership,
 } from './repository.server';
 import {
   ABSOLUTE_MS,
@@ -125,3 +130,8 @@ export async function logout(token: string) {
 export const loadOrganizerMembership = findOrganizerForWedding;
 export const attachCreatedWedding = claimWeddingMembership;
 export const enforceIdentityLimit = consumeLimit;
+export const attachInvitedOrganizer = claimInvitedMembership;
+export const weddingOrganizers = listWeddingOrganizers;
+export const weddingOrganizerExists = existingWeddingOrganizer;
+export const weddingOrganizer = findWeddingOrganizer;
+export const detachManager = removeManagerMembership;

@@ -10,8 +10,9 @@ export type DeliveryState =
   | 'quarantined';
 export interface DeliveryRecord {
   _id: Types.ObjectId;
-  scope: 'platform';
-  kind: 'password-reset';
+  scope: 'platform' | 'wedding';
+  kind: 'password-reset' | 'member-invite';
+  weddingId?: Types.ObjectId;
   userId: Types.ObjectId;
   tokenHash: string;
   logicalKey: string;
@@ -37,6 +38,7 @@ const deliverySchema = new Schema<DeliveryRecord>(
   {
     scope: { type: String, required: true },
     kind: { type: String, required: true },
+    weddingId: { type: Schema.Types.ObjectId },
     userId: { type: Schema.Types.ObjectId, required: true },
     tokenHash: { type: String, required: true, select: false },
     logicalKey: { type: String, required: true },

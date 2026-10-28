@@ -2,6 +2,16 @@
 
 Project: https://stitch.withgoogle.com/projects/7444919587454097178
 
+27 October: the exposed Stitch screen-list tool worked and listed 56 screens.
+For the Manager invitation slice, three desktop screens were retrieved and
+visually inspected: Team Management (`c05aa33afb0841d0aa6603ce8b678a46`), Invite &
+Revoke Dialogs (`9f29205880f148aabd851a335d1318b5`) and Invitation Acceptance &
+States (`116cd362637f4b32a781cb01ae0c6076`). Original HTML/PNG exports and a sanitized
+manifest are under `organizer-invitations`. No dedicated mobile Team screen was
+listed; mobile adapts the existing responsive shell. Listing other screens is not
+proof of inspection. Unsupported generated role/removal/copy-link controls were
+excluded. The existing export helper does not refresh these three new exports.
+
 The user approved the welcome, wedding details and overview designs on
 25 October 2026. Eight desktop/mobile reference screens are archived under
 `wedding-workspace`, with screen names/IDs in `references.json`. The populated

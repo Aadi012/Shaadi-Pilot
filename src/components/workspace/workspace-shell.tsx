@@ -34,7 +34,7 @@ export function WorkspaceShell({
   wedding: WeddingDto;
   name: string;
   role: 'admin' | 'manager';
-  active?: 'Overview' | 'Settings';
+  active?: 'Overview' | 'Settings' | 'Team';
 }) {
   const drawer = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -57,12 +57,16 @@ export function WorkspaceShell({
             .map((item) => (
               <div key={item.label}>
                 {item.group && <p className={styles.navGroup}>{item.group}</p>}
-                {item.label === 'Overview' || item.label === 'Settings' ? (
+                {item.label === 'Overview' ||
+                item.label === 'Settings' ||
+                item.label === 'Team' ? (
                   <a
                     href={
-                      item.label === 'Settings'
-                        ? '/account/settings/wedding'
-                        : '/account'
+                      item.label === 'Team'
+                        ? '/account/team'
+                        : item.label === 'Settings'
+                          ? '/account/settings/wedding'
+                          : '/account'
                     }
                     aria-current={item.label === active ? 'page' : undefined}
                     className={
@@ -135,9 +139,11 @@ export function WorkspaceShell({
               {wedding.displayNames.partnerTwo}
             </strong>
             <small>
-              {active === 'Settings'
-                ? 'Settings · Wedding details'
-                : 'Workspace overview'}
+              {active === 'Team'
+                ? 'Team'
+                : active === 'Settings'
+                  ? 'Settings · Wedding details'
+                  : 'Workspace overview'}
             </small>
           </div>
           <span className={styles.badge}>Private workspace</span>

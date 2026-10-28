@@ -17,6 +17,8 @@ import {
   resetDeliveryEligible,
 } from './recovery-service.server';
 import { dispatchResetEmails } from '@/modules/email/service.server';
+import { dispatchInvitationEmails } from '@/modules/email/service.server';
+import { invitationEmailEligible } from '@/modules/memberships/service.server';
 async function checkCsrf(request: Request) {
   requireOrigin(request);
   const current = await currentSession();
@@ -100,9 +102,13 @@ export const emailCronHandler = withApiHandler(
         code: 'UNAUTHENTICATED',
         message: 'Unauthorized.',
       });
-    return apiSuccess(
-      await dispatchResetEmails(resetDeliveryEligible),
-      requestId,
+    const resets = await dispatchResetEmails(resetDeliveryEligible, {
+      limit: 2,
+    });
+    const invitations = await dispatchInvitationEmails(
+      invitationEmailEligible,
+      { limit: 3 },
     );
+    return apiSuccess({ resets, invitations }, requestId);
   },
 );

@@ -53,7 +53,7 @@ export const insertDelivery = async (
     [
       {
         _id: delivery._id,
-        idempotencyKey: `password-reset/${delivery._id}`,
+        idempotencyKey: `${delivery.kind}/${delivery._id}`,
         ...batch,
         expiresAt: delivery.expiresAt,
       },
@@ -61,11 +61,15 @@ export const insertDelivery = async (
     { session },
   );
 };
-export const claimDelivery = (now: Date, id?: string) =>
+export const claimDelivery = (
+  now: Date,
+  id?: string,
+  kind: 'password-reset' | 'member-invite' = 'password-reset',
+) =>
   EmailDelivery.findOneAndUpdate(
     {
-      scope: 'platform',
-      kind: 'password-reset',
+      scope: kind === 'password-reset' ? 'platform' : 'wedding',
+      kind,
       ...(id ? { _id: new Types.ObjectId(id) } : {}),
       $or: [
         { state: { $in: ['pending', 'retry'] }, nextAttemptAt: { $lte: now } },
@@ -111,3 +115,15 @@ export const markAttempt = (delivery: DeliveryRecord, now: Date) =>
     { _id: delivery._id, state: 'leased', leaseOwner: delivery.leaseOwner },
     { $set: { firstAttemptAt: delivery.firstAttemptAt ?? now } },
   );
+export const weddingDeliveryStates = (
+  weddingId: Types.ObjectId,
+  ids: Types.ObjectId[],
+) =>
+  EmailDelivery.find({
+    _id: { $in: ids },
+    scope: 'wedding',
+    weddingId,
+    kind: 'member-invite',
+  })
+    .select('_id state')
+    .lean();

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   MarketingIcon,
   type MarketingIconName,
@@ -115,15 +116,20 @@ export function WeddingOverview({
                 )}
                 <h3>{item.title}</h3>
                 <p>{item.copy}</p>
-                <button disabled>
-                  {item.action} <span>Coming next</span>
-                </button>
+                {item.admin ? (
+                  <Link href="/account/team">{item.action} →</Link>
+                ) : (
+                  <button disabled>
+                    {item.action} <span>Coming next</span>
+                  </button>
+                )}
               </article>
             ))}
         </div>
         <p className={styles.phaseNote}>
-          Your wedding is saved. Function planning, tasks, guests and organizer
-          invitations will become available in upcoming updates.
+          Your wedding is saved. Admins can now invite Managers from Team.
+          Function planning, tasks and guest invitations are coming in later
+          updates.
         </p>
       </section>
       <section aria-labelledby="indicators">

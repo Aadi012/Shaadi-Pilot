@@ -12,6 +12,7 @@ export interface WeddingRecord {
   status: 'active' | 'archived' | 'deleting';
   createdBy: Types.ObjectId;
   __v?: number;
+  membershipVersion?: number;
 }
 export interface CreationRecord {
   _id: string;
@@ -37,6 +38,7 @@ const schema = new Schema<WeddingRecord>(
       default: 'active',
     },
     createdBy: { type: Schema.Types.ObjectId, required: true },
+    membershipVersion: { type: Number, default: 0 },
   },
   { collection: 'weddings', timestamps: true, autoIndex: false },
 );

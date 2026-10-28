@@ -3,7 +3,7 @@ import { Types, type ClientSession } from 'mongoose';
 import { hashSecret } from '@/modules/auth/security.server';
 import { encryptEmail, decryptEmail } from './crypto.server';
 import { emailEnvironment } from './config.server';
-import { resetEmail } from './template';
+import { resetEmail, managerInviteEmail } from './template';
 import {
   claimDelivery,
   emailDatabase,
@@ -11,6 +11,7 @@ import {
   finishDelivery,
   insertDelivery,
   markAttempt,
+  weddingDeliveryStates,
 } from './repository.server';
 import { sendResendBatch } from './provider.server';
 export const prepareEmailQueue = emailDatabase;
@@ -56,8 +57,10 @@ type Eligible = (
   userId: string,
   tokenHash: string,
   now: Date,
+  weddingId?: string,
 ) => Promise<boolean>;
-export async function dispatchResetEmails(
+async function dispatchKind(
+  kind: 'password-reset' | 'member-invite',
   eligible: Eligible,
   options: { id?: string; limit?: number } = {},
   send = sendResendBatch,
@@ -72,7 +75,7 @@ export async function dispatchResetEmails(
     quarantined: 0,
   };
   for (let index = 0; index < Math.min(options.limit ?? 5, 5); index++) {
-    const delivery = await claimDelivery(new Date(), options.id);
+    const delivery = await claimDelivery(new Date(), options.id, kind);
     if (!delivery) break;
     if (delivery.attempts > 5) {
       await finishDelivery(delivery, 'failed', {
@@ -84,7 +87,12 @@ export async function dispatchResetEmails(
     const now = new Date();
     if (
       delivery.expiresAt <= now ||
-      !(await eligible(delivery.userId.toString(), delivery.tokenHash, now))
+      !(await eligible(
+        delivery.userId.toString(),
+        delivery.tokenHash,
+        now,
+        delivery.weddingId?.toString(),
+      ))
     ) {
       await finishDelivery(delivery, 'cancelled');
       counts.cancelled++;
@@ -115,18 +123,18 @@ export async function dispatchResetEmails(
     }
     if (!(await markAttempt(delivery, now)).matchedCount) continue;
     const result = await send(payload, batch!.idempotencyKey);
-    const kind =
+    const outcome =
       result.kind === 'retry' && delivery.attempts >= 5
         ? 'failed'
         : result.kind;
     await finishDelivery(
       delivery,
-      kind,
+      outcome,
       result.kind === 'submitted'
         ? { providerMessageId: result.id }
         : {
             lastError: result.category,
-            ...(kind === 'retry'
+            ...(outcome === 'retry'
               ? {
                   nextAttemptAt: new Date(
                     Date.now() +
@@ -136,7 +144,64 @@ export async function dispatchResetEmails(
               : {}),
           },
     );
-    counts[kind]++;
+    counts[outcome]++;
   }
   return counts;
+}
+export const dispatchResetEmails = (
+  eligible: Eligible,
+  options: { id?: string; limit?: number } = {},
+  send = sendResendBatch,
+) => dispatchKind('password-reset', eligible, options, send);
+export const dispatchInvitationEmails = (
+  eligible: Eligible,
+  options: { id?: string; limit?: number } = {},
+  send = sendResendBatch,
+) => dispatchKind('member-invite', eligible, options, send);
+export const invitationMailStates = weddingDeliveryStates;
+export async function queueManagerInvitation(
+  data: {
+    id: Types.ObjectId;
+    weddingId: Types.ObjectId;
+    inviterId: Types.ObjectId;
+    recipient: string;
+    couple: string;
+    token: string;
+    expiresAt: Date;
+  },
+  session: ClientSession,
+) {
+  const { from, baseUrl } = emailEnvironment();
+  const link = new URL('/join', baseUrl);
+  link.hash = `token=${data.token}`;
+  const payload = JSON.stringify([
+    {
+      from,
+      to: [data.recipient],
+      ...managerInviteEmail(link.toString(), data.couple),
+    },
+  ]);
+  await insertDelivery(
+    {
+      _id: data.id,
+      scope: 'wedding',
+      kind: 'member-invite',
+      weddingId: data.weddingId,
+      userId: data.inviterId,
+      tokenHash: hashSecret(data.token),
+      logicalKey: `member-invite/${data.id}`,
+      state: 'pending',
+      attempts: 0,
+      nextAttemptAt: new Date(),
+      leaseUntil: null,
+      leaseOwner: null,
+      expiresAt: data.expiresAt,
+      purgeAt: new Date(data.expiresAt.getTime() + 7 * 86400000),
+    },
+    {
+      payloadHash: hashSecret(payload),
+      encrypted: encryptEmail(payload, data.id.toString()),
+    },
+    session,
+  );
 }

@@ -1,0 +1,26 @@
+{
+  "projectId": "7444919587454097178",
+  "references": [
+    {
+      "name": "projects/7444919587454097178/screens/c05aa33afb0841d0aa6603ce8b678a46",
+      "title": "ShaadiPilot — Team Management (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "c05aa33afb0841d0aa6603ce8b678a46.png",
+      "html": "c05aa33afb0841d0aa6603ce8b678a46.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/9f29205880f148aabd851a335d1318b5",
+      "title": "ShaadiPilot — Invite & Revoke Dialogs (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "9f29205880f148aabd851a335d1318b5.png",
+      "html": "9f29205880f148aabd851a335d1318b5.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/116cd362637f4b32a781cb01ae0c6076",
+      "title": "ShaadiPilot — Invitation Acceptance & States (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "116cd362637f4b32a781cb01ae0c6076.png",
+      "html": "116cd362637f4b32a781cb01ae0c6076.html"
+    }
+  ]
+}

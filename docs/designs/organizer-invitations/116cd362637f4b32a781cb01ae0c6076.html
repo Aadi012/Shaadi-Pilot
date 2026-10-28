@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_blank" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"primary-fixed":"#ffd8e8","secondary-fixed-dim":"#dec29e","on-surface-variant":"#4e4448","outline-variant":"#d2c3c7","on-tertiary-fixed-variant":"#4d453e","surface-container":"#f0ecf6","tertiary-fixed":"#ede0d6","surface":"#fcf8ff","surface-tint":"#765564","tertiary":"#28221b","on-primary-container":"#be96a7","tertiary-container":"#3e3730","on-background":"#1c1b22","secondary-container":"#fbdeb8","tertiary-fixed-dim":"#d0c4bb","on-primary-fixed-variant":"#5c3e4c","surface-container-highest":"#e5e1ea","on-error-container":"#93000a","surface-container-lowest":"#ffffff","secondary-fixed":"#fbdeb8","primary-container":"#4c2f3d","inverse-surface":"#312f37","on-primary-fixed":"#2c1320","surface-variant":"#e5e1ea","on-secondary-container":"#766143","surface-dim":"#dcd8e2","error":"#ba1a1a","secondary":"#705b3d","surface-bright":"#fcf8ff","on-tertiary-container":"#aaa096","on-tertiary":"#ffffff","inverse-on-surface":"#f3eff9","on-secondary-fixed":"#271903","surface-container-low":"#f6f2fc","on-primary":"#ffffff","on-error":"#ffffff","error-container":"#ffdad6","background":"#fcf8ff","on-surface":"#1c1b22","on-secondary-fixed-variant":"#564428","on-tertiary-fixed":"#201b15","on-secondary":"#ffffff","surface-container-high":"#ebe6f0","inverse-primary":"#e5bbcd","primary-fixed-dim":"#e5bbcd","outline":"#807478","primary":"#341a27"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-md":"1rem","gutter-mobile":"1rem","margin-mobile":"1.25rem","space-xs":"0.25rem","gutter":"1.5rem","margin":"3rem","space-xl":"2.5rem","space-lg":"1.5rem","space-sm":"0.5rem"},"fontFamily":{"body-md":["Manrope"],"label-sm":["Manrope"],"label-md":["Manrope"],"display-lg-mobile":["Newsreader"],"headline-lg-mobile":["Newsreader"],"title-lg":["Manrope"],"body-sm":["Manrope"],"headline-sm":["Newsreader"],"body-lg":["Manrope"],"headline-md":["Newsreader"],"title-md":["Manrope"],"headline-lg":["Newsreader"],"display-lg":["Newsreader"]},"fontSize":{"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"700"}],"label-md":["13px",{"lineHeight":"18px","letterSpacing":"0.02em","fontWeight":"600"}],"display-lg-mobile":["36px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"400"}],"headline-lg-mobile":["28px",{"lineHeight":"36px","fontWeight":"400"}],"title-lg":["18px",{"lineHeight":"24px","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"18px","fontWeight":"400"}],"headline-sm":["22px",{"lineHeight":"28px","fontWeight":"500"}],"body-lg":["16px",{"lineHeight":"26px","fontWeight":"400"}],"headline-md":["28px",{"lineHeight":"36px","fontWeight":"500"}],"title-md":["16px",{"lineHeight":"22px","fontWeight":"600"}],"headline-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.015em","fontWeight":"400"}],"display-lg":["56px",{"lineHeight":"64px","letterSpacing":"-0.02em","fontWeight":"400"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface"><main class="w-full bg-surface min-h-screen flex items-center justify-center p-space-lg"><div class="flex flex-col w-full items-center justify-center py-space-xl px-gutter-mobile md:px-gutter">
+<div class="w-full max-w-[720px] flex flex-col items-center">
+<!-- Editorial Branding Monogram Header -->
+<header class="flex flex-col items-center text-center mb-space-lg select-none">
+<div class="w-14 h-14 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-md mb-space-sm">
+<span class="font-headline-md text-headline-md italic tracking-tight font-serif">SP</span>
+</div>
+<span class="font-title-md text-title-md tracking-wider font-semibold text-primary">ShaadiPilot</span>
+<div class="mt-space-xs inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm tracking-widest uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        Wedding Workspace Invitation
+      </div>
+</header>
+<!-- State Switcher Tabs (For Interactive Review of Flow States) -->
+<div class="w-full mb-space-lg bg-surface-container-high p-1.5 rounded-xl flex items-center justify-between gap-1 text-on-surface-variant">
+<button class="state-tab flex-1 py-2 px-3 rounded-lg font-label-md text-label-md transition-all duration-150 bg-surface-container-lowest text-primary shadow-sm text-center" id="tab-active" onclick="showState('active')" type="button">
+        Eligible (Active)
+      </button>
+<button class="state-tab flex-1 py-2 px-3 rounded-lg font-label-md text-label-md transition-all duration-150 text-on-surface-variant hover:text-on-surface text-center" id="tab-loggedOut" onclick="showState('loggedOut')" type="button">
+        Logged Out
+      </button>
+<button class="state-tab flex-1 py-2 px-3 rounded-lg font-label-md text-label-md transition-all duration-150 text-on-surface-variant hover:text-on-surface text-center" id="tab-mismatch" onclick="showState('mismatch')" type="button">
+        Mismatch
+      </button>
+<button class="state-tab flex-1 py-2 px-3 rounded-lg font-label-md text-label-md transition-all duration-150 text-on-surface-variant hover:text-on-surface text-center" id="tab-conflict" onclick="showState('conflict')" type="button">
+        Conflict
+      </button>
+<button class="state-tab flex-1 py-2 px-3 rounded-lg font-label-md text-label-md transition-all duration-150 text-on-surface-variant hover:text-on-surface text-center" id="tab-expired" onclick="showState('expired')" type="button">
+        Expired
+      </button>
+</div>
+<!-- MAIN VIEW CONTAINER -->
+<div class="w-full relative min-h-[580px]">
+<!-- STATE 1: ACTIVE ELIGIBLE (Primary Card) -->
+<section class="state-panel transition-opacity duration-300 w-full bg-surface-container-lowest rounded-xl shadow-xl p-6 sm:p-10 flex flex-col gap-space-lg" id="state-active">
+<!-- Event Header Card Banner -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high p-6 text-on-surface">
+<div class="relative z-10 flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Royal Wedding Portal</span>
+<h1 class="font-headline-md text-headline-md text-primary font-normal">Join Aarav &amp; Ananya’s Wedding</h1>
+<div class="flex items-center gap-2 mt-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-secondary">calendar_month</span>
+<span>14 March 2027</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span class="material-symbols-outlined text-[18px] text-secondary">location_on</span>
+<span>The Leela Palace, Jaipur</span>
+</div>
+</div>
+<!-- Editorial decorative backdrop element -->
+<div class="absolute -right-6 -bottom-8 opacity-10 text-primary pointer-events-none">
+<span class="material-symbols-outlined text-[130px]">temple_hindu</span>
+</div>
+</div>
+<!-- Auth Identity Ribbon -->
+<div class="flex items-center justify-between bg-surface-container-low px-4 py-3 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md">
+              KK
+            </div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Signed in as</span>
+<span class="font-title-md text-title-md text-on-surface font-medium">kavita.kapoor@gmail.com</span>
+</div>
+</div>
+<button class="font-label-md text-label-md text-secondary hover:text-on-secondary-container transition-colors" onclick="showState('mismatch')" type="button">
+            Switch
+          </button>
+</div>
+<!-- Role & Scope Details -->
+<div class="flex flex-col gap-space-md">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<div class="bg-surface-container-low p-4 rounded-lg flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Assigned Role</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold">
+                  Manager
+                </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Full Event Staff</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Invited By</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">verified_user</span>
+<span class="font-title-md text-title-md text-on-surface">Ananya Kapoor</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(Admin)</span>
+</div>
+</div>
+</div>
+<!-- Permissions Breakdown -->
+<div class="bg-surface-container-low p-4 rounded-lg flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">assignment_turned_in</span>
+<span class="font-title-md text-title-md text-on-surface">Granted Capabilities</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              As a Manager, you'll have collaborative access to orchestrate ceremony schedules, manage task run-sheets, track family RSVPs, and review vendor allocations across all Jaipur ceremonies.
+            </p>
+</div>
+<!-- Single Workspace Policy Notice -->
+<div class="flex items-start gap-3 p-4 rounded-lg bg-surface-container text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">info</span>
+<p class="font-body-sm text-body-sm leading-relaxed">
+<strong class="font-semibold text-on-surface">Dedicated Workspace Policy:</strong> ShaadiPilot accounts are dedicated to one wedding at a time. Accepting this invitation establishes Aarav &amp; Ananya’s portal as your primary working event.
+            </p>
+</div>
+</div>
+<!-- Action Panel -->
+<div class="flex flex-col items-center gap-space-md pt-2">
+<button class="w-full h-12 bg-primary-container text-on-primary hover:bg-primary transition-all duration-200 rounded-xl font-title-md text-title-md flex items-center justify-center gap-2 shadow-md" id="accept-btn" onclick="handleAccept(this)" type="button">
+<span>Accept Invitation &amp; Enter Workspace</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<button class="font-body-md text-body-md text-on-surface-variant hover:text-error transition-colors" onclick="confirmDecline()" type="button">
+            Decline invitation
+          </button>
+</div>
+</section>
+<!-- STATE 2: SIGNED OUT / ACCOUNT NEEDED -->
+<section class="state-panel hidden opacity-0 transition-opacity duration-300 w-full bg-surface-container-lowest rounded-xl shadow-xl p-6 sm:p-10 flex flex-col gap-space-lg" id="state-loggedOut">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">lock</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Authentication Required</span>
+<h2 class="font-headline-md text-headline-md text-primary mt-1">Please Sign In to Review Invitation</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+            You've been invited by <strong class="text-on-surface">Ananya Kapoor</strong> as an Event Manager for <strong class="text-on-surface">Aarav &amp; Ananya’s Wedding</strong>. Please authenticate using the designated email below.
+          </p>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-low flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">mail</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Invited Address</span>
+<span class="font-title-md text-title-md text-on-surface">kavita.kapoor@gmail.com</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+<button class="w-full sm:flex-1 h-12 bg-primary-container text-on-primary hover:bg-primary transition-all rounded-xl font-title-md text-title-md flex items-center justify-center gap-2 shadow-sm" type="button">
+<span>Log In with Invited Email</span>
+</button>
+<button class="w-full sm:flex-1 h-12 bg-surface-container text-on-surface hover:bg-surface-container-high transition-all rounded-xl font-title-md text-title-md flex items-center justify-center gap-2" type="button">
+<span>Create Account</span>
+</button>
+</div>
+</section>
+<!-- STATE 3: EMAIL MISMATCH -->
+<section class="state-panel hidden opacity-0 transition-opacity duration-300 w-full bg-surface-container-lowest rounded-xl shadow-xl p-6 sm:p-10 flex flex-col gap-space-lg" id="state-mismatch">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">sync_problem</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-error">Account Mismatch</span>
+<h2 class="font-headline-md text-headline-md text-primary mt-1">Different Account Detected</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+            This invitation was provisioned specifically for another recipient. To view or accept the workspace keys, switch to the authorized address.
+          </p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="p-3.5 rounded-lg bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline text-[20px]">person_outline</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Currently active:</span>
+</div>
+<span class="font-title-md text-title-md text-on-surface">rohit@tech.com</span>
+</div>
+<div class="p-3.5 rounded-lg bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">mark_email_read</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Invited email:</span>
+</div>
+<span class="font-title-md text-title-md text-primary font-semibold">kavita.kapoor@gmail.com</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+<button class="w-full sm:flex-1 h-12 bg-primary-container text-on-primary hover:bg-primary transition-all rounded-xl font-title-md text-title-md flex items-center justify-center gap-2 shadow-sm" onclick="showState('active')" type="button">
+<span class="material-symbols-outlined text-[20px]">switch_account</span>
+<span>Switch to kavita.kapoor@gmail.com</span>
+</button>
+<button class="w-full sm:w-auto px-6 h-12 bg-surface-container text-on-surface hover:bg-surface-container-high transition-all rounded-xl font-title-md text-title-md" type="button">
+            Sign Out
+          </button>
+</div>
+</section>
+<!-- STATE 4: ALREADY IN ANOTHER WEDDING -->
+<section class="state-panel hidden opacity-0 transition-opacity duration-300 w-full bg-surface-container-lowest rounded-xl shadow-xl p-6 sm:p-10 flex flex-col gap-space-lg" id="state-conflict">
+<div class="w-12 h-12 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">domain_disabled</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Single-Event Constraint</span>
+<h2 class="font-headline-md text-headline-md text-primary mt-1">Active Wedding Already Associated</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+            Your account <strong class="text-on-surface">kavita.kapoor@gmail.com</strong> is currently an active coordinator for <strong class="text-on-surface">Pooja &amp; Rohan’s Wedding (Nov 2026)</strong>. ShaadiPilot enforces single-workspace membership to protect data isolation and budget governance.
+          </p>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-low flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary font-title-md text-title-md">
+<span class="material-symbols-outlined text-[20px]">info</span>
+<span>Recommended Next Steps</span>
+</div>
+<ul class="font-body-sm text-body-sm text-on-surface-variant list-disc pl-5 space-y-1">
+<li>Ask Ananya Kapoor to send this invite to an alternate business email.</li>
+<li>Alternatively, complete or conclude your role in the Nov 2026 wedding prior to accepting.</li>
+</ul>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+<button class="w-full sm:flex-1 h-12 bg-primary-container text-on-primary hover:bg-primary transition-all rounded-xl font-title-md text-title-md flex items-center justify-center gap-2 shadow-sm" type="button">
+<span>Return to Pooja &amp; Rohan's Workspace</span>
+</button>
+<button class="w-full sm:w-auto px-6 h-12 bg-surface-container text-on-surface hover:bg-surface-container-high transition-all rounded-xl font-title-md text-title-md" onclick="showState('active')" type="button">
+            Switch Account
+          </button>
+</div>
+</section>
+<!-- STATE 5: INVALID OR EXPIRED LINK -->
+<section class="state-panel hidden opacity-0 transition-opacity duration-300 w-full bg-surface-container-lowest rounded-xl shadow-xl p-6 sm:p-10 flex flex-col gap-space-lg" id="state-expired">
+<div class="w-12 h-12 rounded-full bg-error-container text-on-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">link_off</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-error">Invitation Expired</span>
+<h2 class="font-headline-md text-headline-md text-primary mt-1">This Invitation Is No Longer Valid</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+            This invitation link has either expired after the 7-day security window or has been revoked by the wedding hosts. Please contact <strong class="text-on-surface">Ananya Kapoor (Host)</strong> directly to request a refreshed invitation token.
+          </p>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-low flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Issued On</span>
+<span class="font-body-sm text-body-sm text-on-surface">12 Feb 2027 · Expired 19 Feb 2027</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+<a class="w-full sm:flex-1 h-12 bg-primary-container text-on-primary hover:bg-primary transition-all rounded-xl font-title-md text-title-md flex items-center justify-center gap-2 shadow-sm" href="mailto:ananya.kapoor@domain.com?subject=ShaadiPilot%20Invite%20Renewal">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+<span>Request New Link from Ananya</span>
+</a>
+<button class="w-full sm:w-auto px-6 h-12 bg-surface-container text-on-surface hover:bg-surface-container-high transition-all rounded-xl font-title-md text-title-md" onclick="showState('active')" type="button">
+            Go to ShaadiPilot
+          </button>
+</div>
+</section>
+</div>
+<!-- Editorial Footer Utility -->
+<footer class="mt-space-lg flex flex-col items-center gap-2 text-center text-on-surface-variant select-none">
+<div class="flex items-center gap-4 font-label-sm text-label-sm tracking-wider uppercase opacity-75">
+<span>ISO 27001 Certified Security</span>
+<span>·</span>
+<span>End-to-End Encrypted Data</span>
+</div>
+<p class="font-body-sm text-body-sm opacity-60">
+        ShaadiPilot © 2027. Crafted for bespoke destination celebrations.
+      </p>
+</footer>
+</div>
+</div>
+<script>
+  function showState(stateKey) {
+    const states = ['active', 'loggedOut', 'mismatch', 'conflict', 'expired'];
+    
+    states.forEach(s => {
+      const panel = document.getElementById('state-' + s);
+      const tab = document.getElementById('tab-' + s);
+      
+      if (s === stateKey) {
+        panel.classList.remove('hidden');
+        setTimeout(() => {
+          panel.classList.remove('opacity-0');
+        }, 10);
+        
+        tab.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        tab.classList.remove('text-on-surface-variant');
+      } else {
+        panel.classList.add('opacity-0');
+        panel.classList.add('hidden');
+        
+        tab.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        tab.classList.add('text-on-surface-variant');
+      }
+    });
+  }
+
+  function handleAccept(btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">sync</span><span>Connecting to Jaipur Workspace...</span>';
+    setTimeout(() => {
+      btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check</span><span>Workspace Ready! Redirecting...</span>';
+      btn.classList.remove('bg-primary-container');
+      btn.classList.add('bg-secondary');
+    }, 1200);
+  }
+
+  function confirmDecline() {
+    if (confirm("Are you sure you wish to decline Aarav & Ananya's wedding invitation? This link will become inactive.")) {
+      showState('expired');
+    }
+  }
+</script></main></body></html>
