@@ -34,7 +34,7 @@ export function WorkspaceShell({
   wedding: WeddingDto;
   name: string;
   role: 'admin' | 'manager';
-  active?: 'Overview' | 'Settings' | 'Team' | 'Functions';
+  active?: 'Overview' | 'Settings' | 'Team' | 'Functions' | 'Tasks';
 }) {
   const drawer = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -60,16 +60,19 @@ export function WorkspaceShell({
                 {item.label === 'Overview' ||
                 item.label === 'Settings' ||
                 item.label === 'Functions' ||
+                item.label === 'Tasks' ||
                 item.label === 'Team' ? (
                   <a
                     href={
-                      item.label === 'Functions'
-                        ? '/account/functions'
-                        : item.label === 'Team'
-                          ? '/account/team'
-                          : item.label === 'Settings'
-                            ? '/account/settings/wedding'
-                            : '/account'
+                      item.label === 'Tasks'
+                        ? '/account/tasks'
+                        : item.label === 'Functions'
+                          ? '/account/functions'
+                          : item.label === 'Team'
+                            ? '/account/team'
+                            : item.label === 'Settings'
+                              ? '/account/settings/wedding'
+                              : '/account'
                     }
                     aria-current={item.label === active ? 'page' : undefined}
                     className={
@@ -146,7 +149,9 @@ export function WorkspaceShell({
                 ? 'Team'
                 : active === 'Settings'
                   ? 'Settings · Wedding details'
-                  : 'Workspace overview'}
+                  : active === 'Tasks' || active === 'Functions'
+                    ? active
+                    : 'Workspace overview'}
             </small>
           </div>
           <span className={styles.badge}>Private workspace</span>

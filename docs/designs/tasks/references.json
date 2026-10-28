@@ -1,0 +1,33 @@
+{
+  "projectId": "7444919587454097178",
+  "references": [
+    {
+      "name": "projects/7444919587454097178/screens/28e5cde23ffd434e9ab79f0f7dece4ea",
+      "title": "ShaadiPilot — Task Detail Hub (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "28e5cde23ffd434e9ab79f0f7dece4ea.png",
+      "html": "28e5cde23ffd434e9ab79f0f7dece4ea.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/531b559bf0e74238bb3f7b7f10fe60f3",
+      "title": "ShaadiPilot — Tasks Management (Mobile)",
+      "deviceType": "MOBILE",
+      "screenshot": "531b559bf0e74238bb3f7b7f10fe60f3.png",
+      "html": "531b559bf0e74238bb3f7b7f10fe60f3.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/ae1f134263ed4995b5257d01ca3f4d2d",
+      "title": "ShaadiPilot — Create, Edit, Conflict & Delete Task (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "ae1f134263ed4995b5257d01ca3f4d2d.png",
+      "html": "ae1f134263ed4995b5257d01ca3f4d2d.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/1e1035586737415a8d4de0d23a1cf5cb",
+      "title": "ShaadiPilot — Tasks Management & Registry (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "1e1035586737415a8d4de0d23a1cf5cb.png",
+      "html": "1e1035586737415a8d4de0d23a1cf5cb.html"
+    }
+  ]
+}

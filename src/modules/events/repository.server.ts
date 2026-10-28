@@ -29,6 +29,15 @@ const Event =
   (mongoose.models.PlanningEvent as Model<RecordType> | undefined) ??
   mongoose.model<RecordType>('PlanningEvent', schema);
 export const database = connectDatabase;
+export const findPlanningEvents = (
+  weddingId: Types.ObjectId,
+  ids: Types.ObjectId[],
+  session?: ClientSession,
+) =>
+  Event.find({ _id: { $in: ids }, weddingId, status: 'active' })
+    .select('_id title')
+    .session(session ?? null)
+    .lean();
 export const list = (
   weddingId: Types.ObjectId,
   after?: { startsAt: Date; id: Types.ObjectId },

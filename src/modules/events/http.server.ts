@@ -67,6 +67,9 @@ export function eventHandler(
         id,
         version,
         method === 'DELETE',
+        method === 'POST'
+          ? (request.headers.get('Idempotency-Key') ?? undefined)
+          : undefined,
       );
       return apiSuccess({ event }, requestId, method === 'POST' ? 201 : 200);
     },

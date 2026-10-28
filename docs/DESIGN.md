@@ -35,6 +35,15 @@ Never show a completed operation or fabricated planning activity as real data.
 
 ## 5. Layout
 
+Tasks uses the four inspected desktop/mobile references in designs/tasks. Keep
+the editorial heading, summary strip, quiet filter panel and desktop registry;
+collapse rows into readable mobile cards. Forms use native modal dialogs and
+group title/notes, function/assignee, timezone-aware deadline and status. Preserve
+drafts on failure, reset after discard/success, and explicitly load latest details
+after conflicts. Exclude prototype tabs, priority/category fields, attachments,
+PDF exports, offline sync, audit history and notification actions outside V1.
+Use real counts, no sample task records, and the existing shared brand/shell.
+
 Functions uses the five user-attached references in designs/functions. Retain
 the warm canvas, editorial function titles, schedule cards and right-side form
 drawer. Mobile stacks fields/actions. Exclude state-preview tabs, dummy planning

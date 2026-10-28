@@ -134,4 +134,5 @@ export const attachInvitedOrganizer = claimInvitedMembership;
 export const weddingOrganizers = listWeddingOrganizers;
 export const weddingOrganizerExists = existingWeddingOrganizer;
 export const weddingOrganizer = findWeddingOrganizer;
+export { findPlanningOrganizers as planningOrganizers } from './repository.server';
 export const detachManager = removeManagerMembership;

@@ -415,6 +415,16 @@ assignment. New assignments require active same-wedding membership; allow cleari
 or replacing a former assignment without exposing another wedding's user profile.
 These are approved policies for the planned Tasks slice, not implemented features.
 
+Implementation follow-up: Tasks uses the API/database name assignedToUserId
+instead of the system-design shorthand assigneeUserId. Archive timestamps keep
+the three business statuses unchanged. Assignee membership generations prevent
+removed/rejoined accounts from silently taking back historical tasks. Both
+planning POST routes now require durable, tenant/user-scoped UUID request keys;
+receipts store only payload hashes and record IDs. Matching retries return the
+current record; archived originals return conflict. No TTL silently reopens a
+create key. See tasks-plan.md and project-status.md for actual delivery evidence;
+the approval above describes policy, and does not itself establish verification.
+
 1. Scaffold and checks.
 2. Identity, tenancy, membership and the email delivery needed for recovery/invites.
 3. Planning modules and public website.

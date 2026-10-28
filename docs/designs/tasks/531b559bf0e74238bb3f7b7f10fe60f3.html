@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary-container": "#fbdeb8", "on-primary-fixed-variant": "#5c3e4c", "tertiary": "#28221b", "error-container": "#ffdad6", "surface-bright": "#fcf8ff", "surface-tint": "#765564", "primary": "#341a27", "on-error-container": "#93000a", "surface-container": "#f0ecf6", "on-primary-fixed": "#2c1320", "inverse-on-surface": "#f3eff9", "on-tertiary-fixed": "#201b15", "secondary-fixed": "#fbdeb8", "primary-fixed-dim": "#e5bbcd", "on-tertiary-fixed-variant": "#4d453e", "surface-container-highest": "#e5e1ea", "on-surface-variant": "#4e4448", "outline-variant": "#d2c3c7", "on-primary": "#ffffff", "surface-container-low": "#f6f2fc", "surface": "#fcf8ff", "tertiary-fixed-dim": "#d0c4bb", "on-background": "#1c1b22", "on-surface": "#1c1b22", "on-tertiary-container": "#aaa096", "background": "#fcf8ff", "on-secondary": "#ffffff", "error": "#ba1a1a", "surface-variant": "#e5e1ea", "on-error": "#ffffff", "primary-fixed": "#ffd8e8", "secondary-fixed-dim": "#dec29e", "inverse-surface": "#312f37", "primary-container": "#4c2f3d", "inverse-primary": "#e5bbcd", "on-secondary-fixed-variant": "#564428", "surface-container-lowest": "#ffffff", "secondary": "#705b3d", "tertiary-container": "#3e3730", "on-tertiary": "#ffffff", "surface-dim": "#dcd8e2", "on-secondary-container": "#766143", "surface-container-high": "#ebe6f0", "on-secondary-fixed": "#271903", "on-primary-container": "#be96a7", "outline": "#807478", "tertiary-fixed": "#ede0d6" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "3rem", "gutter": "1.5rem", "space-xs": "0.25rem", "space-md": "1rem", "margin-mobile": "1.25rem", "gutter-mobile": "1rem", "space-lg": "1.5rem", "space-xl": "2.5rem", "space-sm": "0.5rem" }, fontFamily: { "headline-lg-mobile": ["Newsreader"], "label-sm": ["Manrope"], "display-lg": ["Newsreader"], "title-md": ["Manrope"], "headline-lg": ["Newsreader"], "display-lg-mobile": ["Newsreader"], "body-sm": ["Manrope"], "headline-md": ["Newsreader"], "title-lg": ["Manrope"], "body-md": ["Manrope"], "headline-sm": ["Newsreader"], "body-lg": ["Manrope"], "label-md": ["Manrope"] }, fontSize: { "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "400" }], "label-sm": ["11px", { lineHeight: "16px", letterSpacing: "0.06em", fontWeight: "700" }], "display-lg": ["56px", { lineHeight: "64px", letterSpacing: "-0.02em", fontWeight: "400" }], "title-md": ["16px", { lineHeight: "22px", fontWeight: "600" }], "headline-lg": ["40px", { lineHeight: "48px", letterSpacing: "-0.015em", fontWeight: "400" }], "display-lg-mobile": ["36px", { lineHeight: "44px", letterSpacing: "-0.01em", fontWeight: "400" }], "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }], "headline-md": ["28px", { lineHeight: "36px", fontWeight: "500" }], "title-lg": ["18px", { lineHeight: "24px", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }], "headline-sm": ["22px", { lineHeight: "28px", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }], "label-md": ["13px", { lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "600" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0 flex-1"><button aria-label="Navigation menu" class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors flex-shrink-0"><span class="material-symbols-outlined text-[24px]">menu</span></button><div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-title-md text-title-md tracking-wider flex-shrink-0">SP</div><div class="flex flex-col min-w-0 pr-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary truncate">Aarav &amp; Ananya · Jaipur</span><h1 class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">Tasks</h1></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><button aria-label="Notifications" class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors relative"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-error"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="px-margin-mobile pt-space-md pb-space-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight">Tasks</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Aarav &amp; Ananya’s Wedding · <span id="summary-counter">14 tasks · 1 overdue</span></p>
+</div>
+<button class="h-11 px-space-md rounded-xl bg-primary-container text-on-primary font-title-md text-title-md flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all flex-shrink-0 cursor-pointer" id="open-new-modal-btn">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>New Task</span>
+</button>
+</div>
+<!-- Quick State Switcher Ribbon -->
+<div class="w-full overflow-x-auto pb-1 -mx-margin-mobile px-margin-mobile">
+<div class="flex items-center gap-space-xs min-w-max">
+<button class="state-tab h-9 px-3 rounded-lg font-label-md text-label-md bg-primary-container text-on-primary shadow-xs transition-colors cursor-pointer" data-view="all">
+          All Tasks (14)
+        </button>
+<button class="state-tab h-9 px-3 rounded-lg font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" data-view="assigned">
+          Assigned to Me (4)
+        </button>
+<button class="state-tab h-9 px-3 rounded-lg font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" data-view="overdue">
+          Overdue (1)
+        </button>
+<button class="state-tab h-9 px-3 rounded-lg font-label-md text-label-md bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" data-view="empty">
+          Empty State
+        </button>
+</div>
+</div>
+<!-- Filter Pills Bar -->
+<div class="w-full overflow-x-auto pb-1 -mx-margin-mobile px-margin-mobile">
+<div class="flex items-center gap-space-xs min-w-max" id="tag-filters">
+<button class="filter-pill h-8 px-3 rounded-full font-label-sm text-label-sm bg-primary text-on-primary transition-all cursor-pointer" data-filter="all">All Statuses</button>
+<button class="filter-pill h-8 px-3 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:text-on-surface transition-all cursor-pointer" data-filter="assigned">Assigned (4)</button>
+<button class="filter-pill h-8 px-3 rounded-full font-label-sm text-label-sm bg-surface-container text-error hover:text-on-surface transition-all cursor-pointer" data-filter="overdue">Overdue ⚠️</button>
+<button class="filter-pill h-8 px-3 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:text-on-surface transition-all cursor-pointer" data-filter="sangeet">Sangeet (4)</button>
+<button class="filter-pill h-8 px-3 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:text-on-surface transition-all cursor-pointer" data-filter="pheras">Pheras (3)</button>
+<button class="filter-pill h-8 px-3 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:text-on-surface transition-all cursor-pointer" data-filter="unassigned">Unassigned (2)</button>
+</div>
+</div>
+</div>
+<!-- Main Tasks Card List -->
+<div class="px-margin-mobile flex flex-col gap-3 py-space-xs pb-space-lg" id="tasks-container">
+<!-- Card 1: Overdue -->
+<div class="task-card relative rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex transition-all duration-200" data-category="overdue sangeet assigned" data-task-id="t1">
+<div class="w-1.5 bg-error flex-shrink-0"></div>
+<div class="flex-1 p-3.5 flex flex-col gap-2.5 min-w-0">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2.5 min-w-0">
+<button aria-label="Toggle completed status" class="task-checkbox min-w-[44px] min-h-[44px] -ml-2 -mt-2 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="w-5 h-5 rounded-md bg-surface-container flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px] hidden">check</span>
+</span>
+</button>
+<div class="flex flex-col min-w-0 pt-0.5">
+<div class="flex items-center gap-1.5 flex-wrap pb-1">
+<span class="px-2 py-0.5 rounded-md bg-error-container text-on-error-container font-label-sm text-label-sm uppercase font-bold">Overdue by 2d</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">To Do</span>
+</div>
+<h3 class="task-title font-title-md text-title-md text-on-surface leading-snug">Submit sound clearance for Sangeet DJ</h3>
+</div>
+</div>
+<button class="min-w-[44px] min-h-[44px] -mr-2 -mt-2 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" onclick="openTaskSheet('Submit sound clearance for Sangeet DJ', 'Aarav Kapoor', 'Sangeet &amp; Cocktail Night', 'Due 12 Feb 2027', 'todo')">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div class="flex flex-col gap-1 pl-7">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm flex-wrap">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">person</span>
+<span>Aarav Kapoor</span>
+</span>
+<span class="text-outline-variant">·</span>
+<span class="flex items-center gap-1 truncate">
+<span class="material-symbols-outlined text-[14px] text-secondary">location_on</span>
+<span class="truncate">Sangeet &amp; Cocktail Night</span>
+</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">event_busy</span>
+              Due 12 Feb 2027
+            </span>
+<button class="font-label-sm text-label-sm text-primary-container font-semibold flex items-center gap-0.5 hover:underline cursor-pointer" onclick="openTaskSheet('Submit sound clearance for Sangeet DJ', 'Aarav Kapoor', 'Sangeet &amp; Cocktail Night', 'Due 12 Feb 2027', 'todo')">
+              Details <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: In Progress - Assigned to Me -->
+<div class="task-card relative rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex transition-all duration-200" data-category="assigned pheras" data-task-id="t2">
+<div class="w-1.5 bg-secondary flex-shrink-0"></div>
+<div class="flex-1 p-3.5 flex flex-col gap-2.5 min-w-0">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2.5 min-w-0">
+<button aria-label="Toggle completed status" class="task-checkbox min-w-[44px] min-h-[44px] -ml-2 -mt-2 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="w-5 h-5 rounded-md bg-surface-container flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px] hidden">check</span>
+</span>
+</button>
+<div class="flex flex-col min-w-0 pt-0.5">
+<div class="flex items-center gap-1.5 flex-wrap pb-1">
+<span class="px-2 py-0.5 rounded-md bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">In Progress</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Vendor Logistics</span>
+</div>
+<h3 class="task-title font-title-md text-title-md text-on-surface leading-snug">Confirm photographer drone permit with Leela security</h3>
+</div>
+</div>
+<button class="min-w-[44px] min-h-[44px] -mr-2 -mt-2 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" onclick="openTaskSheet('Confirm photographer drone permit with Leela security', 'Aarav Kapoor', 'Vedic Wedding', 'Due 16 Feb (in 2d)', 'inprogress')">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div class="flex flex-col gap-1 pl-7">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm flex-wrap">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">person</span>
+<span>Aarav Kapoor</span>
+</span>
+<span class="text-outline-variant">·</span>
+<span class="flex items-center gap-1 truncate">
+<span class="material-symbols-outlined text-[14px] text-secondary">temple_hindu</span>
+<span class="truncate">Vedic Wedding</span>
+</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-secondary font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+              Due 16 Feb (in 2d)
+            </span>
+<button class="font-label-sm text-label-sm text-primary-container font-semibold flex items-center gap-0.5 hover:underline cursor-pointer" onclick="openTaskSheet('Confirm photographer drone permit with Leela security', 'Aarav Kapoor', 'Vedic Wedding', 'Due 16 Feb (in 2d)', 'inprogress')">
+              Details <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: Unassigned -->
+<div class="task-card relative rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex transition-all duration-200" data-category="unassigned" data-task-id="t3">
+<div class="w-1.5 bg-outline-variant flex-shrink-0"></div>
+<div class="flex-1 p-3.5 flex flex-col gap-2.5 min-w-0">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2.5 min-w-0">
+<button aria-label="Toggle completed status" class="task-checkbox min-w-[44px] min-h-[44px] -ml-2 -mt-2 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="w-5 h-5 rounded-md bg-surface-container flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px] hidden">check</span>
+</span>
+</button>
+<div class="flex flex-col min-w-0 pt-0.5">
+<div class="flex items-center gap-1.5 flex-wrap pb-1">
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">To Do</span>
+<span class="px-2 py-0.5 rounded-md bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">person_add</span> Unassigned · Tap to assign
+                </span>
+</div>
+<h3 class="task-title font-title-md text-title-md text-on-surface leading-snug">Distribute brass bell welcome favours for guest arrival</h3>
+</div>
+</div>
+<button class="min-w-[44px] min-h-[44px] -mr-2 -mt-2 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" onclick="openTaskSheet('Distribute brass bell welcome favours for guest arrival', 'Unassigned', 'Mehendi Ceremony', 'Due 22 Feb', 'todo')">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div class="flex flex-col gap-1 pl-7">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm flex-wrap">
+<span class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[14px]">local_activity</span>
+<span>Favours &amp; Hampers</span>
+</span>
+<span class="text-outline-variant">·</span>
+<span class="flex items-center gap-1 truncate">
+<span class="material-symbols-outlined text-[14px]">spa</span>
+<span class="truncate">Mehendi Ceremony</span>
+</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span>
+              Due 22 Feb
+            </span>
+<button class="font-label-sm text-label-sm text-primary-container font-semibold flex items-center gap-0.5 hover:underline cursor-pointer" onclick="openTaskSheet('Distribute brass bell welcome favours for guest arrival', 'Unassigned', 'Mehendi Ceremony', 'Due 22 Feb', 'todo')">
+              Details <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 4: Completed -->
+<div class="task-card relative rounded-xl bg-surface-container-lowest/80 shadow-sm overflow-hidden flex transition-all duration-200" data-category="assigned" data-task-id="t4">
+<div class="w-1.5 bg-primary-container flex-shrink-0"></div>
+<div class="flex-1 p-3.5 flex flex-col gap-2.5 min-w-0">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-start gap-2.5 min-w-0">
+<button aria-label="Toggle completed status" class="task-checkbox min-w-[44px] min-h-[44px] -ml-2 -mt-2 flex items-center justify-center text-on-primary transition-colors cursor-pointer">
+<span class="w-5 h-5 rounded-md bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] block">check</span>
+</span>
+</button>
+<div class="flex flex-col min-w-0 pt-0.5">
+<div class="flex items-center gap-1.5 flex-wrap pb-1">
+<span class="px-2 py-0.5 rounded-md bg-surface-container-highest text-secondary font-label-sm text-label-sm font-semibold flex items-center gap-0.5">
+                  Completed ✓
+                </span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Catering &amp; Menu</span>
+</div>
+<h3 class="task-title font-title-md text-title-md text-on-surface/60 line-through leading-snug">Review &amp; approve Leela Palace banquet tasting menu</h3>
+</div>
+</div>
+<button class="min-w-[44px] min-h-[44px] -mr-2 -mt-2 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" onclick="openTaskSheet('Review &amp; approve Leela Palace banquet tasting menu', 'Ananya Kapoor', 'Royal Reception', 'Completed yesterday', 'completed')">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div class="flex flex-col gap-1 pl-7">
+<div class="flex items-center gap-1.5 text-on-surface-variant/75 font-body-sm text-body-sm flex-wrap">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">person</span>
+<span>Ananya Kapoor</span>
+</span>
+<span class="text-outline-variant">·</span>
+<span class="flex items-center gap-1 truncate">
+<span class="material-symbols-outlined text-[14px]">dinner_dining</span>
+<span class="truncate">Royal Reception</span>
+</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant/75 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">task_alt</span>
+              Approved on 10 Feb
+            </span>
+<button class="font-label-sm text-label-sm text-primary-container font-semibold flex items-center gap-0.5 hover:underline cursor-pointer" onclick="openTaskSheet('Review &amp; approve Leela Palace banquet tasting menu', 'Ananya Kapoor', 'Royal Reception', 'Completed yesterday', 'completed')">
+              Details <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Warm Empty State Display (Toggled via Switcher) -->
+<div class="hidden px-margin-mobile py-space-xl flex-col items-center text-center gap-space-md" id="empty-state-view">
+<div class="w-16 h-16 rounded-full bg-secondary-container/60 text-secondary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-[32px]">task_alt</span>
+</div>
+<div class="flex flex-col gap-1 max-w-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">All caught up!</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Every ritual detail and ceremony task for Aarav &amp; Ananya is safely accounted for.</p>
+</div>
+<button class="h-11 px-5 rounded-xl bg-primary-container text-on-primary font-title-md text-title-md flex items-center gap-2 shadow-sm cursor-pointer" onclick="resetStateSwitcher()">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Show All Tasks</span>
+</button>
+</div>
+<!-- Accessible Mobile Bottom Sheet / Modal (Task Quick Edit Drawer) -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-xs z-50 transition-opacity opacity-0 pointer-events-none flex items-end" id="task-drawer-backdrop">
+<div class="w-full bg-surface-container-lowest rounded-t-2xl shadow-xl max-h-[751px] overflow-y-auto transform translate-y-full transition-transform duration-300 p-space-md flex flex-col gap-space-md" id="task-drawer-panel">
+<!-- Drawer Drag Handle -->
+<div class="w-12 h-1.5 rounded-full bg-surface-container-highest mx-auto"></div>
+<!-- Drawer Header -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider">Quick Task Editor</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-tight mt-0.5 truncate" id="drawer-task-title">Task Title</h3>
+</div>
+<button aria-label="Close task details sheet" class="min-w-[44px] min-h-[44px] -mr-2 -mt-2 flex items-center justify-center text-on-surface-variant hover:text-on-surface cursor-pointer" id="close-drawer-btn">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+<!-- Status Toggle Pill Row -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">Ceremony Progress Status</label>
+<div class="grid grid-cols-3 gap-2 bg-surface-container p-1 rounded-xl">
+<button class="status-btn min-h-[44px] px-2 rounded-lg font-label-md text-label-md flex items-center justify-center gap-1 transition-all bg-surface-container-lowest text-on-surface shadow-xs cursor-pointer" data-status="todo">
+<span class="material-symbols-outlined text-[16px]">radio_button_unchecked</span>
+<span>To Do</span>
+</button>
+<button class="status-btn min-h-[44px] px-2 rounded-lg font-label-md text-label-md flex items-center justify-center gap-1 transition-all text-on-surface-variant cursor-pointer" data-status="inprogress">
+<span class="material-symbols-outlined text-[16px]">pending</span>
+<span>In Progress</span>
+</button>
+<button class="status-btn min-h-[44px] px-2 rounded-lg font-label-md text-label-md flex items-center justify-center gap-1 transition-all text-on-surface-variant cursor-pointer" data-status="completed">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Completed</span>
+</button>
+</div>
+</div>
+<!-- Meta Information Grid -->
+<div class="flex flex-col gap-2.5 bg-surface-container-low p-3.5 rounded-xl">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">person</span> Assignee
+          </span>
+<span class="font-title-md text-title-md text-on-surface" id="drawer-assignee">Aarav Kapoor</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">festival</span> Event Function
+          </span>
+<span class="font-body-md text-body-md text-on-surface font-medium truncate max-w-[190px]" id="drawer-event">Sangeet Night</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">calendar_month</span> Target Date
+          </span>
+<span class="font-label-md text-label-md text-secondary font-semibold" id="drawer-date">12 Feb 2027</span>
+</div>
+</div>
+<!-- Quick Note Input (16px font to prevent mobile zoom) -->
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold" for="task-note-input">Coordination Notes</label>
+<textarea class="w-full p-3 rounded-xl bg-surface-container-low text-on-surface text-[16px] leading-relaxed placeholder:text-outline-variant focus:outline-none focus:ring-1 focus:ring-primary-container resize-none" id="task-note-input" placeholder="Vendor contact, delivery gate, or payment notes..." rows="2"></textarea>
+</div>
+<!-- Action Footer with Safeguard Delete -->
+<div class="flex items-center gap-2 pt-1 pb-safe">
+<button class="min-h-[44px] px-3.5 rounded-xl bg-error-container text-on-error-container font-title-md text-title-md flex items-center justify-center gap-1 cursor-pointer transition-colors active:scale-95" id="delete-task-safeguard">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span class="text-xs">Delete</span>
+</button>
+<button class="flex-1 min-h-[44px] px-4 rounded-xl bg-primary-container text-on-primary font-title-md text-title-md flex items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95 shadow-sm" id="save-drawer-btn">
+<span>Save Changes</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Simple New Task Modal Sheet -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-xs z-50 transition-opacity opacity-0 pointer-events-none flex items-end" id="new-task-backdrop">
+<div class="w-full bg-surface-container-lowest rounded-t-2xl shadow-xl max-h-[795px] overflow-y-auto transform translate-y-full transition-transform duration-300 p-space-md flex flex-col gap-space-md pb-safe" id="new-task-panel">
+<div class="w-12 h-1.5 rounded-full bg-surface-container-highest mx-auto"></div>
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Add Wedding Task</h3>
+<button class="min-w-[44px] min-h-[44px] -mr-2 flex items-center justify-center text-on-surface-variant hover:text-on-surface cursor-pointer" id="close-new-modal-btn">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-3">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold block mb-1">Task Title</label>
+<input class="w-full h-12 px-3.5 rounded-xl bg-surface-container-low text-on-surface text-[16px] focus:outline-none focus:ring-1 focus:ring-primary-container" id="new-task-input" placeholder="e.g., Finalize varmala flower design" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold block mb-1">Function</label>
+<select class="w-full h-11 px-2.5 rounded-xl bg-surface-container-low text-on-surface text-[14px] focus:outline-none">
+<option>Sangeet Night</option>
+<option>Vedic Wedding</option>
+<option>Mehendi</option>
+<option>Haldi Morning</option>
+<option>Reception</option>
+</select>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold block mb-1">Assignee</label>
+<select class="w-full h-11 px-2.5 rounded-xl bg-surface-container-low text-on-surface text-[14px] focus:outline-none">
+<option>Aarav Kapoor</option>
+<option>Ananya Kapoor</option>
+<option>Wedding Planner (ShaadiPilot)</option>
+<option>Unassigned</option>
+</select>
+</div>
+</div>
+</div>
+<button class="w-full min-h-[44px] h-12 rounded-xl bg-primary-container text-on-primary font-title-md text-title-md flex items-center justify-center gap-1 shadow-sm mt-1 cursor-pointer" id="submit-new-task-btn">
+<span class="material-symbols-outlined text-[20px]">add_task</span>
+<span>Create Task</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  (function initShaadiTasks() {
+    const stateTabs = document.querySelectorAll('.state-tab');
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const tasksContainer = document.getElementById('tasks-container');
+    const emptyStateView = document.getElementById('empty-state-view');
+    const cards = document.querySelectorAll('.task-card');
+    const summaryCounter = document.getElementById('summary-counter');
+
+    // Bottom Drawer Elements
+    const drawerBackdrop = document.getElementById('task-drawer-backdrop');
+    const drawerPanel = document.getElementById('task-drawer-panel');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
+    const saveDrawerBtn = document.getElementById('save-drawer-btn');
+    const drawerTitle = document.getElementById('drawer-task-title');
+    const drawerAssignee = document.getElementById('drawer-assignee');
+    const drawerEvent = document.getElementById('drawer-event');
+    const drawerDate = document.getElementById('drawer-date');
+    const deleteSafeguard = document.getElementById('delete-task-safeguard');
+    const statusBtns = document.querySelectorAll('.status-btn');
+
+    // New Task Modal Elements
+    const openNewModalBtn = document.getElementById('open-new-modal-btn');
+    const newTaskBackdrop = document.getElementById('new-task-backdrop');
+    const newTaskPanel = document.getElementById('new-task-panel');
+    const closeNewModalBtn = document.getElementById('close-new-modal-btn');
+    const submitNewTaskBtn = document.getElementById('submit-new-task-btn');
+    const newTaskInput = document.getElementById('new-task-input');
+
+    // State Switcher Handlers
+    stateTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        stateTabs.forEach(t => {
+          t.classList.remove('bg-primary-container', 'text-on-primary');
+          t.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+        });
+        tab.classList.add('bg-primary-container', 'text-on-primary');
+        tab.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+
+        const view = tab.getAttribute('data-view');
+        applyView(view);
+      });
+    });
+
+    function applyView(view) {
+      if (view === 'empty') {
+        tasksContainer.classList.add('hidden');
+        emptyStateView.classList.remove('hidden');
+        emptyStateView.classList.add('flex');
+        summaryCounter.textContent = '0 tasks remaining';
+        return;
+      }
+
+      tasksContainer.classList.remove('hidden');
+      emptyStateView.classList.add('hidden');
+      emptyStateView.classList.remove('flex');
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category') || '';
+        if (view === 'all') {
+          card.classList.remove('hidden');
+        } else if (view === 'assigned') {
+          card.classList.toggle('hidden', !cat.includes('assigned'));
+        } else if (view === 'overdue') {
+          card.classList.toggle('hidden', !cat.includes('overdue'));
+        }
+      });
+
+      if (view === 'all') summaryCounter.textContent = '14 tasks · 1 overdue';
+      if (view === 'assigned') summaryCounter.textContent = '4 tasks assigned to you';
+      if (view === 'overdue') summaryCounter.textContent = '1 task overdue';
+    }
+
+    // Filter Pills
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => {
+          p.classList.remove('bg-primary', 'text-on-primary');
+          p.classList.add('bg-surface-container', 'text-on-surface-variant');
+        });
+        pill.classList.add('bg-primary', 'text-on-primary');
+        pill.classList.remove('bg-surface-container', 'text-on-surface-variant');
+
+        const filter = pill.getAttribute('data-filter');
+        cards.forEach(card => {
+          const cat = card.getAttribute('data-category') || '';
+          if (filter === 'all') {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.toggle('hidden', !cat.includes(filter));
+          }
+        });
+      });
+    });
+
+    // Checkbox Micro-Interaction
+    document.querySelectorAll('.task-checkbox').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const box = btn.querySelector('span');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        const card = btn.closest('.task-card');
+        const title = card.querySelector('.task-title');
+
+        const isChecked = !icon.classList.contains('hidden');
+        if (isChecked) {
+          icon.classList.add('hidden');
+          box.classList.remove('bg-primary-container', 'text-on-primary');
+          box.classList.add('bg-surface-container');
+          title.classList.remove('line-through', 'text-on-surface/60');
+          title.classList.add('text-on-surface');
+        } else {
+          icon.classList.remove('hidden');
+          box.classList.add('bg-primary-container', 'text-on-primary');
+          box.classList.remove('bg-surface-container');
+          title.classList.add('line-through', 'text-on-surface/60');
+          title.classList.remove('text-on-surface');
+        }
+      });
+    });
+
+    // Global helper for opening Task Drawer
+    window.openTaskSheet = function(title, assignee, eventName, date, status) {
+      drawerTitle.textContent = title;
+      drawerAssignee.textContent = assignee;
+      drawerEvent.textContent = eventName;
+      drawerDate.textContent = date;
+
+      // Status pill selection
+      statusBtns.forEach(btn => {
+        const isCurrent = btn.getAttribute('data-status') === status;
+        btn.classList.toggle('bg-surface-container-lowest', isCurrent);
+        btn.classList.toggle('text-on-surface', isCurrent);
+        btn.classList.toggle('shadow-xs', isCurrent);
+        btn.classList.toggle('text-on-surface-variant', !isCurrent);
+      });
+
+      drawerBackdrop.classList.remove('pointer-events-none');
+      drawerBackdrop.classList.add('opacity-100');
+      drawerPanel.classList.remove('translate-y-full');
+      drawerPanel.classList.add('translate-y-0');
+    };
+
+    function closeTaskSheet() {
+      drawerPanel.classList.remove('translate-y-0');
+      drawerPanel.classList.add('translate-y-full');
+      drawerBackdrop.classList.remove('opacity-100');
+      setTimeout(() => {
+        drawerBackdrop.classList.add('pointer-events-none');
+      }, 250);
+    }
+
+    closeDrawerBtn.addEventListener('click', closeTaskSheet);
+    saveDrawerBtn.addEventListener('click', closeTaskSheet);
+    drawerBackdrop.addEventListener('click', (e) => {
+      if (e.target === drawerBackdrop) closeTaskSheet();
+    });
+
+    statusBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        statusBtns.forEach(b => {
+          b.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-xs');
+          b.classList.add('text-on-surface-variant');
+        });
+        btn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-xs');
+        btn.classList.remove('text-on-surface-variant');
+      });
+    });
+
+    deleteSafeguard.addEventListener('click', () => {
+      if (confirm('Are you sure you want to remove this wedding task?')) {
+        closeTaskSheet();
+      }
+    });
+
+    // New Task Modal handlers
+    openNewModalBtn.addEventListener('click', () => {
+      newTaskBackdrop.classList.remove('pointer-events-none');
+      newTaskBackdrop.classList.add('opacity-100');
+      newTaskPanel.classList.remove('translate-y-full');
+      newTaskPanel.classList.add('translate-y-0');
+      setTimeout(() => newTaskInput.focus(), 150);
+    });
+
+    function closeNewModal() {
+      newTaskPanel.classList.remove('translate-y-0');
+      newTaskPanel.classList.add('translate-y-full');
+      newTaskBackdrop.classList.remove('opacity-100');
+      setTimeout(() => {
+        newTaskBackdrop.classList.add('pointer-events-none');
+      }, 250);
+    }
+
+    closeNewModalBtn.addEventListener('click', closeNewModal);
+    newTaskBackdrop.addEventListener('click', (e) => {
+      if (e.target === newTaskBackdrop) closeNewModal();
+    });
+
+    submitNewTaskBtn.addEventListener('click', () => {
+      if (newTaskInput.value.trim().length > 0) {
+        closeNewModal();
+        newTaskInput.value = '';
+      }
+    });
+
+    window.resetStateSwitcher = function() {
+      const allTab = document.querySelector('[data-view="all"]');
+      if (allTab) allTab.click();
+    };
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary-container font-title-md"><div class="flex justify-around items-center h-20 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm">Overview</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="functions" href="#"><span class="material-symbols-outlined text-[22px]">event</span><span class="font-label-sm text-label-sm">Functions</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 transition-colors text-primary-container font-title-md" data-path="tasks" href="#"><span class="material-symbols-outlined text-[22px]">check_circle</span><span class="font-label-sm text-label-sm">Tasks</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="guests" href="#"><span class="material-symbols-outlined text-[22px]">group</span><span class="font-label-sm text-label-sm">Guests</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="menu" href="#"><span class="material-symbols-outlined text-[22px]">more_horiz</span><span class="font-label-sm text-label-sm">Menu</span></a></div></nav></body></html>

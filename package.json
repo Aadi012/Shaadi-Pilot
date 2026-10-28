@@ -23,6 +23,8 @@
     "db:wedding:indexes": "node scripts/wedding-indexes.mjs",
     "db:recovery:indexes": "node scripts/recovery-indexes.mjs",
     "db:membership:indexes": "node scripts/membership-indexes.mjs",
+    "db:events:indexes": "node scripts/event-indexes.mjs",
+    "db:tasks:indexes": "node scripts/task-indexes.mjs",
     "design:check": "node scripts/stitch-reference.mjs",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:http": "npm run build && vitest run --config vitest.http.config.ts",

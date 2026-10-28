@@ -208,6 +208,21 @@ export const findWeddingOrganizer = (
   weddingId: Types.ObjectId,
   session: ClientSession,
 ) => User.findOne({ _id: userId, weddingId }).session(session).lean();
+// Planning projections never resolve a User by ID without its wedding boundary.
+export const findPlanningOrganizers = (
+  weddingId: Types.ObjectId,
+  ids: Types.ObjectId[],
+  session?: ClientSession,
+) =>
+  User.find({
+    _id: { $in: ids },
+    weddingId,
+    status: 'active',
+    role: { $in: ['admin', 'manager'] },
+  })
+    .select('_id displayName membershipVersion')
+    .session(session ?? null)
+    .lean();
 export async function removeManagerMembership(
   userId: Types.ObjectId,
   weddingId: Types.ObjectId,

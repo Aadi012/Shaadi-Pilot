@@ -9,8 +9,12 @@ import {
 import { objectIdSchema } from '@/modules/memberships/contracts';
 import { eventInput, type EventDto } from './contracts';
 import * as repository from './repository.server';
+import { inviteKeySchema } from '@/modules/memberships/contracts';
+import { hashSecret } from '@/modules/auth/security.server';
+import { findRequest, recordRequest } from './requests.server';
 const fail = (status: number, code: string, message: string) =>
   new ApiError({ status, code, message });
+export { findPlanningEvents as planningEvents } from './repository.server';
 async function context(userId: string, session?: ClientSession) {
   const user = await loadOrganizerMembership(userId, session);
   if (!user) throw fail(401, 'UNAUTHENTICATED', 'Please log in.');
@@ -78,6 +82,7 @@ export async function writeEvent(
   id?: string,
   version?: number,
   archive = false,
+  key?: string,
 ) {
   const data = archive ? undefined : eventInput.parse(input);
   objectIdSchema.parse(expectedWedding);
@@ -85,6 +90,10 @@ export async function writeEvent(
     ? new Types.ObjectId(objectIdSchema.parse(id))
     : undefined;
   const db = await repository.database();
+  const requestId = !id
+    ? hashSecret(`${userId}:${expectedWedding}:${inviteKeySchema.parse(key)}`)
+    : undefined;
+  const requestHash = requestId ? hashSecret(JSON.stringify(data)) : '';
   return db.connection.transaction(async (session) => {
     const weddingId = await context(userId, session);
     if (weddingId.toString() !== expectedWedding)
@@ -95,8 +104,40 @@ export async function writeEvent(
       );
     if (!(await lockWeddingMembership(weddingId, session)))
       throw fail(404, 'NOT_FOUND', 'Wedding not found.');
-    if (!objectId)
-      return dto(await repository.insert(weddingId, data!, session));
+    if (!objectId) {
+      const receipt = await findRequest(requestId!, weddingId, session);
+      if (receipt) {
+        if (receipt.requestHash !== requestHash)
+          throw fail(
+            409,
+            'IDEMPOTENCY_CONFLICT',
+            'This request key was used for different details.',
+          );
+        const existing = await repository.find(
+          weddingId,
+          receipt.eventId,
+          session,
+        );
+        if (!existing)
+          throw fail(
+            409,
+            'FUNCTION_ARCHIVED',
+            'This request already created a function which was later removed. Refresh the schedule.',
+          );
+        return dto(existing);
+      }
+      const result = dto(await repository.insert(weddingId, data!, session));
+      await recordRequest(
+        {
+          _id: requestId!,
+          weddingId,
+          requestHash,
+          eventId: new Types.ObjectId(result.id),
+        },
+        session,
+      );
+      return result;
+    }
     const current = await repository.find(weddingId, objectId, session);
     if (!current) throw fail(404, 'NOT_FOUND', 'Function not found.');
     if (current.__v !== version)

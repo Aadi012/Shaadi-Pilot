@@ -69,6 +69,14 @@ import {
   listEvents,
   readEvent,
 } from '@/modules/events/service.server';
+import {
+  writeTask,
+  listTasks,
+  readTask,
+  taskOverview,
+  taskOptions,
+} from '@/modules/tasks/service.server';
+import { taskIndexes } from '@/modules/tasks/indexes';
 
 const database = 'sp_mem_test_' + randomUUID().replaceAll('-', '').slice(0, 24);
 let sequence = 0;
@@ -98,6 +106,7 @@ beforeAll(async () => {
       ...weddingIndexes,
       ...emailIndexes,
       ...membershipIndexes,
+      ...taskIndexes,
     ])
       await mongoose.connection
         .collection(collection)
@@ -274,13 +283,29 @@ describe('Functions', () => {
       { _id: manager._id },
       { $set: { weddingId: a.wedding._id, role: 'manager' } },
     );
-    const row = await writeEvent(a.adminId, a.weddingId, input);
+    const row = await writeEvent(
+      a.adminId,
+      a.weddingId,
+      input,
+      undefined,
+      undefined,
+      false,
+      randomUUID(),
+    );
     expect((await listEvents(b.adminId)).events).toHaveLength(0);
     await expect(readEvent(b.adminId, row.id)).rejects.toMatchObject({
       status: 404,
     });
     await expect(
-      writeEvent(a.adminId, b.weddingId, input),
+      writeEvent(
+        a.adminId,
+        b.weddingId,
+        input,
+        undefined,
+        undefined,
+        false,
+        randomUUID(),
+      ),
     ).rejects.toMatchObject({ status: 409 });
     const edited = await writeEvent(
       manager._id.toString(),
@@ -296,7 +321,15 @@ describe('Functions', () => {
   });
   it('blocks linked removal and archives only an unlinked function', async () => {
     const a = await wedding();
-    const row = await writeEvent(a.adminId, a.weddingId, input);
+    const row = await writeEvent(
+      a.adminId,
+      a.weddingId,
+      input,
+      undefined,
+      undefined,
+      false,
+      randomUUID(),
+    );
     const task = await mongoose.connection.collection('tasks').insertOne({
       weddingId: a.wedding._id,
       eventId: new Types.ObjectId(row.id),
@@ -314,6 +347,374 @@ describe('Functions', () => {
     });
   });
 });
+describe('Tasks and durable planning creates', () => {
+  const eventInput = {
+    title: 'Task function',
+    startsAt: '2027-03-13T14:00:00Z',
+    endsAt: '2027-03-13T20:00:00Z',
+    timezone: 'Asia/Kolkata',
+    venue: { name: 'Test hall' },
+  };
+  it('serializes identical function creates and rejects changed-payload key reuse', async () => {
+    const a = await wedding(),
+      key = randomUUID();
+    const results = await Promise.all(
+      [1, 2].map(() =>
+        writeEvent(
+          a.adminId,
+          a.weddingId,
+          eventInput,
+          undefined,
+          undefined,
+          false,
+          key,
+        ),
+      ),
+    );
+    expect(results[0].id).toBe(results[1].id);
+    expect((await listEvents(a.adminId)).events).toHaveLength(1);
+    await expect(
+      writeEvent(
+        a.adminId,
+        a.weddingId,
+        { ...eventInput, title: 'Changed' },
+        undefined,
+        undefined,
+        false,
+        key,
+      ),
+    ).rejects.toMatchObject({ code: 'IDEMPOTENCY_CONFLICT' });
+    await writeEvent(a.adminId, a.weddingId, undefined, results[0].id, 0, true);
+    await expect(
+      writeEvent(
+        a.adminId,
+        a.weddingId,
+        eventInput,
+        undefined,
+        undefined,
+        false,
+        key,
+      ),
+    ).rejects.toMatchObject({ code: 'FUNCTION_ARCHIVED' });
+  });
+  it('allows a Manager to assign an Admin, complete tasks and update real summaries', async () => {
+    const a = await wedding(),
+      { account } = await joinedManager(a);
+    const row = await writeTask(
+      account.id,
+      a.weddingId,
+      {
+        title: 'Venue call',
+        assignedToUserId: a.adminId,
+        dueAt: '2020-01-01T00:00:00Z',
+      },
+      { key: randomUUID() },
+    );
+    expect(row.assignee).toEqual({
+      state: 'active',
+      name: a.admin.displayName,
+    });
+    expect(row.overdue).toBe(true);
+    expect((await taskOverview(a.weddingId, a.adminId)).summary).toMatchObject({
+      total: 1,
+      overdue: 1,
+      assigned: 1,
+      done: 0,
+    });
+    const done = await writeTask(
+      a.adminId,
+      a.weddingId,
+      { status: 'done' },
+      { id: row.id, version: 0 },
+    );
+    expect(done.overdue).toBe(false);
+    expect((await taskOverview(a.weddingId, a.adminId)).summary).toMatchObject({
+      total: 1,
+      overdue: 0,
+      assigned: 0,
+      done: 1,
+    });
+    expect(
+      (await taskOptions(account.id)).members.some((m) => m.id === a.adminId),
+    ).toBe(true);
+  });
+  it('rejects foreign references, stale wedding context, stale edits and removed actors', async () => {
+    const a = await wedding(),
+      b = await wedding();
+    const event = await writeEvent(
+      b.adminId,
+      b.weddingId,
+      eventInput,
+      undefined,
+      undefined,
+      false,
+      randomUUID(),
+    );
+    for (const input of [
+      { title: 'Foreign organizer', assignedToUserId: b.adminId },
+      { title: 'Foreign event', eventId: event.id },
+    ])
+      await expect(
+        writeTask(a.adminId, a.weddingId, input, { key: randomUUID() }),
+      ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      writeTask(
+        a.adminId,
+        b.weddingId,
+        { title: 'Wrong context' },
+        { key: randomUUID() },
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+    const row = await writeTask(
+      a.adminId,
+      a.weddingId,
+      { title: 'Local' },
+      { key: randomUUID() },
+    );
+    await expect(readTask(b.adminId, row.id)).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(
+      writeTask(
+        b.adminId,
+        b.weddingId,
+        { title: 'Attack' },
+        { id: row.id, version: 0 },
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await writeTask(
+      a.adminId,
+      a.weddingId,
+      { status: 'inProgress' },
+      { id: row.id, version: 0 },
+    );
+    await expect(
+      writeTask(
+        a.adminId,
+        a.weddingId,
+        { title: 'Stale' },
+        { id: row.id, version: 0 },
+      ),
+    ).rejects.toMatchObject({ status: 412 });
+    expect((await listTasks(b.adminId, {})).tasks).toHaveLength(0);
+  });
+  it('retains former assignments without resolving a profile in another wedding', async () => {
+    const a = await wedding(),
+      b = await wedding(),
+      { account, member } = await joinedManager(a);
+    const row = await writeTask(
+      a.adminId,
+      a.weddingId,
+      { title: 'Assigned task', assignedToUserId: account.id },
+      { key: randomUUID() },
+    );
+    const receiptKey = randomUUID();
+    const original = {
+      title: 'Retry after removal',
+      assignedToUserId: account.id,
+    };
+    const receipt = await writeTask(a.adminId, a.weddingId, original, {
+      key: receiptKey,
+    });
+    await removeManager(
+      a.adminId,
+      member.id,
+      a.weddingId,
+      member.membershipVersion,
+    );
+    await User.updateOne(
+      { _id: account._id },
+      {
+        $set: {
+          weddingId: b.wedding._id,
+          role: 'manager',
+          displayName: 'Private foreign profile',
+        },
+      },
+    );
+    expect((await readTask(a.adminId, row.id)).task.assignee).toEqual({
+      state: 'former',
+      name: null,
+    });
+    expect(
+      (await writeTask(a.adminId, a.weddingId, original, { key: receiptKey }))
+        .assignee,
+    ).toEqual({ state: 'former', name: null });
+    await expect(
+      writeTask(
+        a.adminId,
+        a.weddingId,
+        { title: 'New', assignedToUserId: account.id },
+        { key: randomUUID() },
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    expect(
+      (
+        await writeTask(
+          a.adminId,
+          a.weddingId,
+          { status: 'done' },
+          { id: row.id, version: 0 },
+        )
+      ).assignee.state,
+    ).toBe('former');
+    expect(
+      (
+        await writeTask(
+          a.adminId,
+          a.weddingId,
+          { assignedToUserId: null },
+          { id: row.id, version: 1 },
+        )
+      ).assignee.state,
+    ).toBe('unassigned');
+    expect(receipt.id).toBeDefined();
+  });
+  it('deduplicates concurrent creates, rejects key reuse and never recreates archived tasks', async () => {
+    const a = await wedding(),
+      key = randomUUID(),
+      input = { title: 'Once' };
+    const [first, second] = await Promise.all(
+      [1, 2].map(() => writeTask(a.adminId, a.weddingId, input, { key })),
+    );
+    expect(first.id).toBe(second.id);
+    expect((await listTasks(a.adminId, {})).summary.total).toBe(1);
+    await expect(
+      writeTask(a.adminId, a.weddingId, { title: 'Changed' }, { key }),
+    ).rejects.toMatchObject({ code: 'IDEMPOTENCY_CONFLICT' });
+    await writeTask(
+      a.adminId,
+      a.weddingId,
+      { status: 'done' },
+      { id: first.id, version: 0 },
+    );
+    expect((await listTasks(a.adminId, {})).summary.unassigned).toBe(0);
+    expect(
+      (await writeTask(a.adminId, a.weddingId, input, { key })).status,
+    ).toBe('done');
+    await writeTask(a.adminId, a.weddingId, undefined, {
+      id: first.id,
+      version: 1,
+      archive: true,
+    });
+    await expect(
+      writeTask(a.adminId, a.weddingId, input, { key }),
+    ).rejects.toMatchObject({ code: 'TASK_ARCHIVED' });
+    expect((await listTasks(a.adminId, {})).summary.total).toBe(0);
+  });
+  it('pages stable filters without duplicates and binds cursors to those filters', async () => {
+    const a = await wedding();
+    for (let n = 0; n < 4; n++)
+      await writeTask(
+        a.adminId,
+        a.weddingId,
+        {
+          title: 'Page ' + n,
+          status: n === 0 ? 'done' : 'todo',
+          dueAt: n === 1 ? '2020-01-01T00:00:00Z' : null,
+        },
+        { key: randomUUID() },
+      );
+    const first = await listTasks(a.adminId, { status: 'todo', limit: 2 });
+    const second = await listTasks(a.adminId, {
+      status: 'todo',
+      limit: 2,
+      cursor: first.nextCursor,
+    });
+    expect(
+      new Set([...first.tasks, ...second.tasks].map((t) => t.id)).size,
+    ).toBe(3);
+    expect(second.nextCursor).toBe(null);
+    await expect(
+      listTasks(a.adminId, {
+        status: 'done',
+        limit: 2,
+        cursor: first.nextCursor,
+      }),
+    ).rejects.toMatchObject({ status: 400 });
+    expect(
+      (await listTasks(a.adminId, { overdue: 'true' })).tasks,
+    ).toHaveLength(1);
+    expect(
+      (
+        await listTasks(a.adminId, {
+          assignedToUserId: 'unassigned',
+          dueBefore: '2021-01-01T00:00:00Z',
+        })
+      ).tasks,
+    ).toHaveLength(1);
+  });
+  it('serializes function archival against task reference creation', async () => {
+    const a = await wedding();
+    const event = await writeEvent(
+      a.adminId,
+      a.weddingId,
+      eventInput,
+      undefined,
+      undefined,
+      false,
+      randomUUID(),
+    );
+    const results = await Promise.allSettled([
+      writeTask(
+        a.adminId,
+        a.weddingId,
+        { title: 'Linked', eventId: event.id },
+        { key: randomUUID() },
+      ),
+      writeEvent(a.adminId, a.weddingId, undefined, event.id, 0, true),
+    ]);
+    expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+    const tasks = await listTasks(a.adminId, {});
+    if (tasks.tasks.length) {
+      expect((await listEvents(a.adminId)).events).toHaveLength(1);
+      expect(results[1]).toMatchObject({
+        status: 'rejected',
+        reason: { code: 'FUNCTION_HAS_LINKS' },
+      });
+    } else
+      expect(results[0]).toMatchObject({
+        status: 'rejected',
+        reason: { status: 404 },
+      });
+  });
+  it('serializes Manager removal against assignment and denies later writes', async () => {
+    const a = await wedding(),
+      { account, member } = await joinedManager(a);
+    const results = await Promise.allSettled([
+      writeTask(
+        a.adminId,
+        a.weddingId,
+        { title: 'Race assignment', assignedToUserId: account.id },
+        { key: randomUUID() },
+      ),
+      removeManager(
+        a.adminId,
+        member.id,
+        a.weddingId,
+        member.membershipVersion,
+      ),
+    ]);
+    expect(results[1].status).toBe('fulfilled');
+    const tasks = await listTasks(a.adminId, {});
+    if (tasks.tasks.length)
+      expect(tasks.tasks[0].assignee).toEqual({ state: 'former', name: null });
+    else
+      expect(results[0]).toMatchObject({
+        status: 'rejected',
+        reason: { status: 404 },
+      });
+    await expect(
+      writeTask(
+        account.id,
+        a.weddingId,
+        { title: 'Removed writer' },
+        { key: randomUUID() },
+      ),
+    ).rejects.toMatchObject({ status: 403 });
+  });
+});
+
 describe('Manager removal', () => {
   it('detaches only this membership, invalidates all sessions and invitations, and retains the account and planning records', async () => {
     const scope = await wedding();

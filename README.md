@@ -207,9 +207,10 @@ requests cannot attach one organizer to two weddings. Publication defaults false
 `GET /api/v1/weddings/current` resolves membership from the authenticated User.
 `GET /api/v1/weddings/slug-availability?slug=...` is an authenticated reservation
 check and never returns wedding/owner details. Client tenant IDs and roles are
-not accepted. The overview counts wedding-scoped records; function/task detail,
-RSVP aggregation, nonempty expense totals and planning writes remain later slices.
-Future actions are labelled unavailable. No sample planning records are inserted.
+not accepted. The overview includes wedding-scoped counts, upcoming functions and
+task completion/overdue summaries. RSVP aggregation and nonempty expense totals
+remain later slices. Future actions are labelled unavailable. Setup inserts no
+sample planning records.
 
 The [approved design references](docs/designs/README.md) and
 [design language](docs/DESIGN.md) document the implementation. `npm run design:check`
@@ -231,7 +232,27 @@ One real email-to-acceptance flow was verified locally on 27 October. An owned,
 verified sender domain, scheduler configuration and release monitoring are still
 needed for general customer sending. Removal transactionally revokes sessions and
 old invitations; stale versions cannot remove a later rejoined membership.
-Functions are next; see the [V1 roadmap](docs/roadmap.md).
+Functions and Tasks are implemented for review; see the [V1 roadmap](docs/roadmap.md).
+
+## Planning modules
+
+Use `/account/functions` and `/account/tasks` for authenticated wedding planning.
+Both organizer roles can manage these records. Run `npm run db:events:indexes`
+and `npm run db:tasks:indexes` once per environment after the existing setup;
+these scripts add indexes without removing records.
+
+Functions and Tasks create requests require a UUID `Idempotency-Key`, the current
+CSRF token, trusted Origin and `X-Wedding-Context` stale-tab guard. The server
+derives the actual tenant from fresh authenticated membership. Matching retries
+do not create duplicates; changing the payload under the same key returns 409.
+Edit/remove requests require a strong quoted numeric `If-Match` version.
+
+Task deadlines are optional UTC instants entered/displayed in the wedding timezone.
+Removed Manager assignments retain their history with “Former organizer — reassign”.
+Task removal archives the record and excludes it from active lists and summaries.
+Function removal remains blocked by linked records, including archived task history;
+no reference cleanup or cascade deletion is performed. See [Tasks plan](docs/tasks-plan.md)
+and [project status](docs/project-status.md) for verification and remaining review.
 
 ## Project documents and progress
 

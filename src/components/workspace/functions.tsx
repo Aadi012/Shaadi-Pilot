@@ -5,6 +5,9 @@ import type { WeddingDto } from '@/modules/weddings/contracts';
 import { type EventDto } from '@/modules/events/contracts';
 import { wallTime } from '@/modules/events/time';
 import { readFunctionDraft } from './function-draft';
+import { prepareCreate, type CreateAttempt } from '@/lib/api/create-attempt';
+import type { TaskDto } from '@/modules/tasks/contracts';
+import Link from 'next/link';
 import styles from './team.module.css';
 import form from './workspace.module.css';
 export function Functions({
@@ -27,6 +30,36 @@ export function Functions({
     [notice, setNotice] = useState('');
   const [cursor, setCursor] = useState<string | null>(null);
   const [formGeneration, setFormGeneration] = useState(0);
+  const [linkedTasks, setLinkedTasks] = useState<TaskDto[]>([]);
+  const [taskError, setTaskError] = useState('');
+  useEffect(() => {
+    if (!selected || editing) return;
+    let active = true;
+    void fetch('/api/v1/tasks?eventId=' + selected.id + '&limit=5', {
+      cache: 'no-store',
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error();
+        const { data } = await response.json();
+        if (data.weddingId !== wedding.id) throw new Error();
+        if (active) {
+          setLinkedTasks(data.tasks);
+          setTaskError('');
+        }
+      })
+      .catch(() => {
+        if (active)
+          setTaskError(
+            'Could not load related tasks. Reopen these details to retry.',
+          );
+      });
+    return () => {
+      active = false;
+    };
+  }, [selected, editing, wedding.id]);
+  const creation = useRef<CreateAttempt<
+    ReturnType<typeof readFunctionDraft>
+  > | null>(null);
   const dialog = useRef<HTMLDialogElement>(null),
     busy = useRef(false),
     fields = useRef<HTMLFormElement>(null);
@@ -69,11 +102,30 @@ export function Functions({
     };
   }, [wedding.id]);
   function open(row: EventDto | null, edit: boolean) {
+    creation.current = null;
     setFormGeneration((value) => value + 1);
     setSelected(row);
+    setLinkedTasks([]);
+    setTaskError('');
     setEditing(edit);
     setError('');
     dialog.current?.showModal();
+  }
+  function discard() {
+    if (pending) return;
+    if (
+      editing &&
+      !window.confirm(
+        creation.current
+          ? 'The previous save may have succeeded. Discard this draft and refresh before adding another function?'
+          : 'Discard any unsaved changes?',
+      )
+    )
+      return;
+    dialog.current?.close();
+    void load().catch(() =>
+      setError('Could not refresh functions. Refresh before creating another.'),
+    );
   }
   async function write(archive = false) {
     if (busy.current) return;
@@ -81,6 +133,8 @@ export function Functions({
     try {
       // Capture controls synchronously, before pending disables the fieldset.
       if (!archive) body = readFunctionDraft(new FormData(fields.current!));
+      if (!archive && !selected)
+        creation.current = prepareCreate(creation.current, body!);
     } catch (error) {
       setError(
         error instanceof Error ? error.message : 'Check the form fields.',
@@ -107,6 +161,9 @@ export function Functions({
             'X-CSRF-Token': data.csrfToken,
             'X-Wedding-Context': wedding.id,
             ...(selected ? { 'If-Match': `"${selected.version}"` } : {}),
+            ...(!selected && creation.current
+              ? { 'Idempotency-Key': creation.current.key }
+              : {}),
           },
           ...(archive ? {} : { body: JSON.stringify(body) }),
         },
@@ -228,11 +285,8 @@ export function Functions({
             setFormGeneration((value) => value + 1);
           }}
           onCancel={(e) => {
-            if (
-              pending ||
-              (editing && !window.confirm('Discard any unsaved changes?'))
-            )
-              e.preventDefault();
+            e.preventDefault();
+            discard();
           }}
         >
           <h2 id="function-title">
@@ -339,10 +393,7 @@ export function Functions({
                   <button
                     type="button"
                     className={form.textButton}
-                    onClick={() => {
-                      if (window.confirm('Discard any unsaved changes?'))
-                        dialog.current?.close();
-                    }}
+                    onClick={discard}
                   >
                     Cancel
                   </button>
@@ -368,9 +419,30 @@ export function Functions({
               <h3>Venue & directions</h3>
               <p>{selected?.venue.name}</p>
               <p>{selected?.venue.address}</p>
+              <h3>Related tasks</h3>
+              {taskError ? (
+                <p role="alert">{taskError}</p>
+              ) : linkedTasks.length ? (
+                linkedTasks.map((task) => (
+                  <p key={task.id}>
+                    {task.title} ·{' '}
+                    {task.status === 'done'
+                      ? 'Completed'
+                      : task.status === 'inProgress'
+                        ? 'In Progress'
+                        : 'To Do'}
+                    {task.overdue ? ' · Overdue' : ''}
+                  </p>
+                ))
+              ) : (
+                <p>No related tasks loaded.</p>
+              )}
+              <Link href={'/account/tasks?eventId=' + selected?.id}>
+                Manage tasks for this function →
+              </Link>
               <p>
-                Task, expense and guest summaries will appear as those features
-                become available.
+                Expense and guest summaries will appear as those features become
+                available.
               </p>
               <div className={styles.actions}>
                 <button

@@ -1,7 +1,8 @@
-# Tasks — proposed next feature
+# Tasks — implementation plan
 
-Prepared 28 October 2026. Planning only; task implementation is not started.
-Finish the outstanding Functions verification/retry work before starting this slice.
+Prepared and authorized 28 October 2026. Implementation is underway; see project
+status for actual verification and remaining review. Functions and Tasks now use
+durable create receipts; browser walkthroughs remain distinct from HTTP tests.
 
 ## Delivered scope to target
 
@@ -51,4 +52,33 @@ Finish the outstanding Functions verification/retry work before starting this sl
 Keep historical identity visibility within approved wedding scope; raw User IDs
 must not authorize cross-wedding profile lookups. No new product policy is silently
 approved beyond the two explicit choices recorded above. See the architecture
-decision record for the approval; this remains a plan, not implemented behavior.
+decision record for the approval and project status for implementation evidence.
+
+## Implemented contract
+
+- Canonical field is assignedToUserId (the system-design shorthand used
+  assigneeUserId); optional eventId, dueAt and assignee are explicitly nullable.
+  Title is 1–160 trimmed characters, description at most 2,000. Unknown fields
+  are rejected. PATCH accepts a nonempty subset; statuses retain the source API
+  values. createdBy/updatedBy, archive timestamp and version are server-owned.
+- GET supports status, assignedToUserId (or unassigned), eventId (or none),
+  dueAfter (inclusive), dueBefore (exclusive), overdue=true, limit (1–100, default 25) and a cursor tied to those filters. Lists order by descending record ID.
+  Ranges use UTC instants converted from explicit wedding-local controls.
+- /api/v1/tasks/options supplies a paged, same-wedding active organizer projection
+  for both roles; it exposes no email addresses or membership-management actions.
+  Function options reuse the existing paged events API.
+- POST requires a UUID Idempotency-Key. Receipts contain scoped record ID and
+  payload hash, not duplicated organizer profiles. The shared wedding write and
+  receipt insertion commit with creation. Matching retries return the current
+  record; a later archive returns conflict rather than recreating it. Receipts
+  have no TTL, avoiding a hidden replay window; retention is release work.
+- PATCH/DELETE require a strong quoted numeric If-Match. DELETE accepts empty
+  content and archives; it never removes assignments or linked function history.
+  Archived task references still block function removal under the approved rule.
+- Assignment stores the membership generation as well as User ID, so rejoining
+  does not silently reclaim an old assignment. Existing former assignments can
+  be preserved while changing other fields, cleared, or replaced. Clear then
+  reassign to explicitly use a later membership generation of the same account.
+- Dashboard summaries include real total/completed/overdue counts and the current
+  organizer's incomplete queue. Function details show up to five related tasks
+  and link to the filtered task registry. No realtime sync is claimed.

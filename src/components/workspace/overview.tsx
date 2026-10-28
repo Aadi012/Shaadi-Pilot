@@ -10,6 +10,7 @@ import {
 } from '@/modules/weddings/calendar';
 import type { WeddingDto } from '@/modules/weddings/contracts';
 import styles from './workspace.module.css';
+import type { TaskDto } from '@/modules/tasks/contracts';
 type Counts = {
   functions: number;
   tasks: number;
@@ -28,12 +29,17 @@ export function WeddingOverview({
   name,
   role,
   now,
+  taskOverview,
 }: {
   wedding: WeddingDto;
   counts: Counts;
   name: string;
   role: 'admin' | 'manager';
   now: string;
+  taskOverview?: {
+    summary: { total: number; done: number; overdue: number };
+    assigned: TaskDto[];
+  };
 }) {
   const days = daysUntilWedding(wedding.weddingDate, wedding.timezone, now);
   const setup: {
@@ -124,6 +130,16 @@ export function WeddingOverview({
                 <p>{item.copy}</p>
                 {item.admin ? (
                   <Link href="/account/team">{item.action} →</Link>
+                ) : item.icon === 'calendar' || item.icon === 'tasks' ? (
+                  <Link
+                    href={
+                      item.icon === 'calendar'
+                        ? '/account/functions'
+                        : '/account/tasks'
+                    }
+                  >
+                    {item.action} →
+                  </Link>
                 ) : (
                   <button disabled>
                     {item.action} <span>Coming next</span>
@@ -134,8 +150,8 @@ export function WeddingOverview({
         </div>
         <p className={styles.phaseNote}>
           Your wedding is saved. Admins can now invite Managers from Team.
-          Function planning, tasks and guest invitations are coming in later
-          updates.
+          Functions and tasks are ready to plan. Guest invitations are coming in
+          a later update.
         </p>
       </section>
       <section aria-labelledby="indicators">
@@ -209,23 +225,28 @@ export function WeddingOverview({
                 </small>
               </p>
             ))}
-            <div className={styles.emptyState}>
-              <span className={styles.iconBadge}>
-                <MarketingIcon name="calendar" size={27} />
-              </span>
-              <h3>
-                {counts.functions === 0
-                  ? 'No wedding functions added yet'
-                  : 'Your functions are in your workspace'}
-              </h3>
-              <p>
-                From Haldi to Reception, give each celebration its own date and
-                place. Function planning is the next milestone.
-              </p>
-              <Link href="/account/functions" className={styles.primaryButton}>
-                Manage functions
-              </Link>
-            </div>
+            {!counts.upcoming?.length && (
+              <div className={styles.emptyState}>
+                <span className={styles.iconBadge}>
+                  <MarketingIcon name="calendar" size={27} />
+                </span>
+                <h3>
+                  {counts.functions === 0
+                    ? 'No wedding functions added yet'
+                    : 'Your functions are in your workspace'}
+                </h3>
+                <p>
+                  From Haldi to Reception, give each celebration its own date
+                  and place. Keep your celebrations together in your schedule.
+                </p>
+                <Link
+                  href="/account/functions"
+                  className={styles.primaryButton}
+                >
+                  Manage functions
+                </Link>
+              </div>
+            )}
           </section>
           <section className={styles.overviewPanel}>
             <div className={styles.panelHeading}>
@@ -276,20 +297,35 @@ export function WeddingOverview({
               <p className={styles.eyebrow}>Action registry</p>
               <h2>Your task queue</h2>
             </div>
-            <div className={styles.emptyState}>
-              <span className={styles.iconBadge}>
-                <MarketingIcon name="check" size={27} />
-              </span>
-              <h3>
-                {counts.tasks === 0
-                  ? 'A little space to begin'
-                  : 'Your planning tasks'}
-              </h3>
+            {taskOverview && (
               <p>
-                Keep photographer calls, venue visits and family to-dos
-                together. Task planning is coming next.
+                {taskOverview.summary.done} of {taskOverview.summary.total}{' '}
+                tasks completed · {taskOverview.summary.overdue} overdue
               </p>
-            </div>
+            )}
+            {taskOverview?.assigned.map((task) => (
+              <p key={task.id}>
+                <Link href="/account/tasks">{task.title}</Link>
+                {task.overdue && <strong> · Overdue</strong>}
+              </p>
+            ))}
+            {!taskOverview?.assigned.length && (
+              <div className={styles.emptyState}>
+                <span className={styles.iconBadge}>
+                  <MarketingIcon name="check" size={27} />
+                </span>
+                <h3>
+                  {counts.tasks === 0
+                    ? 'A little space to begin'
+                    : 'Your planning tasks'}
+                </h3>
+                <p>
+                  Keep photographer calls, venue visits and family to-dos
+                  together. No incomplete tasks are currently assigned to you.
+                </p>
+              </div>
+            )}
+            <Link href="/account/tasks">Manage tasks →</Link>
           </section>
           <section className={styles.rolePanel}>
             <MarketingIcon name="users" size={24} />

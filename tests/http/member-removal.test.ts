@@ -216,6 +216,112 @@ afterAll(async () => {
 });
 
 describe('Manager removal through the running Next.js HTTP server', () => {
+  it('enforces Tasks security and runs create/replay/edit/filter/archive over real HTTP', async () => {
+    const input = {
+      title: 'HTTP task',
+      description: 'Confirm delivery',
+      assignedToUserId: admin.toString(),
+      dueAt: '2020-01-01T00:00:00Z',
+    };
+    const key = randomUUID();
+    const writeHeaders = {
+      ...headers(adminSecret),
+      'Content-Type': 'application/json',
+      'Idempotency-Key': key,
+    };
+    expect(
+      (
+        await fetch(base + '/api/v1/tasks', {
+          method: 'POST',
+          headers: { ...writeHeaders, 'X-CSRF-Token': 'wrong' },
+          body: JSON.stringify(input),
+        })
+      ).status,
+    ).toBe(403);
+    const created = await fetch(base + '/api/v1/tasks', {
+      method: 'POST',
+      headers: writeHeaders,
+      body: JSON.stringify(input),
+    });
+    expect(created.status).toBe(201);
+    const row = (await created.json()).data.task;
+    const replay = await fetch(base + '/api/v1/tasks', {
+      method: 'POST',
+      headers: writeHeaders,
+      body: JSON.stringify(input),
+    });
+    expect(replay.status).toBe(201);
+    expect((await replay.json()).data.task.id).toBe(row.id);
+    const list = await fetch(base + '/api/v1/tasks?overdue=true', {
+      headers: headers(adminSecret),
+    });
+    expect(list.headers.get('Cache-Control')).toBe('no-store');
+    expect(
+      (await list.json()).data.tasks.some(
+        (task: { id: string }) => task.id === row.id,
+      ),
+    ).toBe(true);
+    expect(
+      (
+        await fetch(base + '/api/v1/tasks?status=todo&status=done', {
+          headers: headers(adminSecret),
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(base + '/api/v1/tasks?unexpected=yes', {
+          headers: headers(adminSecret),
+        })
+      ).status,
+    ).toBe(422);
+    const updated = await fetch(base + '/api/v1/tasks/' + row.id, {
+      method: 'PATCH',
+      headers: { ...writeHeaders, 'If-Match': '"0"' },
+      body: JSON.stringify({ status: 'done' }),
+    });
+    expect(updated.status).toBe(200);
+    expect((await updated.json()).data.task.overdue).toBe(false);
+    expect(
+      (
+        await fetch(base + '/api/v1/tasks/' + row.id, {
+          method: 'DELETE',
+          headers: { ...writeHeaders, 'If-Match': '"0"' },
+        })
+      ).status,
+    ).toBe(412);
+    expect(
+      (
+        await fetch(base + '/api/v1/tasks/' + row.id, {
+          method: 'DELETE',
+          headers: { ...writeHeaders, 'If-Match': '"1"' },
+          body: ' ',
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(base + '/api/v1/tasks/' + row.id, {
+          method: 'DELETE',
+          headers: { ...writeHeaders, 'If-Match': '"1"' },
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (await fetch(base + '/api/v1/tasks/' + row.id, { headers: writeHeaders }))
+        .status,
+    ).toBe(404);
+    const fixture = await manager();
+    const options = await fetch(base + '/api/v1/tasks/options', {
+      headers: headers(fixture.tokens[0]),
+    });
+    expect(options.status).toBe(200);
+    expect(
+      (await options.json()).data.members.some(
+        (m: { id: string }) => m.id === admin.toString(),
+      ),
+    ).toBe(true);
+  });
   it('creates, edits and removes an unlinked function through Next HTTP', async () => {
     const input = {
       title: 'HTTP Sangeet',
@@ -227,7 +333,11 @@ describe('Manager removal through the running Next.js HTTP server', () => {
     };
     const created = await fetch(base + '/api/v1/events', {
       method: 'POST',
-      headers: { ...headers(adminSecret), 'Content-Type': 'application/json' },
+      headers: {
+        ...headers(adminSecret),
+        'Content-Type': 'application/json',
+        'Idempotency-Key': randomUUID(),
+      },
       body: JSON.stringify(input),
     });
     expect(created.status).toBe(201);

@@ -1,0 +1,223 @@
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.summary article {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 22px;
+  border-radius: 12px;
+}
+.summary h2 {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  margin: 0 0 20px;
+}
+.summary strong {
+  font-family: var(--font-heading), serif;
+  font-size: 36px;
+  font-weight: 400;
+}
+.summary p,
+.help {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.filters {
+  padding: 22px;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin: 24px 0;
+}
+.filterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.filters > .filterGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+}
+.filters select,
+.filters input,
+.taskDialog select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-soft);
+  color: var(--foreground);
+  font: inherit;
+}
+.filters details {
+  margin-top: 18px;
+}
+.filters summary {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 12px 0;
+}
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+.registry {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.tableHeading,
+.taskRow {
+  display: grid;
+  grid-template-columns: minmax(160px, 2fr) 1fr 1fr 1fr 1fr 90px;
+  gap: 16px;
+  padding: 22px;
+  align-items: start;
+}
+.tableHeading {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface-soft);
+}
+.taskRow {
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.taskRow > * {
+  min-width: 0;
+}
+.taskRow h2 {
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 600;
+  margin: 0;
+}
+.taskRow p {
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 6px 0;
+  white-space: pre-wrap;
+}
+.taskRow > div > p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.badge {
+  display: inline-block;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: var(--surface-soft);
+  color: var(--plum);
+  font-size: 11px;
+}
+.warning {
+  display: block;
+  color: #a02935;
+  font-size: 11px;
+  margin-top: 8px;
+}
+.overdue {
+  border-left: 3px solid #a02935;
+}
+.completed {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.rowActions {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.taskDialog {
+  width: min(680px, calc(100% - 32px));
+}
+.taskDialog h2 {
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+.taskDialog dt {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 18px;
+}
+.taskDialog dd {
+  margin: 8px 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.detailMeta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.description {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1000px) {
+  .tableHeading {
+    display: none;
+  }
+  .taskRow {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+  .summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .filters > .filterGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 680px) {
+  .filterGrid,
+  .filters > .filterGrid,
+  .taskRow {
+    grid-template-columns: 1fr;
+  }
+  .taskRow {
+    margin: 16px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    gap: 8px;
+  }
+  .overdue {
+    border-left: 3px solid #a02935;
+  }
+  .registry {
+    background: transparent;
+    border: 0;
+  }
+  .rowActions {
+    flex-direction: row;
+    gap: 20px;
+  }
+  .summary article {
+    padding: 16px;
+  }
+  .filters select,
+  .filters input,
+  .taskDialog select {
+    font-size: 16px;
+  }
+}

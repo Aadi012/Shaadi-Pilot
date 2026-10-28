@@ -12,7 +12,7 @@ export async function workspaceCounts(weddingId: string) {
       .countDocuments({ ...tenant, status: { $ne: 'archived' } }),
     db.connection
       .collection('tasks')
-      .countDocuments({ ...tenant, status: { $ne: 'done' } }),
+      .countDocuments({ ...tenant, archivedAt: null, status: { $ne: 'done' } }),
     db.connection.collection('guestContacts').countDocuments(tenant),
     db.connection.collection('expenses').countDocuments(tenant),
   ]);

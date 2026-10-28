@@ -465,6 +465,62 @@ Resolve affected open decisions before each feature. The existing dashboard is
 partial and will gain real summaries incrementally. General-recipient email and
 live recovery verification remain release work.
 
+### 11. Tasks management — 28 October 2026
+
+Status: In progress — implemented for user review; broader browser coverage and
+final approval remain.
+
+- User authorized the approved Tasks plan after the Functions handoff commit
+  [60d0a41](https://github.com/Aadi012/Shaadi-Pilot/commit/60d0a41d6cc548f328b3ffb6ca845eab059e3229).
+- Retrieved and inspected all four Tasks Stitch references (desktop registry,
+  detail, edit/conflict/remove and mobile). Sanitized references and original
+  decoded HTML/PNG exports are under docs/designs/tasks. No new designs generated.
+- Implemented Tasks REST services and responsive workspace forms with statuses,
+  optional assignee/function/deadline, cursor filters, version checks, archive,
+  same-wedding reference checks and retained former assignments. Dashboard and
+  function summaries are connected. No production-readiness signoff is claimed.
+- Added durable transactional create receipts for Functions and Tasks. Clients
+  retain the same key/payload after an uncertain response. Drafts stay memory-only.
+  External notifications, attachments, PDF export and offline sync remain excluded.
+- No commit, push or deployment is authorized for this new implementation yet.
+- Verification so far: npm run check passed formatting, lint, types and 76
+  unit/render tests; isolated MongoDB tests passed 80 cases; running-Next HTTP
+  tests passed eight cases; production build passed with database/email
+  credentials blank for that process. Final checks follow review corrections.
+- Browser confirmed Tasks Cancel/reopen clears the draft (the user cleared a
+  stalled native confirmation), save failure preserves populated fields, populated
+  deadlines save/display correctly, completion persists and updates summaries,
+  and success/reopen starts blank. Observed desktop/mobile CSS widths of 1200px
+  and 325px showed no page-level horizontal overflow. Browser zoom affected
+  requested viewport dimensions; exact 1440px/390px rendering is not claimed.
+- The long-running dev server initially returned unexpected API errors. A scoped
+  restart resolved observed GET/POST failures; the precise hot-reload cause was
+  not isolated. It remains running at http://localhost:3000. A subsequent browser
+  function create saved populated overnight dates and its next form opened blank.
+  Durable function retries cover concurrent replay and retry after archival.
+- Removed only this browser run's uniquely named QA task/function and their
+  receipts after verifying tenant and UTC times. A fingerprint confirmed other
+  checked users and wedding planning records were unchanged. The preexisting QA
+  function and real invitation-test membership were retained. Additive Tasks
+  indexes were applied in development without modifying existing records.
+- An initial unit run hit Windows worker-start timeouts; a two-worker rerun and
+  later full check passed. An initial permission review timed out before database
+  test startup; retry passed. An HTTP assertion was corrected from 400 to the
+  existing 422 response for an unknown schema field; runtime validation was correct.
+- Unassigned summaries count incomplete tasks, matching “Ready to delegate”.
+  Archived task history still blocks function removal. Remaining review includes
+  both-role browser journeys, keyboard/edit-discard/mobile dialog coverage and
+  exact design fidelity. Drafts are memory-only; reload/restart can lose input.
+- Final rerun after corrections: npm run check (76 tests), the full isolated
+  integration suite (80 tests), the built-server HTTP suite (eight tests) and
+  npm run build all pass. Changed-file whitespace checks pass, excluding the
+  untouched independent .env.example edit. Browser use was disabled in Work
+  settings during the final viewport-reset/navigation attempt; do not claim that
+  last navigation or reset completed. The earlier observed browser checks stand.
+- User accepted this implementation and authorized commit/push on 28 October.
+  Delivered scope is accepted; the broader release/browser review above remains
+  outstanding and is not implied complete by the approval.
+
 ## Keeping this record current
 
 - Read this file before starting a major feature. Add an entry when major work
