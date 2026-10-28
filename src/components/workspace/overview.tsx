@@ -140,6 +140,8 @@ export function WeddingOverview({
                   >
                     {item.action} →
                   </Link>
+                ) : item.icon === 'mail' ? (
+                  <Link href="/account/guests">{item.action} →</Link>
                 ) : (
                   <button disabled>
                     {item.action} <span>Coming next</span>
@@ -150,8 +152,8 @@ export function WeddingOverview({
         </div>
         <p className={styles.phaseNote}>
           Your wedding is saved. Admins can now invite Managers from Team.
-          Functions and tasks are ready to plan. Guest invitations are coming in
-          a later update.
+          Functions, tasks and guest contacts are ready to plan. Private guest
+          invitations and RSVPs are coming in the next update.
         </p>
       </section>
       <section aria-labelledby="indicators">

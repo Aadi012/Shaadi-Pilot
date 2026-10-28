@@ -224,11 +224,17 @@ The first implementation is still under review; see project status for limitatio
 
 ## Remaining open product and contract decisions
 
+Guest records approval — 28 October 2026: the user requires email for V1, following
+the PRD over the API's optional-email proposal. Separate contacts may share an
+email with a duplicate warning and no automatic merging. Selected functions are
+planning intent on a contact, not a capability or sent invitation; invitation and
+RSVP behavior remains the next slice. See guests-plan.md for the additive contract.
+
 | Topic                  | Conflict or missing decision                                                                                                     | Proposal awaiting confirmation                                                   |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | Admin policy           | PRD leaves Admin onboarding and transfer open; later contracts provisionally support it                                          | Admin may manage other Admins, with last-Admin protection                        |
 | Guest entry            | PRD shows multiple invited functions from one link; technical contracts issue per-event capabilities and a separate gallery link | Confirm the entry experience before implementing capability contracts            |
-| Guest email            | PRD requires email; API permits manually shared contacts without email                                                           | Confirm requiredness; duplicate family emails also need a policy                 |
+| Guest email            | PRD requires email; API permits manually shared contacts without email                                                           | Resolved 28 October: required; shared emails allowed with warning                |
 | Public website images  | PRD permits image customization; only private gallery media is modeled                                                           | Define separately published website assets and authorization                     |
 | Expense corrections    | PRD permits edits/deletions; later contracts introduce refunds/reversals                                                         | Confirm editable entries versus reversal semantics                               |
 | Currency               | PRD includes currency; database/API choose INR-only                                                                              | Confirm INR-only scope                                                           |

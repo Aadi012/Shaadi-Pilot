@@ -35,6 +35,14 @@ Never show a completed operation or fabricated planning activity as real data.
 
 ## 5. Layout
 
+Guest contacts uses the inspected directory, contact detail, add/edit and mobile
+references in designs/guests. Preserve the existing brand/shell, editorial title,
+quiet filter panel, desktop rows and mobile cards. Use a native modal with clear
+inline discard/removal confirmations. Require email; shared family addresses warn
+without merging. Selected functions are labelled planning intent. Exclude generated
+seating, transport, room allocation, accompanying-person profiles, dietary schemas,
+priority tiers, verification claims, CSV export and fabricated RSVP/dispatch data.
+
 Tasks uses the four inspected desktop/mobile references in designs/tasks. Keep
 the editorial heading, summary strip, quiet filter panel and desktop registry;
 collapse rows into readable mobile cards. Forms use native modal dialogs and

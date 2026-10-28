@@ -13,9 +13,14 @@ still unverified. Manager invitation/revocation/acceptance is implemented and on
 real email-to-acceptance flow succeeded. Admin removal of Managers is implemented;
 see project status for its actual checks and boundaries.
 
-The dashboard already has its shell and tenant-scoped counts. It is partial:
-upcoming-function details, assigned/overdue tasks, RSVP headcounts and nonempty
-expense totals depend on their modules. Most planning, public-wedding and guest
+28 October update: Functions and Tasks were accepted and pushed to dev. Guest
+records and planned function selection are now implemented for review. Private
+guest invitations, capability links and RSVP are the next separate slice; no guest
+email or access is created by contact selection alone.
+
+The dashboard has tenant-scoped counts, upcoming functions and real task summaries.
+It is partial: RSVP headcounts and nonempty expense totals await their modules.
+Most public-wedding and guest
 media requirements are still ahead. No completion percentage has been measured.
 
 ## Delivery order
@@ -34,8 +39,7 @@ media requirements are still ahead. No completion percentage has been measured.
 | 10    | Private gallery and personal QR    | Organizer/authorized guest uploads, R2 validation/completion, scoped view/download, removal and per-guest QR entry. Decide formats, quotas, retention and abuse controls first.                                                                                                                          |
 | 11    | V1 integration and release         | Finish real dashboard aggregation; verify organizer/guest journeys, mobile/accessibility, email retries, secrets, retention, backups, monitoring and Vercel configuration. Deploy only when authorized.                                                                                                  |
 
-Functions are the next planning module after the delivered Manager-removal slice.
-Guest invitations/RSVP precede private gallery
+Review the Guest contact slice, then implement private invitations/RSVP before gallery
 capabilities; public website work depends on the function schedule. Tasks, expenses
 and saved vendors can be reordered if priorities change.
 

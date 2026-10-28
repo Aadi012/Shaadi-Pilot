@@ -112,6 +112,15 @@ export async function hasReferences(
   session: ClientSession,
 ) {
   const db = await connectDatabase();
+  if (
+    await db.connection
+      .collection('guestContacts')
+      .findOne(
+        { weddingId, selectedEventIds: eventId },
+        { session, projection: { _id: 1 } },
+      )
+  )
+    return true;
   for (const name of [
     'tasks',
     'expenses',

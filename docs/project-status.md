@@ -1,6 +1,6 @@
 # ShaadiPilot project status
 
-Last updated: 28 October 2026 (Asia/Kolkata).
+Last updated: 29 October 2026 (Asia/Kolkata).
 
 This is the implementation progress record. The [PRD](prd.md) defines product
 scope; [architecture decisions](architecture-decisions.md) record accepted
@@ -8,6 +8,13 @@ contracts and unresolved choices. A status entry does not approve new scope or
 resolve an open product decision.
 
 ## Current position
+
+Guest contacts and planned function selection, including the review corrections,
+were accepted for commit/push on 29 October. Functions and Tasks are already on
+dev. The latest Guest checks pass 85 unit/render tests, formatting, lint and types;
+see milestone 12 for persistence/HTTP evidence and browser limitations. Private
+guest invitations and RSVP are the next authorized feature, with access-policy
+decisions being confirmed before implementation.
 
 Manager removal is complete for the approved slice following user authorization
 on 27 October. Documentation handoff resumed on 28 October after a tooling usage
@@ -520,6 +527,96 @@ final approval remain.
 - User accepted this implementation and authorized commit/push on 28 October.
   Delivered scope is accepted; the broader release/browser review above remains
   outstanding and is not implied complete by the approval.
+
+### 12. Guest records and function selection — 28 October 2026
+
+Status: In progress — implemented for review; browser walkthrough pending.
+
+- Tasks and Functions retry fixes were committed and pushed to dev as
+  [9e96204](https://github.com/Aadi012/Shaadi-Pilot/commit/9e9620493c7b4e49d06719cdc05efb5f703e4eaf).
+  Local and remote heads matched. The independent .env.example edit was excluded.
+- User approved required email and shared-address duplicate warnings without
+  merging. The [Guest slice plan](guests-plan.md) separates contact selection from
+  future private invitations/RSVP and records authorization/verification scope.
+- Retrieved and inspected four existing approved Stitch references: desktop
+  registry, detail, add/edit policy variants and mobile directory. Original decoded
+  HTML/PNG and sanitized manifest are in docs/designs/guests. The exported form
+  screenshot is partially clipped; its source HTML was available as reference.
+  Generated transport/room/seating, verification and RSVP claims are excluded.
+- Added tenant-scoped guest contact CRUD, required normalized email, optional
+  phone/notes, shared-email warnings, selected functions, literal name/email search,
+  paged filters, safe create retries, versioned updates/archive and dashboard counts.
+  Admin and Manager share planning access. Selection is explicitly planning intent:
+  no invitation, email delivery, private link or RSVP record is created here.
+- Transactions share the wedding lock with function archival and membership
+  changes. Existing invitation/gallery references block identity/selection edits
+  and archive until a revocation workflow is implemented. Archived contact
+  selections retain references and still block function removal; no cascade cleanup.
+- Isolated integration suite passes 86 tests including duplicates, foreign tenants,
+  stale writes, concurrent create replay, cursor tenant/filter binding, access
+  safeguards and selection/function-removal races. Real running-Next HTTP suite
+  passes nine tests including Manager contact writes and authenticated page rendering.
+  Production build passes with external-service credentials disabled for that process.
+- Initial checks caught a React ref read in confirmation copy, fixed before rerun.
+  A shared-email HTTP search assertion was corrected to expect both contacts;
+  the search correctly matches email as well as name. A new text-escaping render
+  test needed the same router mock as existing component tests; corrected in tests.
+- Additive Guest indexes were applied in development; no existing records removed
+  or modified. Automated writes used isolated disposable test databases only.
+  No Guest test email was sent, no dependencies installed, no commit/push/deploy
+  performed for this new slice. The separate .env.example edit remains untouched.
+- Browser verification was attempted but local browser use is disabled in Work
+  settings. Desktop/mobile form submissions, cancel/Escape/reopen, conflict reload
+  and visual/accessibility walkthroughs remain unverified. Memory-only drafts stay
+  on validation/network/conflict failure and reset on confirmed discard/success;
+  automated helper/render tests do not substitute for real browser completion.
+- Final project checks pass: formatting, lint, types and all 81 unit/render tests.
+  The text-escaping render test also dropped an invalid expectation that a closed,
+  unopened form was mounted. The 86 integration tests, nine built-server HTTP
+  tests and final production build pass. Changed-file whitespace checks pass,
+  excluding the untouched independent .env.example edit. Guest code remains local
+  for review; the earlier Tasks commit is the latest verified remote change.
+
+- Guest UX corrections — 29 October: Reset now clears controlled search/function
+  inputs together with the applied query and pagination. Cancel/Escape compares
+  raw fields and checked functions against the initial contact, closing unchanged
+  or fully reverted drafts directly. Changed drafts and uncertain create attempts
+  retain explicit discard confirmation. Escape from that confirmation returns to
+  the draft first, avoiding FormData reads while its controls are disabled.
+- Save transport errors now explain the connection problem, how to retry and that
+  the draft is retained. Unreadable save responses explain safe same-payload retry;
+  API validation/conflict guidance is preserved. Neither the draft nor the create
+  key is reset on failure. Focused tests cover raw/invalid/reverted field changes,
+  function-selection ordering, transport rejection, unreadable responses and API
+  conflict messages. npm run check passes all 83 unit/render tests plus formatting,
+  lint and types; final production build passes with service credentials blank.
+  No persistence/API behavior changed, so the prior 86 integration and nine HTTP
+  results above remain historical evidence, not rerun for these client-only fixes.
+- Browser testing was requested again. The user reported enabling access, but a
+  fresh browser inventory still returned “Local browser use is disabled in Work
+  settings”. No interactive verification of these fixes is claimed; no alternate
+  automation bypass or settings change was attempted. No commit/push/deploy.
+
+Guest retry/pagination corrections — 29 October:
+
+- Definitive first-attempt create rejections clear only the client attempt/key,
+  allowing corrections to the preserved contact draft (including deselecting a
+  removed function). Typed API errors distinguish known rejection statuses/codes
+  from transport failures, unreadable responses, server errors, key conflicts and
+  archived-original conflicts. Those uncertain outcomes keep retry protection.
+  An earlier uncertain POST stays protected even if a subsequent request rejects;
+  preflight failures before dispatch do not lock a fresh draft unnecessarily.
+- Applied query, rows, summary and cursor now commit as one successful listing
+  state. Failed Apply/Reset retains the previous listing and cursor/query pairing;
+  visible filter inputs remain editable separately. Stale responses stay ignored.
+- Focused regressions cover rejected-create correction, unchanged-key retry,
+  earlier uncertainty followed by rejection, multiple loaded pages during a failed
+  filter replacement, cursor/query mismatch prevention and successful replacement.
+  npm run check passes 85 unit/render tests, formatting, lint and types. Production
+  build passes with service credentials blank for that process. Changed-file
+  whitespace checks pass excluding the independent .env.example edit. No API or
+  database behavior changed; prior integration/HTTP results were not rerun.
+  Interactive browser verification is not claimed. No commit/push/deploy.
 
 ## Keeping this record current
 

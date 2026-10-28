@@ -25,6 +25,7 @@
     "db:membership:indexes": "node scripts/membership-indexes.mjs",
     "db:events:indexes": "node scripts/event-indexes.mjs",
     "db:tasks:indexes": "node scripts/task-indexes.mjs",
+    "db:guests:indexes": "node scripts/guest-indexes.mjs",
     "design:check": "node scripts/stitch-reference.mjs",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:http": "npm run build && vitest run --config vitest.http.config.ts",

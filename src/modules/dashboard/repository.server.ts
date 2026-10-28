@@ -13,7 +13,9 @@ export async function workspaceCounts(weddingId: string) {
     db.connection
       .collection('tasks')
       .countDocuments({ ...tenant, archivedAt: null, status: { $ne: 'done' } }),
-    db.connection.collection('guestContacts').countDocuments(tenant),
+    db.connection
+      .collection('guestContacts')
+      .countDocuments({ ...tenant, archivedAt: null }),
     db.connection.collection('expenses').countDocuments(tenant),
   ]);
   const upcoming = await db.connection

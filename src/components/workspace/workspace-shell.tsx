@@ -34,7 +34,8 @@ export function WorkspaceShell({
   wedding: WeddingDto;
   name: string;
   role: 'admin' | 'manager';
-  active?: 'Overview' | 'Settings' | 'Team' | 'Functions' | 'Tasks';
+  active?:
+    'Overview' | 'Settings' | 'Team' | 'Functions' | 'Tasks' | 'Guests & RSVPs';
 }) {
   const drawer = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -61,18 +62,21 @@ export function WorkspaceShell({
                 item.label === 'Settings' ||
                 item.label === 'Functions' ||
                 item.label === 'Tasks' ||
+                item.label === 'Guests & RSVPs' ||
                 item.label === 'Team' ? (
                   <a
                     href={
-                      item.label === 'Tasks'
-                        ? '/account/tasks'
-                        : item.label === 'Functions'
-                          ? '/account/functions'
-                          : item.label === 'Team'
-                            ? '/account/team'
-                            : item.label === 'Settings'
-                              ? '/account/settings/wedding'
-                              : '/account'
+                      item.label === 'Guests & RSVPs'
+                        ? '/account/guests'
+                        : item.label === 'Tasks'
+                          ? '/account/tasks'
+                          : item.label === 'Functions'
+                            ? '/account/functions'
+                            : item.label === 'Team'
+                              ? '/account/team'
+                              : item.label === 'Settings'
+                                ? '/account/settings/wedding'
+                                : '/account'
                     }
                     aria-current={item.label === active ? 'page' : undefined}
                     className={
@@ -149,7 +153,9 @@ export function WorkspaceShell({
                 ? 'Team'
                 : active === 'Settings'
                   ? 'Settings · Wedding details'
-                  : active === 'Tasks' || active === 'Functions'
+                  : active === 'Tasks' ||
+                      active === 'Functions' ||
+                      active === 'Guests & RSVPs'
                     ? active
                     : 'Workspace overview'}
             </small>

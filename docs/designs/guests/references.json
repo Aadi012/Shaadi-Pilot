@@ -1,0 +1,33 @@
+{
+  "projectId": "7444919587454097178",
+  "references": [
+    {
+      "name": "projects/7444919587454097178/screens/7d59af41631f420c85ecb4c6f71148bd",
+      "title": "ShaadiPilot — Guest Directory & Registry (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "7d59af41631f420c85ecb4c6f71148bd.png",
+      "html": "7d59af41631f420c85ecb4c6f71148bd.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/cc980ef967bb4ef2a5394c19bd442626",
+      "title": "ShaadiPilot — Guests & RSVPs Directory (Mobile)",
+      "deviceType": "MOBILE",
+      "screenshot": "cc980ef967bb4ef2a5394c19bd442626.png",
+      "html": "cc980ef967bb4ef2a5394c19bd442626.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/4453bdc613194896874606b406cbc1fc",
+      "title": "ShaadiPilot — Guest Detail, Function Assignment & Removal (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "4453bdc613194896874606b406cbc1fc.png",
+      "html": "4453bdc613194896874606b406cbc1fc.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/ae6404ffa9a0444cb87c2f80f0eed372",
+      "title": "ShaadiPilot — Add & Edit Guest · Policy Alternatives & Duplicates (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "ae6404ffa9a0444cb87c2f80f0eed372.png",
+      "html": "ae6404ffa9a0444cb87c2f80f0eed372.html"
+    }
+  ]
+}

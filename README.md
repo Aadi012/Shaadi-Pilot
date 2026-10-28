@@ -254,6 +254,17 @@ Function removal remains blocked by linked records, including archived task hist
 no reference cleanup or cascade deletion is performed. See [Tasks plan](docs/tasks-plan.md)
 and [project status](docs/project-status.md) for verification and remaining review.
 
+## Guest contacts
+
+The private Guest directory is at `/account/guests`. Run
+`npm run db:guests:indexes` per environment after existing setup. Both organizer
+roles can create/edit/archive contacts, search name/email and select functions.
+Email is required; shared family mailboxes warn without merging contacts.
+Selections are planning intent; this slice creates no invitations, sends no mail
+and grants no guest access. Existing access references block removal or changes
+to email/function selections until the revocation workflow is implemented.
+The [Guest plan](docs/guests-plan.md) documents REST and concurrency contracts.
+
 ## Project documents and progress
 
 Implementation milestones, verification results and remaining work are tracked

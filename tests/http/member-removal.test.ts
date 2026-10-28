@@ -216,6 +216,103 @@ afterAll(async () => {
 });
 
 describe('Manager removal through the running Next.js HTTP server', () => {
+  it('runs Guest contact create/replay/search/edit/archive through real Next HTTP', async () => {
+    const fixture = await manager(),
+      input = { displayName: 'HTTP guest', email: 'guest-http@example.test' },
+      key = randomUUID();
+    const writeHeaders = {
+      ...headers(fixture.tokens[0]),
+      'Content-Type': 'application/json',
+      'Idempotency-Key': key,
+    };
+    const path = base + '/api/v1/guest-contacts';
+    expect(
+      (
+        await fetch(path, {
+          method: 'POST',
+          headers: { ...writeHeaders, 'X-CSRF-Token': 'invalid' },
+          body: JSON.stringify(input),
+        })
+      ).status,
+    ).toBe(403);
+    const create = await fetch(path, {
+      method: 'POST',
+      headers: writeHeaders,
+      body: JSON.stringify(input),
+    });
+    expect(create.status).toBe(201);
+    const row = (await create.json()).data.guest;
+    const replay = await fetch(path, {
+      method: 'POST',
+      headers: writeHeaders,
+      body: JSON.stringify(input),
+    });
+    expect(replay.status).toBe(201);
+    expect((await replay.json()).data.guest.id).toBe(row.id);
+    expect(
+      (
+        await fetch(path, {
+          method: 'POST',
+          headers: { ...writeHeaders, 'Idempotency-Key': randomUUID() },
+          body: JSON.stringify({ displayName: 'Missing email' }),
+        })
+      ).status,
+    ).toBe(422);
+    const second = await fetch(path, {
+      method: 'POST',
+      headers: { ...writeHeaders, 'Idempotency-Key': randomUUID() },
+      body: JSON.stringify({ ...input, displayName: 'Shared family mailbox' }),
+    });
+    expect(second.status).toBe(201);
+    expect((await second.json()).data.guest.duplicateEmail).toBe(true);
+    const list = await fetch(path + '?search=HTTP', { headers: writeHeaders });
+    expect(list.headers.get('Cache-Control')).toBe('no-store');
+    // Both contacts match the shared email guest-http@example.test.
+    expect((await list.json()).data.guests).toHaveLength(2);
+    const page = await fetch(base + '/account/guests', {
+      headers: writeHeaders,
+    });
+    expect(page.status).toBe(200);
+    expect(await page.text()).toContain('Guest Directory');
+    expect(
+      (await fetch(path + '?search=x&search=y', { headers: writeHeaders }))
+        .status,
+    ).toBe(400);
+    const updated = await fetch(path + '/' + row.id, {
+      method: 'PATCH',
+      headers: { ...writeHeaders, 'If-Match': '"0"' },
+      body: JSON.stringify({ notes: 'Updated by Manager' }),
+    });
+    expect(updated.status).toBe(200);
+    expect(
+      (
+        await fetch(path + '/' + row.id, {
+          method: 'DELETE',
+          headers: { ...writeHeaders, 'If-Match': '"0"' },
+        })
+      ).status,
+    ).toBe(412);
+    expect(
+      (
+        await fetch(path + '/' + row.id, {
+          method: 'DELETE',
+          headers: { ...writeHeaders, 'If-Match': '"1"' },
+          body: ' ',
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(path + '/' + row.id, {
+          method: 'DELETE',
+          headers: { ...writeHeaders, 'If-Match': '"1"' },
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (await fetch(path + '/' + row.id, { headers: writeHeaders })).status,
+    ).toBe(404);
+  });
   it('enforces Tasks security and runs create/replay/edit/filter/archive over real HTTP', async () => {
     const input = {
       title: 'HTTP task',

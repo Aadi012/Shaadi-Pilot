@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-container-lowest":"#ffffff","outline-variant":"#d2c3c7","on-secondary-fixed-variant":"#564428","tertiary-container":"#3e3730","primary":"#341a27","on-tertiary-fixed-variant":"#4d453e","outline":"#807478","surface-container-highest":"#e5e1ea","secondary-fixed":"#fbdeb8","tertiary-fixed-dim":"#d0c4bb","on-error":"#ffffff","on-surface":"#1c1b22","on-background":"#1c1b22","on-error-container":"#93000a","on-tertiary":"#ffffff","on-secondary-fixed":"#271903","on-secondary":"#ffffff","on-primary-container":"#be96a7","on-tertiary-fixed":"#201b15","surface-container":"#f0ecf6","tertiary-fixed":"#ede0d6","primary-fixed-dim":"#e5bbcd","primary-fixed":"#ffd8e8","tertiary":"#28221b","background":"#fcf8ff","surface-tint":"#765564","primary-container":"#4c2f3d","on-surface-variant":"#4e4448","on-secondary-container":"#766143","surface-bright":"#fcf8ff","surface-container-high":"#ebe6f0","inverse-surface":"#312f37","error":"#ba1a1a","secondary-fixed-dim":"#dec29e","inverse-on-surface":"#f3eff9","surface-container-low":"#f6f2fc","error-container":"#ffdad6","on-tertiary-container":"#aaa096","on-primary-fixed-variant":"#5c3e4c","inverse-primary":"#e5bbcd","surface":"#fcf8ff","on-primary":"#ffffff","on-primary-fixed":"#2c1320","secondary-container":"#fbdeb8","secondary":"#705b3d","surface-variant":"#e5e1ea","surface-dim":"#dcd8e2"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"margin":"3rem","space-xl":"2.5rem","space-sm":"0.5rem","space-md":"1rem","space-xs":"0.25rem","margin-mobile":"1.25rem","space-lg":"1.5rem","gutter":"1.5rem","gutter-mobile":"1rem"},fontFamily:{"body-lg":["Manrope"],"label-md":["Manrope"],"title-md":["Manrope"],"headline-md":["Newsreader"],"headline-lg-mobile":["Newsreader"],"body-md":["Manrope"],"headline-sm":["Newsreader"],"label-sm":["Manrope"],"display-lg":["Newsreader"],"display-lg-mobile":["Newsreader"],"title-lg":["Manrope"],"body-sm":["Manrope"],"headline-lg":["Newsreader"]},fontSize:{"body-lg":["16px",{"lineHeight":"26px","fontWeight":"400"}],"label-md":["13px",{"lineHeight":"18px","letterSpacing":"0.02em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"22px","fontWeight":"600"}],"headline-md":["28px",{"lineHeight":"36px","fontWeight":"500"}],"headline-lg-mobile":["28px",{"lineHeight":"36px","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"headline-sm":["22px",{"lineHeight":"28px","fontWeight":"500"}],"label-sm":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"700"}],"display-lg":["56px",{"lineHeight":"64px","letterSpacing":"-0.02em","fontWeight":"400"}],"display-lg-mobile":["36px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"400"}],"title-lg":["18px",{"lineHeight":"24px","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.015em","fontWeight":"400"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between"><div class="flex flex-col"><div class="px-space-lg pt-space-lg pb-space-md"><div class="flex items-center gap-space-sm mb-space-sm"><span class="material-symbols-outlined text-primary text-[28px]">flare</span><span class="font-headline-sm text-headline-sm text-primary tracking-tight">ShaadiPilot</span></div><div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-[0_1px_8px_rgba(0,0,0,0.02)]"><div class="font-title-md text-title-md text-on-surface truncate">Aarav &amp; Ananya</div><div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5"><span>14 Mar 2027</span><span>·</span><span>Jaipur</span></div><div class="mt-space-xs inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">schedule</span>42 Days Remaining</div></div></div><nav class="px-space-md space-y-1" data-active-classes="bg-primary-container text-on-primary font-title-md rounded-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="px-3 pt-space-sm pb-1 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Planning</div><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="overview-dashboard" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span>Overview</a><a aria-current="page" class="flex items-center gap-3 px-3.5 py-2.5 transition-all bg-primary-container text-on-primary font-title-md rounded-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-path="guest-management" href="#"><span class="material-symbols-outlined text-[20px]">group</span>Guests &amp; RSVPs</a><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="seating-chart-allocations" href="#"><span class="material-symbols-outlined text-[20px]">table_restaurant</span>Seating &amp; Tables</a><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="ceremonies-itinerary" href="#"><span class="material-symbols-outlined text-[20px]">event_available</span>Ceremonies &amp; Itinerary</a><div class="px-3 pt-space-md pb-1 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Operations</div><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="vendor-suite" href="#"><span class="material-symbols-outlined text-[20px]">storefront</span>Vendors &amp; Contracts</a><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="budget-and-expenses" href="#"><span class="material-symbols-outlined text-[20px]">payments</span>Budget &amp; Escrow</a><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="invitations-and-portal" href="#"><span class="material-symbols-outlined text-[20px]">mark_email_read</span>Digital Invites</a></nav></div><div class="p-space-md"><div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-[0_1px_8px_rgba(0,0,0,0.02)] flex items-center justify-between"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="overflow-hidden"><div class="font-label-md text-label-md text-on-surface truncate">Ananya Kapoor</div><div class="font-body-sm text-body-sm text-on-surface-variant truncate">Bride · Admin</div></div></div><button class="text-on-surface-variant hover:text-on-surface p-1 rounded-lg hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex-1 max-w-lg"><div class="relative flex items-center"><span class="material-symbols-outlined text-outline absolute left-3.5 text-[20px]">search</span><input class="w-full pl-11 pr-4 py-2.5 rounded-xl bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md text-body-md shadow-[0_1px_8px_rgba(0,0,0,0.02)] focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Search guests, family houses, RSVP status, dietary needs..." type="text"/></div></div><div class="flex items-center gap-space-md"><button class="relative p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary"></span></button><button class="relative p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"><span class="material-symbols-outlined text-[22px]">help_outline</span></button><div class="h-6 w-[1px] bg-outline-variant/40 mx-1"></div><div class="flex items-center gap-3 pl-1"><div class="text-right"><div class="font-label-md text-label-md text-on-surface">Ananya Kapoor</div><div class="font-body-sm text-body-sm text-on-surface-variant">Bride · Admin</div></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-20 bg-surface w-full px-space-xl pb-margin"><div class="flex flex-col w-full">
+<!-- Interactive View State Controller -->
+<div class="flex items-center justify-between py-space-sm px-space-md mb-space-md rounded-xl bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]">tune</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Prototype View Switcher:</span>
+</div>
+<div class="flex items-center gap-1.5" id="state-toggle-group">
+<button class="px-3 py-1 rounded-full font-label-sm text-label-sm transition-all bg-primary-container text-on-primary" id="btn-state-populated" onclick="switchDirectoryState('populated')">
+        Populated Directory (94)
+      </button>
+<button class="px-3 py-1 rounded-full font-label-sm text-label-sm transition-all bg-surface-container-lowest text-on-surface-variant hover:text-on-surface" id="btn-state-empty" onclick="switchDirectoryState('empty')">
+        Empty State (0)
+      </button>
+<button class="px-3 py-1 rounded-full font-label-sm text-label-sm transition-all bg-surface-container-lowest text-on-surface-variant hover:text-on-surface" id="btn-state-no-results" onclick="switchDirectoryState('no-results')">
+        No Results (Filter Mismatch)
+      </button>
+<button class="px-3 py-1 rounded-full font-label-sm text-label-sm transition-all bg-surface-container-lowest text-on-surface-variant hover:text-on-surface" id="btn-state-loading" onclick="switchDirectoryState('loading')">
+        Loading Skeleton
+      </button>
+</div>
+</div>
+<!-- Breadcrumbs & Editorial Header -->
+<div class="flex flex-col gap-space-xs mb-space-lg">
+<nav class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm tracking-wider uppercase">
+<span class="hover:text-primary transition-colors cursor-pointer">ShaadiPilot</span>
+<span class="text-outline-variant">/</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Aarav &amp; Ananya</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-bold">Guests &amp; RSVPs</span>
+</nav>
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pt-2">
+<div class="max-w-3xl">
+<div class="inline-flex items-center gap-2 font-label-sm text-label-sm text-secondary tracking-widest uppercase mb-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          Guest Registry &amp; Invitation Repository · 94 Primary Invitations
+        </div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">
+          Guests &amp; RSVPs
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1.5 leading-relaxed">
+          Coordinate family invitations, track independent ceremonial attendance, and manage accompanying guest allocations across Jaipur celebrations.
+        </p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<button class="px-4 py-2.5 rounded-xl bg-surface-container-lowest text-on-surface font-title-md text-title-md hover:bg-surface-container-high transition-all shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline">file_download</span>
+          Export Directory (CSV)
+        </button>
+<button class="px-5 py-2.5 rounded-xl bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-all shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+          + Add Guest
+        </button>
+</div>
+</div>
+</div>
+<!-- Summary KPI Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-xl">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block">Total Primary Invitees</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">94 Families / Leads</div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">diversity_3</span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-low/50 px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-secondary">people_alt</span>
+<span>Representing <strong>320 individuals</strong> across all circles</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block">Confirmed Attendance</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">240 Attending</div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">check_circle</span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm bg-surface-container-low/50 px-2.5 py-1.5 rounded-lg">
+<span class="truncate">Peak ceremony: <strong>Sangeet (Taj Rambagh)</strong></span>
+<span class="text-secondary font-semibold">75% cap</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block">Awaiting Response</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">46 In Flight</div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-tertiary-fixed/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">pending_actions</span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-low/50 px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+<span>Across all ceremonial dispatches</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block">Manually Dispatched</span>
+<div class="font-headline-md text-headline-md text-primary mt-1">28 Links Copied</div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[22px]">chat</span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-low/50 px-2.5 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-secondary">forum</span>
+<span>For WhatsApp family coordination</span>
+</div>
+</div>
+</div>
+<!-- Filter, Search & Tab Bar Controls -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm p-space-md mb-space-md flex flex-col gap-space-md">
+<!-- Top Row: Tabs & Search -->
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+<!-- Status Tabs -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 xl:pb-0" id="filter-tabs">
+<button class="status-tab px-3.5 py-1.5 rounded-xl font-label-md text-label-md transition-all bg-primary-container text-on-primary" onclick="setActiveTab(this, 'all')">
+          All Guests (94)
+        </button>
+<button class="status-tab px-3.5 py-1.5 rounded-xl font-label-md text-label-md transition-all bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="setActiveTab(this, 'awaiting')">
+          Awaiting Response (46)
+        </button>
+<button class="status-tab px-3.5 py-1.5 rounded-xl font-label-md text-label-md transition-all bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="setActiveTab(this, 'confirmed')">
+          Confirmed (42)
+        </button>
+<button class="status-tab px-3.5 py-1.5 rounded-xl font-label-md text-label-md transition-all bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="setActiveTab(this, 'declined')">
+          Declined (6)
+        </button>
+</div>
+<!-- Quick Search input -->
+<div class="relative w-full xl:w-96">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-xl bg-surface text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary shadow-inner" id="guest-search-input" oninput="handleSearchInput(event)" placeholder="Search guest name, email, or family note..." type="text"/>
+</div>
+</div>
+<!-- Bottom Row: Granular Dropdown Filters -->
+<div class="flex flex-wrap items-center gap-3 pt-space-xs text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">filter_list</span> Filter by:
+      </span>
+<!-- Function Filter -->
+<div class="relative">
+<select class="appearance-none bg-surface pl-3 pr-8 py-1.5 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer shadow-sm" onchange="handleDropdownFilter(this)">
+<option value="">All Ceremonies (5)</option>
+<option value="mehendi">Mehendi · 13 Mar</option>
+<option value="haldi">Haldi · 13 Mar</option>
+<option value="sangeet">Sangeet · 13 Mar Eve</option>
+<option value="pheras">Vedic Pheras · 14 Mar</option>
+<option value="reception">Reception Gala · 14 Mar</option>
+</select>
+<span class="material-symbols-outlined text-[16px] text-outline absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
+</div>
+<!-- RSVP Status Filter -->
+<div class="relative">
+<select class="appearance-none bg-surface pl-3 pr-8 py-1.5 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer shadow-sm" onchange="handleDropdownFilter(this)">
+<option value="">All RSVP Statuses</option>
+<option value="confirmed">Confirmed (Attending)</option>
+<option value="declined">Declined</option>
+<option value="awaiting">Awaiting Response</option>
+<option value="partial">Partially Confirmed</option>
+</select>
+<span class="material-symbols-outlined text-[16px] text-outline absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
+</div>
+<!-- Dispatch Channel Filter -->
+<div class="relative">
+<select class="appearance-none bg-surface pl-3 pr-8 py-1.5 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer shadow-sm" onchange="handleDropdownFilter(this)">
+<option value="">All Dispatch Channels</option>
+<option value="email">Email Invitation (Secure Token)</option>
+<option value="whatsapp">WhatsApp / Manual Direct Token</option>
+<option value="pending">Not Dispatched</option>
+</select>
+<span class="material-symbols-outlined text-[16px] text-outline absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none">expand_more</span>
+</div>
+<!-- Clear Filters button -->
+<button class="ml-auto text-on-surface-variant hover:text-primary font-label-sm text-label-sm flex items-center gap-1 py-1 px-2 hover:bg-surface rounded-lg transition-colors" onclick="resetAllFilters()">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+        Reset Filters
+      </button>
+</div>
+</div>
+<!-- TABLE CONTAINER / STATES -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden flex flex-col">
+<!-- STATE 1: POPULATED TABLE -->
+<div class="overflow-x-auto w-full" id="view-populated">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm tracking-wider uppercase">
+<th class="py-3.5 pl-6 pr-3 w-10">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer accent-primary" type="checkbox"/>
+</th>
+<th class="py-3.5 px-4 font-semibold">Primary Guest &amp; Email</th>
+<th class="py-3.5 px-4 font-semibold">Contact / WhatsApp</th>
+<th class="py-3.5 px-4 font-semibold">Invited Functions &amp; Attendance</th>
+<th class="py-3.5 px-4 font-semibold">Accompanying</th>
+<th class="py-3.5 px-4 font-semibold">Dispatch Status</th>
+<th class="py-3.5 pl-4 pr-6 text-right font-semibold">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/60 font-body-md text-body-md text-on-surface">
+<!-- ROW 1: Rajesh Singhania -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 pl-6 pr-3 align-top">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer accent-primary mt-1" type="checkbox"/>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-[13px] shrink-0">
+                  RS
+                </div>
+<div class="min-w-0">
+<div class="font-title-md text-title-md text-on-surface font-semibold flex items-center gap-2">
+                    Mr. Rajesh Singhania
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed font-label-sm text-[10px]">VIP Family Lead</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-outline">mail</span>
+                    rajesh.singhania@apexcorp.com
+                  </div>
+<div class="text-[11px] text-secondary font-medium mt-1">Bride's Paternal Uncle · Rambagh Palace Stay</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-mono text-[13px] text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">phone_iphone</span>
+                +91 98201 44512
+              </div>
+<span class="inline-flex items-center gap-1 text-[11px] text-outline mt-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">chat</span> WhatsApp Registered
+              </span>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex flex-col gap-1.5 max-w-sm">
+<div class="flex items-center justify-between text-[11px] text-secondary font-semibold bg-secondary-container/20 px-2 py-0.5 rounded">
+<span>5 of 5 Functions Confirmed</span>
+<span>4 Attending Each</span>
+</div>
+<div class="flex flex-wrap gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Mehendi (4)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Haldi (4)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Sangeet (4)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Pheras (4)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Reception (4)
+                  </span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="font-title-md text-title-md text-on-surface font-semibold">+3 family members</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">4 total headcount</div>
+<div class="text-[11px] text-outline mt-0.5">Mrs. Sunita, Aarav (Jr), Rhea</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px] text-secondary">share</span>
+                Dispatched via WhatsApp
+              </div>
+<div class="font-body-sm text-body-sm text-outline mt-1 text-[11px]">Link Copied 2d ago</div>
+</td>
+<td class="py-4 pl-4 pr-6 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg bg-surface hover:bg-surface-container text-primary font-label-md text-label-md transition-colors">
+                  View
+                </button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 2: Dr. Sunita & Arvind Mehta -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 pl-6 pr-3 align-top">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer accent-primary mt-1" type="checkbox"/>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-fixed/60 text-primary flex items-center justify-center font-bold text-[13px] shrink-0">
+                  SM
+                </div>
+<div class="min-w-0">
+<div class="font-title-md text-title-md text-on-surface font-semibold">
+                    Dr. Sunita &amp; Arvind Mehta
+                  </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-outline">mail</span>
+                    sunita.mehta@careclinic.in
+                  </div>
+<div class="text-[11px] text-outline mt-1">Groom's High School Mentor</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-mono text-[13px] text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">phone_iphone</span>
+                +91 98112 77410
+              </div>
+<span class="inline-flex items-center gap-1 text-[11px] text-outline mt-1">
+<span class="material-symbols-outlined text-[13px] text-outline">alternate_email</span> Verified Email
+              </span>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex flex-col gap-1.5 max-w-sm">
+<div class="flex flex-wrap gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Sangeet (Attending · 2)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Pheras (Attending · 2)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container text-outline font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Reception (Declined · 0)
+                  </span>
+</div>
+<div class="text-[11px] text-on-surface-variant">Dietary: Jain Vegetarian requested</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="font-title-md text-title-md text-on-surface font-semibold">+1 spouse</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">2 total headcount</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-fixed/40 text-primary font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px]">mark_email_read</span>
+                Email Dispatched
+              </div>
+<div class="font-body-sm text-body-sm text-secondary mt-1 text-[11px] font-semibold">Token Active · Opened</div>
+</td>
+<td class="py-4 pl-4 pr-6 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg bg-surface hover:bg-surface-container text-primary font-label-md text-label-md transition-colors">
+                  View
+                </button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 3: Vikram Kapoor -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 pl-6 pr-3 align-top">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer accent-primary mt-1" type="checkbox"/>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-bold text-[13px] shrink-0">
+                  VK
+                </div>
+<div class="min-w-0">
+<div class="font-title-md text-title-md text-on-surface font-semibold">
+                    Vikram Kapoor
+                  </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-outline">mail</span>
+                    vikram.kapoor@heritagecorp.in
+                  </div>
+<div class="text-[11px] text-outline mt-1">Bride's Cousin</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-mono text-[13px] text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">phone_iphone</span>
+                +91 99304 88120
+              </div>
+<span class="inline-flex items-center gap-1 text-[11px] text-outline mt-1">
+<span class="material-symbols-outlined text-[13px] text-outline">mail</span> Direct Invitation
+              </span>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex flex-col gap-1 max-w-sm">
+<div class="flex flex-wrap gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-tertiary-fixed/40 text-on-tertiary-fixed font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Mehendi (Awaiting)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-tertiary-fixed/40 text-on-tertiary-fixed font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Sangeet (Awaiting)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-tertiary-fixed/40 text-on-tertiary-fixed font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Vedic Pheras (Awaiting)
+                  </span>
+</div>
+<div class="text-[11px] text-outline mt-1">Sent reminder via WhatsApp 1d ago</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="font-title-md text-title-md text-on-surface font-semibold">+1 guest allowed</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Allocated Cap: 2</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-fixed/30 text-tertiary font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px]">forward_to_inbox</span>
+                Email Dispatched
+              </div>
+<div class="font-body-sm text-body-sm text-outline mt-1 text-[11px]">Unopened (Dispatched 4d ago)</div>
+</td>
+<td class="py-4 pl-4 pr-6 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg bg-surface hover:bg-surface-container text-primary font-label-md text-label-md transition-colors">
+                  View
+                </button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors" title="Resend Notification">
+<span class="material-symbols-outlined text-[18px]">notification_important</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 4: Mrs. Kavita & Harshwardhan Rathore -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 pl-6 pr-3 align-top">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer accent-primary mt-1" type="checkbox"/>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-[13px] shrink-0">
+                  HR
+                </div>
+<div class="min-w-0">
+<div class="font-title-md text-title-md text-on-surface font-semibold">
+                    Mrs. Kavita &amp; Harshwardhan Rathore
+                  </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-outline">mail</span>
+                    harsh.rathore@jaipurestate.com
+                  </div>
+<div class="text-[11px] text-secondary font-medium mt-1">Groom's Maternal Family · Fairmont Suite</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-mono text-[13px] text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">phone_iphone</span>
+                +91 98290 11928
+              </div>
+<span class="inline-flex items-center gap-1 text-[11px] text-outline mt-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">check</span> RSVP Portal Direct
+              </span>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex flex-col gap-1 max-w-sm">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-secondary-container/40 text-on-secondary-container font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+                  All 5 Functions (All Confirmed · 3 guests total)
+                </div>
+<div class="text-[11px] text-outline mt-1">Airport pickup scheduled for Terminal 2 (12 Mar)</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="font-title-md text-title-md text-on-surface font-semibold">+2</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">3 total headcount</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px] text-secondary">cloud_done</span>
+                Dispatched
+              </div>
+<div class="font-body-sm text-body-sm text-on-surface mt-1 text-[11px]">Token Accessed 3h ago</div>
+</td>
+<td class="py-4 pl-4 pr-6 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg bg-surface hover:bg-surface-container text-primary font-label-md text-label-md transition-colors">
+                  View
+                </button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 5: Rohan & Priya Tandon -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 pl-6 pr-3 align-top">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer accent-primary mt-1" type="checkbox"/>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-bold text-[13px] shrink-0">
+                  RT
+                </div>
+<div class="min-w-0">
+<div class="font-title-md text-title-md text-on-surface font-semibold">
+                    Rohan &amp; Priya Tandon
+                  </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-outline">mail</span>
+                    rohan.tandon@techventures.io
+                  </div>
+<div class="text-[11px] text-outline mt-1">College Friends Cohort (Delhi)</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-mono text-[13px] text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">phone_iphone</span>
+                +91 97110 55431
+              </div>
+<span class="inline-flex items-center gap-1 text-[11px] text-outline mt-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">chat</span> WhatsApp Sent
+              </span>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex flex-col gap-1 max-w-sm">
+<div class="flex flex-wrap gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Sangeet (Attending · 2)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-tertiary-fixed/40 text-on-tertiary-fixed font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Reception (Awaiting · 2)
+                  </span>
+</div>
+<div class="text-[11px] text-outline mt-1">In flight connecting via Mumbai</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="font-title-md text-title-md text-on-surface font-semibold">+1</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">2 total headcount</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px] text-secondary">chat</span>
+                Manual WhatsApp Link
+              </div>
+<div class="font-body-sm text-body-sm text-outline mt-1 text-[11px]">Shared 12h ago</div>
+</td>
+<td class="py-4 pl-4 pr-6 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg bg-surface hover:bg-surface-container text-primary font-label-md text-label-md transition-colors">
+                  View
+                </button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 6: Colonel K.S. Bakshi (Retd.) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 pl-6 pr-3 align-top">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer accent-primary mt-1" type="checkbox"/>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-bold text-[13px] shrink-0">
+                  KB
+                </div>
+<div class="min-w-0">
+<div class="font-title-md text-title-md text-on-surface font-semibold flex items-center gap-2">
+                    Colonel K.S. Bakshi (Retd.)
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[10px]">Elder</span>
+</div>
+<div class="font-body-sm text-body-sm text-outline italic flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">unsubscribe</span>
+                    No Email on file · Manual link only
+                  </div>
+<div class="text-[11px] text-outline mt-1">Grandfather's Regimental Friend</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-mono text-[13px] text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">phone_iphone</span>
+                +91 94140 22319
+              </div>
+<span class="inline-flex items-center gap-1 text-[11px] text-outline mt-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">phone</span> Direct Phone Call Logged
+              </span>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="flex flex-col gap-1 max-w-sm">
+<div class="flex flex-wrap gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Vedic Pheras (Attending · 1)
+                  </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Reception (Attending · 1)
+                  </span>
+</div>
+<div class="text-[11px] text-secondary mt-1">Ground floor access seating required</div>
+</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="font-title-md text-title-md text-on-surface font-semibold">Solo</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">1 total headcount</div>
+</td>
+<td class="py-4 px-4 align-top">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px] text-secondary">link</span>
+                Copied Link to WhatsApp
+              </div>
+<div class="font-body-sm text-body-sm text-outline mt-1 text-[11px]">Manual Link Dispatched</div>
+</td>
+<td class="py-4 pl-4 pr-6 align-top text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1.5">
+<button class="px-2.5 py-1 rounded-lg bg-surface hover:bg-surface-container text-primary font-label-md text-label-md transition-colors">
+                  View
+                </button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- STATE 2: EMPTY STATE (Hidden by default) -->
+<div class="hidden flex-col items-center justify-center py-20 px-6 text-center" id="view-empty">
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined text-[40px]">group_add</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-2">No Guests Added to Repository Yet</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-6">
+        Begin constructing your multi-day Indian wedding directory. Add individual family leads, or import bulk family rosters directly from CSV.
+      </p>
+<div class="flex items-center gap-3">
+<button class="px-5 py-2.5 rounded-xl bg-primary-container text-on-primary font-title-md text-title-md shadow-sm hover:bg-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span> Add First Primary Guest
+        </button>
+<button class="px-4 py-2.5 rounded-xl bg-surface-container text-on-surface font-title-md text-title-md hover:bg-surface-container-high transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">upload_file</span> Import Roster (.CSV)
+        </button>
+</div>
+</div>
+<!-- STATE 3: NO RESULTS FILTER MISMATCH (Hidden by default) -->
+<div class="hidden flex-col items-center justify-center py-20 px-6 text-center" id="view-no-results">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center text-outline mb-4">
+<span class="material-symbols-outlined text-[32px]">filter_alt_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-1">No Matching Invitations Found</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-5">
+        No guest records match your currently active filters or query. Try resetting ceremony specifications or clearing search keywords.
+      </p>
+<button class="px-4 py-2 rounded-xl bg-surface-container-high text-on-surface font-title-md text-title-md hover:bg-surface-container hover:text-primary transition-colors flex items-center gap-2" onclick="resetAllFilters()">
+<span class="material-symbols-outlined text-[18px]">clear_all</span> Clear Active Filters
+      </button>
+</div>
+<!-- STATE 4: LOADING SKELETON (Hidden by default) -->
+<div class="hidden p-6 space-y-4" id="view-loading">
+<div class="h-10 bg-surface-container-high rounded-xl animate-pulse w-full"></div>
+<div class="space-y-3 pt-2">
+<div class="h-16 bg-surface-container rounded-xl animate-pulse w-full"></div>
+<div class="h-16 bg-surface-container rounded-xl animate-pulse w-full"></div>
+<div class="h-16 bg-surface-container rounded-xl animate-pulse w-full"></div>
+<div class="h-16 bg-surface-container rounded-xl animate-pulse w-full"></div>
+<div class="h-16 bg-surface-container rounded-xl animate-pulse w-full"></div>
+</div>
+</div>
+<!-- Table Pagination Footer (Always visible with active table) -->
+<div class="flex flex-col sm:flex-row items-center justify-between px-6 py-4 bg-surface-container-low border-t border-surface-container-high/40 text-on-surface-variant font-body-sm text-body-sm" id="table-pagination-footer">
+<div class="flex items-center gap-2 mb-3 sm:mb-0">
+<span>Showing <strong>6</strong> of <strong>94</strong> primary invitees</span>
+<span>·</span>
+<span class="text-outline">Sorted by family lead name (A-Z)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="px-2.5 py-1 rounded-lg bg-surface text-outline hover:text-on-surface disabled:opacity-40 transition-colors flex items-center">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-bold font-mono text-[12px] flex items-center justify-center shadow-sm">
+          1
+        </button>
+<button class="w-8 h-8 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-mono text-[12px] flex items-center justify-center transition-colors">
+          2
+        </button>
+<button class="w-8 h-8 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-mono text-[12px] flex items-center justify-center transition-colors">
+          3
+        </button>
+<button class="w-8 h-8 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-mono text-[12px] flex items-center justify-center transition-colors">
+          4
+        </button>
+<button class="w-8 h-8 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-mono text-[12px] flex items-center justify-center transition-colors">
+          5
+        </button>
+<span class="px-1 text-outline">…</span>
+<button class="w-8 h-8 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-mono text-[12px] flex items-center justify-center transition-colors">
+          16
+        </button>
+<button class="px-2.5 py-1 rounded-lg bg-surface text-on-surface hover:text-primary transition-colors flex items-center">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Reassurance & Privacy Footnote -->
+<div class="mt-space-lg flex items-center justify-between px-space-md py-space-sm rounded-xl bg-surface-container-low/60 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
+<p>
+<strong class="text-on-surface">Privacy Notice:</strong> Each guest record represents one primary invitee with an accompanying headcount. Guests access a private, authenticated link with zero public registration required.
+      </p>
+</div>
+<div class="flex items-center gap-4 shrink-0 text-outline text-[12px]">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> 256-Bit Tokenized URLs</span>
+<span>·</span>
+<span>Indian Data Residency Compliant</span>
+</div>
+</div>
+</div>
+<script>
+  function switchDirectoryState(state) {
+    const views = ['populated', 'empty', 'no-results', 'loading'];
+    views.forEach(v => {
+      const el = document.getElementById('view-' + v);
+      if (el) el.classList.add('hidden');
+    });
+
+    const activeEl = document.getElementById('view-' + state);
+    if (activeEl) {
+      if (state === 'populated') {
+        activeEl.classList.remove('hidden');
+      } else {
+        activeEl.classList.remove('hidden');
+        activeEl.classList.add('flex');
+      }
+    }
+
+    const pagination = document.getElementById('table-pagination-footer');
+    if (pagination) {
+      pagination.style.display = (state === 'populated') ? 'flex' : 'none';
+    }
+
+    // Toggle button styles
+    views.forEach(v => {
+      const btn = document.getElementById('btn-state-' + v);
+      if (btn) {
+        if (v === state) {
+          btn.className = "px-3 py-1 rounded-full font-label-sm text-label-sm transition-all bg-primary-container text-on-primary";
+        } else {
+          btn.className = "px-3 py-1 rounded-full font-label-sm text-label-sm transition-all bg-surface-container-lowest text-on-surface-variant hover:text-on-surface";
+        }
+      }
+    });
+  }
+
+  function setActiveTab(button, status) {
+    document.querySelectorAll('.status-tab').forEach(b => {
+      b.className = "status-tab px-3.5 py-1.5 rounded-xl font-label-md text-label-md transition-all bg-surface-container text-on-surface-variant hover:text-on-surface";
+    });
+    button.className = "status-tab px-3.5 py-1.5 rounded-xl font-label-md text-label-md transition-all bg-primary-container text-on-primary";
+
+    // Simulate interactive filter demonstration
+    if (status === 'declined') {
+      // Show simulated filtered rows or normal view
+      switchDirectoryState('populated');
+    } else {
+      switchDirectoryState('populated');
+    }
+  }
+
+  function handleSearchInput(e) {
+    const val = e.target.value.trim().toLowerCase();
+    if (val === 'empty' || val === 'none') {
+      switchDirectoryState('no-results');
+    } else if (val === 'loading') {
+      switchDirectoryState('loading');
+    } else if (val === '') {
+      switchDirectoryState('populated');
+    }
+  }
+
+  function handleDropdownFilter(select) {
+    if (select.value === 'declined') {
+      // Simulate interaction
+      switchDirectoryState('populated');
+    }
+  }
+
+  function resetAllFilters() {
+    const input = document.getElementById('guest-search-input');
+    if (input) input.value = '';
+    const tabs = document.querySelectorAll('.status-tab');
+    if (tabs.length > 0) setActiveTab(tabs[0], 'all');
+    switchDirectoryState('populated');
+  }
+</script></main></div></body></html>

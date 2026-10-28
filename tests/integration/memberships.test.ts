@@ -77,6 +77,13 @@ import {
   taskOptions,
 } from '@/modules/tasks/service.server';
 import { taskIndexes } from '@/modules/tasks/indexes';
+import {
+  writeGuest,
+  listGuests,
+  readGuest,
+} from '@/modules/guests/service.server';
+import { guestIndexes } from '@/modules/guests/indexes';
+import { workspaceCounts } from '@/modules/dashboard/repository.server';
 
 const database = 'sp_mem_test_' + randomUUID().replaceAll('-', '').slice(0, 24);
 let sequence = 0;
@@ -107,6 +114,7 @@ beforeAll(async () => {
       ...emailIndexes,
       ...membershipIndexes,
       ...taskIndexes,
+      ...guestIndexes,
     ])
       await mongoose.connection
         .collection(collection)
@@ -712,6 +720,285 @@ describe('Tasks and durable planning creates', () => {
         { key: randomUUID() },
       ),
     ).rejects.toMatchObject({ status: 403 });
+  });
+});
+
+describe('Guest contacts and planned function selections', () => {
+  const guest = {
+    displayName: 'Family [A]',
+    email: 'family@example.test',
+    phone: '+91 90000 00000',
+    notes: 'Private organizer note',
+  };
+  const eventInput = {
+    title: 'Guest function',
+    startsAt: '2027-03-13T14:00:00Z',
+    endsAt: '2027-03-13T20:00:00Z',
+    timezone: 'Asia/Kolkata',
+    venue: { name: 'Test hall' },
+  };
+  it('supports both roles, separate shared-email contacts and truthful dashboard counts', async () => {
+    const a = await wedding(),
+      { account } = await joinedManager(a);
+    const first = await writeGuest(
+      account.id,
+      a.weddingId,
+      { ...guest, email: ' FAMILY@example.test ' },
+      { key: randomUUID() },
+    );
+    expect(first.duplicateEmail).toBe(false);
+    const second = await writeGuest(
+      a.adminId,
+      a.weddingId,
+      { ...guest, displayName: 'Other family lead' },
+      { key: randomUUID() },
+    );
+    expect(second.id).not.toBe(first.id);
+    expect(second.duplicateEmail).toBe(true);
+    expect((await readGuest(account.id, first.id)).guest.duplicateEmail).toBe(
+      true,
+    );
+    expect((await workspaceCounts(a.weddingId)).guests).toBe(2);
+    await writeGuest(account.id, a.weddingId, undefined, {
+      id: first.id,
+      version: 0,
+      archive: true,
+    });
+    expect((await workspaceCounts(a.weddingId)).guests).toBe(1);
+    expect((await readGuest(a.adminId, second.id)).guest.duplicateEmail).toBe(
+      false,
+    );
+    expect(
+      await mongoose.connection
+        .collection('eventInvitations')
+        .countDocuments({ weddingId: a.wedding._id }),
+    ).toBe(0);
+  });
+  it('denies foreign reads/writes/references, stale context and removed actors', async () => {
+    const a = await wedding(),
+      b = await wedding(),
+      { account, member } = await joinedManager(a);
+    const event = await writeEvent(
+      b.adminId,
+      b.weddingId,
+      eventInput,
+      undefined,
+      undefined,
+      false,
+      randomUUID(),
+    );
+    await expect(
+      writeGuest(
+        a.adminId,
+        a.weddingId,
+        { ...guest, selectedEventIds: [event.id] },
+        { key: randomUUID() },
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      writeGuest(a.adminId, b.weddingId, guest, { key: randomUUID() }),
+    ).rejects.toMatchObject({ code: 'WEDDING_CONTEXT_CHANGED' });
+    const row = await writeGuest(a.adminId, a.weddingId, guest, {
+      key: randomUUID(),
+    });
+    expect((await listGuests(b.adminId, {})).guests).toHaveLength(0);
+    await expect(readGuest(b.adminId, row.id)).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(
+      writeGuest(
+        b.adminId,
+        b.weddingId,
+        { notes: 'Attack' },
+        { id: row.id, version: 0 },
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await removeManager(
+      a.adminId,
+      member.id,
+      a.weddingId,
+      member.membershipVersion,
+    );
+    await expect(
+      writeGuest(account.id, a.weddingId, guest, { key: randomUUID() }),
+    ).rejects.toMatchObject({ status: 403 });
+  });
+  it('deduplicates concurrent create retries, rejects payload reuse and archives safely', async () => {
+    const a = await wedding(),
+      key = randomUUID();
+    const [one, two] = await Promise.all(
+      [1, 2].map(() => writeGuest(a.adminId, a.weddingId, guest, { key })),
+    );
+    expect(one.id).toBe(two.id);
+    expect((await listGuests(a.adminId, {})).summary.total).toBe(1);
+    await expect(
+      writeGuest(
+        a.adminId,
+        a.weddingId,
+        { ...guest, displayName: 'Changed' },
+        { key },
+      ),
+    ).rejects.toMatchObject({ code: 'IDEMPOTENCY_CONFLICT' });
+    await writeGuest(
+      a.adminId,
+      a.weddingId,
+      { notes: 'Latest' },
+      { id: one.id, version: 0 },
+    );
+    expect(
+      (await writeGuest(a.adminId, a.weddingId, guest, { key })).notes,
+    ).toBe('Latest');
+    await expect(
+      writeGuest(
+        a.adminId,
+        a.weddingId,
+        { notes: 'Stale' },
+        { id: one.id, version: 0 },
+      ),
+    ).rejects.toMatchObject({ status: 412 });
+    await writeGuest(a.adminId, a.weddingId, undefined, {
+      id: one.id,
+      version: 1,
+      archive: true,
+    });
+    await expect(readGuest(a.adminId, one.id)).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(
+      writeGuest(a.adminId, a.weddingId, guest, { key }),
+    ).rejects.toMatchObject({ code: 'GUEST_ARCHIVED' });
+  });
+  it('searches literal text, filters functions and binds paging cursors to tenant and filters', async () => {
+    const a = await wedding(),
+      b = await wedding();
+    const event = await writeEvent(
+      a.adminId,
+      a.weddingId,
+      eventInput,
+      undefined,
+      undefined,
+      false,
+      randomUUID(),
+    );
+    for (let n = 0; n < 3; n++)
+      await writeGuest(
+        a.adminId,
+        a.weddingId,
+        {
+          ...guest,
+          displayName: 'Family [A] ' + n,
+          selectedEventIds: [event.id],
+        },
+        { key: randomUUID() },
+      );
+    await writeGuest(
+      a.adminId,
+      a.weddingId,
+      { ...guest, displayName: 'Different name', email: 'other@example.test' },
+      { key: randomUUID() },
+    );
+    const first = await listGuests(a.adminId, {
+      search: '[A]',
+      eventId: event.id,
+      limit: 2,
+    });
+    expect(first.guests).toHaveLength(2);
+    const second = await listGuests(a.adminId, {
+      search: '[A]',
+      eventId: event.id,
+      limit: 2,
+      cursor: first.nextCursor,
+    });
+    expect(
+      new Set([...first.guests, ...second.guests].map((g) => g.id)).size,
+    ).toBe(3);
+    await expect(
+      listGuests(b.adminId, {
+        search: '[A]',
+        eventId: event.id,
+        limit: 2,
+        cursor: first.nextCursor,
+      }),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(
+      listGuests(a.adminId, {
+        search: 'other',
+        limit: 2,
+        cursor: first.nextCursor,
+      }),
+    ).rejects.toMatchObject({ status: 400 });
+    expect((await listGuests(a.adminId, { search: '.*' })).guests).toHaveLength(
+      0,
+    );
+  });
+  it('serializes planned selections against function archival without creating invitations', async () => {
+    const a = await wedding(),
+      event = await writeEvent(
+        a.adminId,
+        a.weddingId,
+        eventInput,
+        undefined,
+        undefined,
+        false,
+        randomUUID(),
+      );
+    const results = await Promise.allSettled([
+      writeGuest(
+        a.adminId,
+        a.weddingId,
+        { ...guest, selectedEventIds: [event.id] },
+        { key: randomUUID() },
+      ),
+      writeEvent(a.adminId, a.weddingId, undefined, event.id, 0, true),
+    ]);
+    expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+    const page = await listGuests(a.adminId, {});
+    if (page.guests.length) {
+      expect(results[1]).toMatchObject({
+        status: 'rejected',
+        reason: { code: 'FUNCTION_HAS_LINKS' },
+      });
+      expect(page.guests[0].selectedEvents[0].id).toBe(event.id);
+    } else
+      expect(results[0]).toMatchObject({
+        status: 'rejected',
+        reason: { status: 404 },
+      });
+  });
+  it('blocks unsafe changes when private-access records already reference a contact', async () => {
+    const a = await wedding(),
+      row = await writeGuest(a.adminId, a.weddingId, guest, {
+        key: randomUUID(),
+      });
+    await mongoose.connection.collection('galleryTokens').insertOne({
+      weddingId: a.wedding._id,
+      guestContactId: new Types.ObjectId(row.id),
+    });
+    await expect(
+      writeGuest(
+        a.adminId,
+        a.weddingId,
+        { email: 'new@example.test' },
+        { id: row.id, version: 0 },
+      ),
+    ).rejects.toMatchObject({ code: 'GUEST_HAS_ACCESS' });
+    await expect(
+      writeGuest(a.adminId, a.weddingId, undefined, {
+        id: row.id,
+        version: 0,
+        archive: true,
+      }),
+    ).rejects.toMatchObject({ code: 'GUEST_HAS_ACCESS' });
+    expect(
+      (
+        await writeGuest(
+          a.adminId,
+          a.weddingId,
+          { notes: 'Safe note edit' },
+          { id: row.id, version: 0 },
+        )
+      ).notes,
+    ).toBe('Safe note edit');
   });
 });
 
