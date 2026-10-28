@@ -15,6 +15,12 @@ type Counts = {
   tasks: number;
   guests: number;
   expenseRecords: number;
+  upcoming?: {
+    id: string;
+    title: string;
+    startsAt: string;
+    timezone: string;
+  }[];
 };
 export function WeddingOverview({
   wedding,
@@ -189,6 +195,20 @@ export function WeddingOverview({
               <p className={styles.eyebrow}>Chronology</p>
               <h2>Upcoming functions</h2>
             </div>
+            {counts.upcoming?.map((event) => (
+              <p key={event.id}>
+                <Link href="/account/functions">{event.title}</Link>
+                <br />
+                <small>
+                  {new Intl.DateTimeFormat('en-IN', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                    timeZone: event.timezone,
+                  }).format(new Date(event.startsAt))}{' '}
+                  · {event.timezone}
+                </small>
+              </p>
+            ))}
             <div className={styles.emptyState}>
               <span className={styles.iconBadge}>
                 <MarketingIcon name="calendar" size={27} />
@@ -202,9 +222,9 @@ export function WeddingOverview({
                 From Haldi to Reception, give each celebration its own date and
                 place. Function planning is the next milestone.
               </p>
-              <button disabled className={styles.primaryButton}>
-                Schedule your first function <span>Coming next</span>
-              </button>
+              <Link href="/account/functions" className={styles.primaryButton}>
+                Manage functions
+              </Link>
             </div>
           </section>
           <section className={styles.overviewPanel}>

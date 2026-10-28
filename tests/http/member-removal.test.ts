@@ -216,6 +216,50 @@ afterAll(async () => {
 });
 
 describe('Manager removal through the running Next.js HTTP server', () => {
+  it('creates, edits and removes an unlinked function through Next HTTP', async () => {
+    const input = {
+      title: 'HTTP Sangeet',
+      description: 'Runtime verification',
+      startsAt: '2027-03-13T14:00:00Z',
+      endsAt: '2027-03-13T20:00:00Z',
+      timezone: 'Asia/Kolkata',
+      venue: { name: 'Test ballroom', address: 'Test venue' },
+    };
+    const created = await fetch(base + '/api/v1/events', {
+      method: 'POST',
+      headers: { ...headers(adminSecret), 'Content-Type': 'application/json' },
+      body: JSON.stringify(input),
+    });
+    expect(created.status).toBe(201);
+    const row = (await created.json()).data.event;
+    const changed = await fetch(base + '/api/v1/events/' + row.id, {
+      method: 'PATCH',
+      headers: {
+        ...headers(adminSecret),
+        'If-Match': '"0"',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...input, title: 'Updated Sangeet' }),
+    });
+    expect(changed.status).toBe(200);
+    const stale = await fetch(base + '/api/v1/events/' + row.id, {
+      method: 'DELETE',
+      headers: { ...headers(adminSecret), 'If-Match': '"0"' },
+    });
+    expect(stale.status).toBe(412);
+    const deleted = await fetch(base + '/api/v1/events/' + row.id, {
+      method: 'DELETE',
+      headers: { ...headers(adminSecret), 'If-Match': '"1"' },
+    });
+    expect(deleted.status).toBe(200);
+    expect(
+      (
+        await fetch(base + '/api/v1/events/' + row.id, {
+          headers: headers(adminSecret),
+        })
+      ).status,
+    ).toBe(404);
+  });
   it.each(['omitted', 'empty-string', 'empty-stream'] as const)(
     'accepts %s DELETE content and revokes membership, sessions and old invitations',
     async (framing) => {

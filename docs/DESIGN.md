@@ -35,6 +35,11 @@ Never show a completed operation or fabricated planning activity as real data.
 
 ## 5. Layout
 
+Functions uses the five user-attached references in designs/functions. Retain
+the warm canvas, editorial function titles, schedule cards and right-side form
+drawer. Mobile stacks fields/actions. Exclude state-preview tabs, dummy planning
+counts, muhurat recommendations and unimplemented invitation/publication controls.
+
 Manager-invitation references are archived in `designs/organizer-invitations`:
 Team Management, Invite & Revoke Dialogs, and Invitation Acceptance & States.
 All three inspected references are desktop screens from project 7444919587454097178. No dedicated mobile Team screen was listed; adapt with the

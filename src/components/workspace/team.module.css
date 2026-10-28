@@ -145,6 +145,14 @@
   background: #29232a66;
   backdrop-filter: blur(3px);
 }
+.functionDrawer {
+  width: min(580px, 100%);
+  max-height: 100dvh;
+  height: 100dvh;
+  margin: 0 0 0 auto;
+  border-radius: 0;
+  padding: 30px;
+}
 .actions {
   display: flex;
   justify-content: flex-end;

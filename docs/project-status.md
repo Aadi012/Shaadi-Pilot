@@ -379,6 +379,85 @@ handoff finalized 28 October.
 
 ## Next milestone
 
+Completed organizer invitation/removal work and the runtime DELETE fix were
+committed and pushed to dev as
+[1f73bbe](https://github.com/Aadi012/Shaadi-Pilot/commit/1f73bbea5d731cd60f1176ed8d95977de5d83f56)
+on 28 October. Local HEAD and remote refs/heads/dev were verified identical.
+The independent .env.example edit was excluded; configured secrets were absent
+from the staged text scan. No deployment was performed.
+
+### 10. Functions/events — 28 October 2026
+
+Status: In progress — first implementation and automated verification; visual
+review and production-readiness follow-ups remain.
+
+- User authorized this slice and selected blocking removal when linked records
+  exist. The [implementation plan](functions-plan.md) records scope and sequence.
+- Stitch lists desktop schedule, detail and form screens plus mobile management.
+  Metadata is accessible, but asset downloads return 401; fresh URLs and the
+  documented configured fallback did not retrieve approved exports. No visual
+  inspection or frontend implementation is claimed.
+- The user subsequently supplied five screenshots (three desktop and two mobile
+  captures). These were inspected from the attachments and archived in
+  docs/designs/functions. Screenshot access resolves the visual-reference blocker.
+- Implemented events module, GET/POST/PATCH/DELETE REST routes, Functions workspace,
+  details and create/edit drawer, manual venues, description, explicit timezone
+  conversion and version-checked updates. Both roles manage functions; writes
+  derive trusted membership and validate the stale-wedding guard. DST ambiguous
+  and nonexistent local times are rejected rather than guessed.
+- Linked-record removal is blocked; unlinked functions are archived. Shared
+  wedding write serializes mutation; future reference writers must participate
+  in this lock convention. Existing records are never cascade-deleted.
+- Added bounded cursor lists, schedule index setup and real upcoming overview
+  summaries. The additive development index was applied without changing records.
+- Automated evidence: 67 unit/render tests, 72 isolated integration tests and
+  seven running-Next HTTP tests passed. The latter includes function create/edit,
+  stale deletion and successful empty-DELETE removal. Production build passed.
+- Remaining review: desktop/mobile browser walkthrough, exact design fidelity,
+  durable POST idempotency after lost responses, richer per-field errors and
+  exhaustive event concurrency/pagination coverage. Drafts remain memory-only;
+  cancellation asks before discarding. Publication and related module panels are
+  deferred. No real wedding records were created and no commit/push/deploy was
+  performed for Functions. Do not mark this slice complete before follow-ups.
+
+- Form corrections (28 October): manual testing found populated dates failed to
+  save and canceled forms reopened with discarded values. Pending disabled the
+  fieldset before FormData was read, omitting all disabled controls. The client
+  now captures/validates the draft synchronously before pending or session fetch.
+  Closing the dialog resets/remounts the form, and each open begins a new form
+  generation. Confirmed Cancel/Escape and successful save discard old input;
+  validation/network/conflict failures keep the open draft intact.
+- Correction checks: 71 unit/render tests and production build pass. Four new
+  draft tests cover populated overnight dates, snapshot independence and unchanged
+  inputs on validation failure. No persistence logic changed; previous 72 MongoDB
+  and seven HTTP test results remain historical evidence, not rerun for this UI fix.
+  Browser verification was attempted but local browser use is disabled in Work
+  settings. Manual save/cancel/reopen/success-reopen verification remains pending;
+  no existing wedding records or memberships were modified.
+
+- Dashboard assertion follow-up (28 October): both exact wedding-overview count
+  assertions now include upcoming: [], matching fixtures without active upcoming
+  functions. No production behavior changed. The full isolated integration suite
+  passes all 72 tests; npm run check passes all 71 unit/render tests plus format,
+  lint and types. Production build passes after removing only the verified
+  generated .next/server output affected by a Windows/OneDrive EPERM cleanup error.
+  Tasks is proposed next in [the scoped plan](tasks-plan.md); no Tasks code has
+  been implemented. Functions review/retry limitations above remain open.
+
+- Commit handoff (28 October): user authorized committing and pushing this slice
+  to dev. Fresh npm run check passes formatting, lint, types and all 71 unit/render
+  tests. The isolated integration rerun passes all 72 tests, and the running-Next
+  HTTP regression suite passes all seven tests. Initial integration execution
+  stalled and was stopped; the network-enabled rerun passed. Production build
+  passes after scoped cleanup of generated .next/node_modules and .next/server
+  output affected by Windows/OneDrive permission/directory cleanup errors.
+  The independent .env.example edit is excluded. Browser verification and durable
+  create-retry work remain open; this is not a production-readiness signoff.
+- Tasks remains planned, not implemented. The user approved date/time deadlines
+  in the wedding timezone and preserving removed-Manager assignments with a
+  “Former organizer — reassign” label. These approvals are recorded in
+  architecture-decisions.md and tasks-plan.md.
+
 Implement Functions as the first planning module and populate its overview panel
 after review of Manager removal. Continue with
 Tasks, Guests, private invitations/RSVP and the remaining [V1 roadmap](roadmap.md).

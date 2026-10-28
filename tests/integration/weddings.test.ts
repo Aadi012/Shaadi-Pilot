@@ -272,6 +272,7 @@ describe('wedding creation and tenant isolation', () => {
       tasks: 0,
       guests: 0,
       expenseRecords: 0,
+      upcoming: [],
     });
     expect(await WeddingCreation.countDocuments()).toBe(1);
   });
@@ -360,6 +361,7 @@ describe('wedding creation and tenant isolation', () => {
       tasks: 0,
       guests: 0,
       expenseRecords: 0,
+      upcoming: [],
     });
   });
   it('allows only one wedding under competing requests for the same organizer', async () => {

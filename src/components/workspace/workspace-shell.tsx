@@ -34,7 +34,7 @@ export function WorkspaceShell({
   wedding: WeddingDto;
   name: string;
   role: 'admin' | 'manager';
-  active?: 'Overview' | 'Settings' | 'Team';
+  active?: 'Overview' | 'Settings' | 'Team' | 'Functions';
 }) {
   const drawer = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -59,14 +59,17 @@ export function WorkspaceShell({
                 {item.group && <p className={styles.navGroup}>{item.group}</p>}
                 {item.label === 'Overview' ||
                 item.label === 'Settings' ||
+                item.label === 'Functions' ||
                 item.label === 'Team' ? (
                   <a
                     href={
-                      item.label === 'Team'
-                        ? '/account/team'
-                        : item.label === 'Settings'
-                          ? '/account/settings/wedding'
-                          : '/account'
+                      item.label === 'Functions'
+                        ? '/account/functions'
+                        : item.label === 'Team'
+                          ? '/account/team'
+                          : item.label === 'Settings'
+                            ? '/account/settings/wedding'
+                            : '/account'
                     }
                     aria-current={item.label === active ? 'page' : undefined}
                     className={

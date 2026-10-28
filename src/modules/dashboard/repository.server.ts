@@ -7,12 +7,34 @@ export async function workspaceCounts(weddingId: string) {
   const db = await connectDatabase();
   const tenant = { weddingId: new Types.ObjectId(weddingId) };
   const [functions, tasks, guests, expenseRecords] = await Promise.all([
-    db.connection.collection('events').countDocuments(tenant),
+    db.connection
+      .collection('events')
+      .countDocuments({ ...tenant, status: { $ne: 'archived' } }),
     db.connection
       .collection('tasks')
       .countDocuments({ ...tenant, status: { $ne: 'done' } }),
     db.connection.collection('guestContacts').countDocuments(tenant),
     db.connection.collection('expenses').countDocuments(tenant),
   ]);
-  return { functions, tasks, guests, expenseRecords };
+  const upcoming = await db.connection
+    .collection('events')
+    .find(
+      { ...tenant, status: 'active', endsAt: { $gt: new Date() } },
+      { projection: { title: 1, startsAt: 1, timezone: 1 } },
+    )
+    .sort({ startsAt: 1, _id: 1 })
+    .limit(5)
+    .toArray();
+  return {
+    functions,
+    tasks,
+    guests,
+    expenseRecords,
+    upcoming: upcoming.map((row) => ({
+      id: row._id.toString(),
+      title: String(row.title),
+      startsAt: (row.startsAt as Date).toISOString(),
+      timezone: String(row.timezone),
+    })),
+  };
 }

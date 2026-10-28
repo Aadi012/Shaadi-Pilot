@@ -209,6 +209,19 @@ repeated deletion safely fails after removal and cannot affect a new membership.
 Existing assignments are retained; the Tasks slice must define presentation and
 reassignment for former organizers without exposing another wedding's data.
 
+## Functions first implementation — 28 October 2026
+
+The user supplied approved screenshots and selected blocking function removal
+when linked records exist. Unlinked functions are archived. Reference writers in
+future modules must serialize against the shared wedding write used by events;
+uncoordinated inserts cannot guarantee deletion isolation. The first API uses
+strict title/description, UTC startsAt/endsAt, explicit IANA timezone and manually
+entered venue name/address. Description follows the PRD (the source API summary
+omitted it); richer structured/Places venue fields and publication remain deferred.
+Local datetime conversion rejects DST gaps/repeated hours. PATCH/DELETE require
+strong numeric If-Match; writes require Origin, CSRF and expected wedding context.
+The first implementation is still under review; see project status for limitations.
+
 ## Remaining open product and contract decisions
 
 | Topic                  | Conflict or missing decision                                                                                                     | Proposal awaiting confirmation                                                   |
@@ -388,6 +401,19 @@ graphical ERD was found. Conversion does not reconcile conflicts or approve
 provisional product policies.
 
 ## Delivery order
+
+### Tasks policy approval — 28 October 2026
+
+The user approved optional task deadlines as date and time in the wedding's IANA
+timezone, persisted as a UTC dueAt instant. Incomplete tasks become overdue when
+dueAt is earlier than now; tasks without a deadline are never overdue. Handle
+ambiguous or nonexistent local times explicitly rather than silently guessing.
+
+The user also approved preserving tasks assigned to a removed Manager and showing
+“Former organizer — reassign”. Do not delete tasks or automatically clear their
+assignment. New assignments require active same-wedding membership; allow clearing
+or replacing a former assignment without exposing another wedding's user profile.
+These are approved policies for the planned Tasks slice, not implemented features.
 
 1. Scaffold and checks.
 2. Identity, tenancy, membership and the email delivery needed for recovery/invites.

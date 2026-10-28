@@ -64,6 +64,11 @@ import {
 } from '@/modules/memberships/context.server';
 import * as inviteRepository from '@/modules/memberships/repository.server';
 import { findSession } from '@/modules/auth/repository.server';
+import {
+  writeEvent,
+  listEvents,
+  readEvent,
+} from '@/modules/events/service.server';
 
 const database = 'sp_mem_test_' + randomUUID().replaceAll('-', '').slice(0, 24);
 let sequence = 0;
@@ -252,6 +257,63 @@ function removeHttp(targetId: string, options: Parameters<typeof call>[1]) {
     { ...options, method: 'DELETE' },
   );
 }
+describe('Functions', () => {
+  const input = {
+    title: 'Sangeet',
+    description: 'Celebration',
+    startsAt: '2027-03-13T14:00:00Z',
+    endsAt: '2027-03-13T20:00:00Z',
+    timezone: 'Asia/Kolkata',
+    venue: { name: 'Grand ballroom', address: 'Jaipur' },
+  };
+  it('isolates tenants, supports Manager edits and rejects stale versions', async () => {
+    const a = await wedding(),
+      b = await wedding();
+    const manager = await user();
+    await User.updateOne(
+      { _id: manager._id },
+      { $set: { weddingId: a.wedding._id, role: 'manager' } },
+    );
+    const row = await writeEvent(a.adminId, a.weddingId, input);
+    expect((await listEvents(b.adminId)).events).toHaveLength(0);
+    await expect(readEvent(b.adminId, row.id)).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(
+      writeEvent(a.adminId, b.weddingId, input),
+    ).rejects.toMatchObject({ status: 409 });
+    const edited = await writeEvent(
+      manager._id.toString(),
+      a.weddingId,
+      { ...input, title: 'Edited' },
+      row.id,
+      0,
+    );
+    expect(edited.version).toBe(1);
+    await expect(
+      writeEvent(a.adminId, a.weddingId, input, row.id, 0),
+    ).rejects.toMatchObject({ status: 412 });
+  });
+  it('blocks linked removal and archives only an unlinked function', async () => {
+    const a = await wedding();
+    const row = await writeEvent(a.adminId, a.weddingId, input);
+    const task = await mongoose.connection.collection('tasks').insertOne({
+      weddingId: a.wedding._id,
+      eventId: new Types.ObjectId(row.id),
+    });
+    await expect(
+      writeEvent(a.adminId, a.weddingId, undefined, row.id, 0, true),
+    ).rejects.toMatchObject({ code: 'FUNCTION_HAS_LINKS' });
+    await mongoose.connection
+      .collection('tasks')
+      .deleteOne({ _id: task.insertedId });
+    await writeEvent(a.adminId, a.weddingId, undefined, row.id, 0, true);
+    expect((await listEvents(a.adminId)).events).toHaveLength(0);
+    await expect(readEvent(a.adminId, row.id)).rejects.toMatchObject({
+      status: 404,
+    });
+  });
+});
 describe('Manager removal', () => {
   it('detaches only this membership, invalidates all sessions and invitations, and retains the account and planning records', async () => {
     const scope = await wedding();
