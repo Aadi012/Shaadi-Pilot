@@ -64,7 +64,11 @@ export const insertDelivery = async (
 export const claimDelivery = (
   now: Date,
   id?: string,
-  kind: 'password-reset' | 'member-invite' = 'password-reset',
+  kind:
+    | 'password-reset'
+    | 'member-invite'
+    | 'guest-invite'
+    | 'guest-reminder' = 'password-reset',
 ) =>
   EmailDelivery.findOneAndUpdate(
     {
@@ -118,12 +122,13 @@ export const markAttempt = (delivery: DeliveryRecord, now: Date) =>
 export const weddingDeliveryStates = (
   weddingId: Types.ObjectId,
   ids: Types.ObjectId[],
+  kind: 'member-invite' | 'guest-invite' | 'guest-reminder' = 'member-invite',
 ) =>
   EmailDelivery.find({
     _id: { $in: ids },
     scope: 'wedding',
     weddingId,
-    kind: 'member-invite',
+    kind,
   })
     .select('_id state')
     .lean();

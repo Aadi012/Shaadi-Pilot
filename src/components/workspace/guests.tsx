@@ -12,6 +12,8 @@ import {
   guestCreateAfterFailure,
 } from './guest-request';
 import { loadedGuestPage, type GuestPage as Page } from './guest-list';
+import { InvitationRoster } from './invitation-roster';
+import { GuestInvitation } from './guest-invitation';
 import shared from './team.module.css';
 import styles from './guests.module.css';
 import form from './workspace.module.css';
@@ -281,6 +283,7 @@ export function Guests({
             {error}
           </p>
         )}
+        <InvitationRoster weddingId={wedding.id} events={events} />
         <section className={styles.summary} aria-label="Guest contact summary">
           <article>
             <h2>Primary guest contacts</h2>
@@ -294,8 +297,9 @@ export function Guests({
           </article>
         </section>
         <p className={shared.permissionNote}>
-          Function selections are planning only. Private invitation links, email
-          sending and per-function RSVP will be available in the next feature.
+          Function selections are planning only. Open a guest’s details to
+          review, issue and send a private invitation, then track their function
+          RSVPs.
         </p>
         <form
           className={styles.filters}
@@ -520,7 +524,7 @@ export function Guests({
               </h3>
               <p>
                 {confirmation === 'archive'
-                  ? 'This removes the contact from active planning and preserves its history. Existing private access records block this action until the revocation workflow is available.'
+                  ? 'This removes the contact from active planning and preserves its history. Revoke active invitation access first; existing gallery-access records also block removal.'
                   : confirmation === 'latest'
                     ? 'Your current draft will be discarded. Review the latest version before editing again.'
                     : 'Your unsaved changes will be discarded. If you attempted a save, check the refreshed directory before adding another contact.'}
@@ -714,9 +718,16 @@ export function Guests({
                     <p>No functions selected.</p>
                   )}
                   <p className={styles.help}>
-                    Planning selection only. No guest links or invitations are
-                    created in this feature.
+                    Planning selection only. Review and explicitly issue the
+                    private invitation below.
                   </p>
+                  <GuestInvitation
+                    key={selected.id + ':' + selected.version}
+                    guest={selected}
+                    weddingId={wedding.id}
+                    userId={userId}
+                    onPendingChange={setPending}
+                  />
                   <div className={shared.actions}>
                     <button
                       className={form.textButton}

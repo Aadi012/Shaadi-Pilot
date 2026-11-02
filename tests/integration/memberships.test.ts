@@ -83,7 +83,105 @@ import {
   readGuest,
 } from '@/modules/guests/service.server';
 import { guestIndexes } from '@/modules/guests/indexes';
+import sharp from 'sharp';
+import { expenseIndexes } from '@/modules/expenses/indexes';
+import {
+  writeExpense,
+  listExpenses,
+  readExpense,
+  expenseSummary,
+} from '@/modules/expenses/service.server';
+import { weddingOverview } from '@/modules/dashboard/service.server';
+import { galleryIndexes } from '@/modules/gallery/indexes';
+import {
+  createUpload,
+  completeUpload,
+  listPhotos,
+  photoView,
+  removePhoto,
+  cleanupPhotos,
+} from '@/modules/gallery/service.server';
+import type { PhotoStorage } from '@/modules/gallery/storage.server';
+import { MAX_PHOTO_BYTES } from '@/modules/gallery/contracts';
+import { invitationIndexes } from '@/modules/invitations/indexes';
+import {
+  changeInvitation,
+  organizerInvitation,
+  shareInvitation,
+  exchangeInvitation,
+  guestHub,
+  saveRsvp,
+  endGuestSession,
+  attendanceOverview,
+  guestEmailEligible,
+  guestReminderEligible,
+  functionRoster,
+} from '@/modules/invitations/service.server';
+import {
+  dispatchGuestEmails,
+  dispatchGuestReminders,
+} from '@/modules/email/service.server';
 import { workspaceCounts } from '@/modules/dashboard/repository.server';
+async function invitationFixture(
+  scope: Awaited<ReturnType<typeof wedding>>,
+  email = 'guest@example.test',
+) {
+  const startsAt = new Date(Date.now() + 3 * 86400000).toISOString();
+  const event = await writeEvent(
+    scope.adminId,
+    scope.weddingId,
+    {
+      title: 'Private celebration',
+      description: 'A family celebration',
+      startsAt,
+      endsAt: new Date(Date.parse(startsAt) + 3600000).toISOString(),
+      timezone: 'Asia/Kolkata',
+      venue: { name: 'Private venue', address: 'Venue address' },
+    },
+    undefined,
+    undefined,
+    false,
+    randomUUID(),
+  );
+  const guest = await writeGuest(
+    scope.adminId,
+    scope.weddingId,
+    {
+      displayName: 'Invited family',
+      email,
+      notes: 'Never public',
+      selectedEventIds: [event.id],
+    },
+    { key: randomUUID() },
+  );
+  return { event, guest };
+}
+async function issuedFixture(
+  scope: Awaited<ReturnType<typeof wedding>>,
+  email?: string,
+) {
+  const fixture = await invitationFixture(scope, email);
+  const issued = await changeInvitation(
+    scope.adminId,
+    scope.weddingId,
+    fixture.guest.id,
+    'issue',
+    { guestVersion: fixture.guest.version },
+    randomUUID(),
+  );
+  const shared = await shareInvitation(
+    scope.adminId,
+    scope.weddingId,
+    fixture.guest.id,
+  );
+  const params = new URLSearchParams(new URL(shared.link).hash.slice(1));
+  const capability = {
+    publicId: params.get('publicId')!,
+    secret: params.get('secret')!,
+  };
+  const session = await exchangeInvitation(capability);
+  return { ...fixture, issued, shared, capability, token: session.token };
+}
 
 const database = 'sp_mem_test_' + randomUUID().replaceAll('-', '').slice(0, 24);
 let sequence = 0;
@@ -115,6 +213,9 @@ beforeAll(async () => {
       ...membershipIndexes,
       ...taskIndexes,
       ...guestIndexes,
+      ...invitationIndexes,
+      ...galleryIndexes,
+      ...expenseIndexes,
     ])
       await mongoose.connection
         .collection(collection)
@@ -124,6 +225,545 @@ beforeAll(async () => {
       'Isolated membership test setup failed; connection details withheld.',
     );
   }
+});
+describe('Private guest invitation hub and per-function RSVP', () => {
+  it('shows multiple explicitly invited functions on one link with independent responses', async () => {
+    const scope = await wedding(),
+      first = await invitationFixture(scope),
+      second = await invitationFixture(scope);
+    const guest = await writeGuest(
+      scope.adminId,
+      scope.weddingId,
+      { selectedEventIds: [first.event.id, second.event.id] },
+      { id: first.guest.id, version: first.guest.version },
+    );
+    await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      guest.id,
+      'issue',
+      { guestVersion: guest.version },
+      randomUUID(),
+    );
+    const link = await shareInvitation(
+      scope.adminId,
+      scope.weddingId,
+      guest.id,
+    );
+    const session = await exchangeInvitation(
+      Object.fromEntries(new URLSearchParams(new URL(link.link).hash.slice(1))),
+    );
+    const hub = await guestHub(session.token);
+    expect(hub.invitations).toHaveLength(2);
+    const a = hub.invitations.find((e) => e.eventId === first.event.id)!,
+      b = hub.invitations.find((e) => e.eventId === second.event.id)!;
+    await saveRsvp(
+      session.token,
+      hub.context,
+      { invitationId: a.id, status: 'attending', additionalGuests: 15 },
+      a.version,
+    );
+    await saveRsvp(
+      session.token,
+      hub.context,
+      { invitationId: b.id, status: 'declined', additionalGuests: 0 },
+      b.version,
+    );
+    const result = await guestHub(session.token);
+    expect(result.invitations.find((e) => e.id === a.id)).toMatchObject({
+      status: 'attending',
+      headcount: '16',
+    });
+    expect(result.invitations.find((e) => e.id === b.id)).toMatchObject({
+      status: 'declined',
+      headcount: '0',
+    });
+  });
+  it('requires explicit issue, supports Managers and isolates shared-email contacts and their functions', async () => {
+    const scope = await wedding(),
+      fixture = await invitationFixture(scope, 'shared@example.test');
+    expect(
+      (await organizerInvitation(scope.adminId, fixture.guest.id)).link,
+    ).toBeNull();
+    await expect(
+      exchangeInvitation({ publicId: fixture.guest.id, secret: newSecret() }),
+    ).rejects.toMatchObject({ code: 'INVALID_OR_EXPIRED_LINK' });
+    const manager = await user();
+    await User.updateOne(
+      { _id: manager._id },
+      { $set: { weddingId: scope.wedding._id, role: 'manager' } },
+    );
+    const state = await changeInvitation(
+      manager._id.toString(),
+      scope.weddingId,
+      fixture.guest.id,
+      'issue',
+      { guestVersion: fixture.guest.version },
+      randomUUID(),
+    );
+    const other = await issuedFixture(scope, 'shared@example.test');
+    const hub = await guestHub(other.token);
+    expect(hub.invitations.map((e) => e.eventId)).toEqual([other.event.id]);
+    const serialized = JSON.stringify(hub);
+    expect(serialized).not.toContain('shared@example.test');
+    expect(serialized).not.toContain('Never public');
+    expect(serialized).not.toContain('tokenHash');
+    await expect(
+      saveRsvp(
+        other.token,
+        hub.context,
+        {
+          invitationId: state.invitations[0].id,
+          status: 'attending',
+          additionalGuests: 0,
+        },
+        state.invitations[0].version,
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      saveRsvp(
+        other.token,
+        state.link!.id,
+        {
+          invitationId: hub.invitations[0].id,
+          status: 'attending',
+          additionalGuests: 0,
+        },
+        hub.invitations[0].version,
+      ),
+    ).rejects.toMatchObject({ code: 'GUEST_CONTEXT_CHANGED' });
+  });
+  it('issues and queues email idempotently without resetting responses, storing secrets only encrypted or hashed', async () => {
+    const scope = await wedding(),
+      f = await issuedFixture(scope);
+    expect(Date.parse(f.issued.link!.expiresAt)).toBe(
+      Date.parse(f.event.endsAt) + 30 * 86400000,
+    );
+    const hub = await guestHub(f.token),
+      row = hub.invitations[0];
+    await saveRsvp(
+      f.token,
+      hub.context,
+      { invitationId: row.id, status: 'attending', additionalGuests: 15 },
+      row.version,
+    );
+    const issueKey = randomUUID();
+    const requests = await Promise.all(
+      [0, 1].map(() =>
+        changeInvitation(
+          scope.adminId,
+          scope.weddingId,
+          f.guest.id,
+          'issue',
+          { guestVersion: f.guest.version },
+          issueKey,
+        ),
+      ),
+    );
+    expect(requests[0].link!.id).toBe(f.issued.link!.id);
+    expect(requests[1].invitations[0].headcount).toBe('16');
+    const key = randomUUID();
+    const sent = await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'send',
+      undefined,
+      key,
+      f.issued.link!.version,
+    );
+    const replay = await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'send',
+      undefined,
+      key,
+      f.issued.link!.version,
+    );
+    expect(replay.deliveryId).toBe(sent.deliveryId);
+    expect(
+      await EmailDelivery.countDocuments({
+        weddingId: scope.wedding._id,
+        kind: 'guest-invite',
+      }),
+    ).toBe(1);
+    const batch = await EmailBatch.findById(sent.deliveryId)
+      .select('+encrypted')
+      .lean();
+    const mail = JSON.parse(
+      decryptEmail(batch!.encrypted!, batch!._id.toString()),
+    )[0];
+    expect(mail.to).toEqual(['guest@example.test']);
+    expect(mail.text).toContain(f.shared.link);
+    const raw = await mongoose.connection
+      .collection('guestInvitationLinks')
+      .findOne({ _id: new Types.ObjectId(f.issued.link!.id) });
+    expect(JSON.stringify(raw)).not.toContain(f.capability.secret);
+    expect(raw!.tokenHash).toBe(hashSecret(f.capability.secret));
+    const send = vi
+      .fn()
+      .mockResolvedValue({ kind: 'submitted', id: 'guest_mock_accepted' });
+    await dispatchGuestEmails(
+      guestEmailEligible,
+      { id: sent.deliveryId },
+      send,
+    );
+    expect(send).toHaveBeenCalledOnce();
+    expect(
+      (await organizerInvitation(scope.adminId, f.guest.id)).delivery,
+    ).toBe('submitted');
+    await expect(
+      changeInvitation(
+        scope.adminId,
+        scope.weddingId,
+        f.guest.id,
+        'issue',
+        { guestVersion: f.guest.version },
+        key,
+      ),
+    ).rejects.toMatchObject({ code: 'IDEMPOTENCY_CONFLICT' });
+  });
+  it('revokes old links and sessions, permits reviewed contact changes, and reissues only reviewed functions', async () => {
+    const scope = await wedding(),
+      f = await issuedFixture(scope);
+    const hub = await guestHub(f.token),
+      row = hub.invitations[0];
+    await saveRsvp(
+      f.token,
+      hub.context,
+      { invitationId: row.id, status: 'attending', additionalGuests: 2 },
+      row.version,
+    );
+    await expect(
+      writeGuest(
+        scope.adminId,
+        scope.weddingId,
+        { email: 'changed@example.test' },
+        { id: f.guest.id, version: f.guest.version },
+      ),
+    ).rejects.toMatchObject({ code: 'GUEST_HAS_ACCESS' });
+    await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'revoke',
+      undefined,
+      undefined,
+      f.issued.link!.version,
+    );
+    await expect(guestHub(f.token)).rejects.toMatchObject({
+      code: 'INVALID_OR_EXPIRED_LINK',
+    });
+    await expect(exchangeInvitation(f.capability)).rejects.toMatchObject({
+      code: 'INVALID_OR_EXPIRED_LINK',
+    });
+    await expect(
+      saveRsvp(
+        f.token,
+        hub.context,
+        { invitationId: row.id, status: 'declined', additionalGuests: 0 },
+        row.version,
+      ),
+    ).rejects.toMatchObject({ status: 401 });
+    const changed = await writeGuest(
+      scope.adminId,
+      scope.weddingId,
+      { email: 'changed@example.test' },
+      { id: f.guest.id, version: f.guest.version },
+    );
+    const revoked = await organizerInvitation(scope.adminId, f.guest.id);
+    await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'rotate',
+      { guestVersion: changed.version },
+      randomUUID(),
+      revoked.link!.version,
+    );
+    const link = await shareInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+    );
+    expect(link.link).not.toBe(f.shared.link);
+    const params = new URLSearchParams(new URL(link.link).hash.slice(1));
+    const fresh = await exchangeInvitation(Object.fromEntries(params));
+    expect((await guestHub(fresh.token)).invitations[0].headcount).toBe('3');
+    await expect(guestHub(f.token)).rejects.toMatchObject({ status: 401 });
+    const raw = await mongoose.connection
+      .collection('eventInvitations')
+      .findOne({ _id: new Types.ObjectId(row.id) });
+    expect(raw!.rsvpStatus).toBe('attending');
+  });
+  it('enforces tenant, membership, stale review and optimistic link versions', async () => {
+    const scope = await wedding(),
+      foreign = await wedding(),
+      f = await issuedFixture(scope);
+    await expect(
+      organizerInvitation(foreign.adminId, f.guest.id),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      shareInvitation(foreign.adminId, foreign.weddingId, f.guest.id),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      changeInvitation(
+        scope.adminId,
+        foreign.weddingId,
+        f.guest.id,
+        'revoke',
+        undefined,
+        undefined,
+        f.issued.link!.version,
+      ),
+    ).rejects.toMatchObject({ code: 'WEDDING_CONTEXT_CHANGED' });
+    await expect(
+      changeInvitation(
+        scope.adminId,
+        scope.weddingId,
+        f.guest.id,
+        'rotate',
+        { guestVersion: f.guest.version + 1 },
+        randomUUID(),
+        f.issued.link!.version,
+      ),
+    ).rejects.toMatchObject({ status: 412 });
+    const rotations = await Promise.allSettled(
+      [0, 1].map(() =>
+        changeInvitation(
+          scope.adminId,
+          scope.weddingId,
+          f.guest.id,
+          'rotate',
+          { guestVersion: f.guest.version },
+          randomUUID(),
+          f.issued.link!.version,
+        ),
+      ),
+    );
+    expect(rotations.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+    expect(rotations.find((r) => r.status === 'rejected')).toMatchObject({
+      reason: { status: 412 },
+    });
+    const manager = await user();
+    await User.updateOne(
+      { _id: manager._id },
+      { $set: { weddingId: scope.wedding._id, role: 'manager' } },
+    );
+    await User.updateOne(
+      { _id: manager._id },
+      { $set: { weddingId: null, role: null } },
+    );
+    await expect(
+      organizerInvitation(manager._id.toString(), f.guest.id),
+    ).rejects.toMatchObject({ status: 403 });
+  });
+  it('keeps exact headcounts, independent function responses and stale-write protection', async () => {
+    const scope = await wedding(),
+      f = await issuedFixture(scope),
+      other = await issuedFixture(scope);
+    const hub = await guestHub(f.token),
+      row = hub.invitations[0];
+    const body = {
+      invitationId: row.id,
+      status: 'attending',
+      additionalGuests: Number.MAX_SAFE_INTEGER,
+    };
+    const saved = await saveRsvp(f.token, hub.context, body, row.version);
+    expect(saved.headcount).toBe('9007199254740992');
+    expect(
+      (await saveRsvp(f.token, hub.context, body, row.version)).version,
+    ).toBe(saved.version);
+    await expect(
+      saveRsvp(
+        f.token,
+        hub.context,
+        { ...body, additionalGuests: 1 },
+        row.version,
+      ),
+    ).rejects.toMatchObject({ status: 412 });
+    const second = await writeGuest(
+      scope.adminId,
+      scope.weddingId,
+      {
+        displayName: 'Second family',
+        email: 'second@example.test',
+        selectedEventIds: [f.event.id],
+      },
+      { key: randomUUID() },
+    );
+    await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      second.id,
+      'issue',
+      { guestVersion: second.version },
+      randomUUID(),
+    );
+    const shared = await shareInvitation(
+        scope.adminId,
+        scope.weddingId,
+        second.id,
+      ),
+      secondSession = await exchangeInvitation(
+        Object.fromEntries(
+          new URLSearchParams(new URL(shared.link).hash.slice(1)),
+        ),
+      );
+    const secondHub = await guestHub(secondSession.token),
+      secondRow = secondHub.invitations[0];
+    await saveRsvp(
+      secondSession.token,
+      secondHub.context,
+      { invitationId: secondRow.id, status: 'attending', additionalGuests: 1 },
+      secondRow.version,
+    );
+    expect(
+      (await attendanceOverview(scope.weddingId)).find(
+        (e) => e.eventId === f.event.id,
+      ),
+    ).toMatchObject({
+      attending: 2,
+      pending: 0,
+      headcount: '9007199254740994',
+    });
+    expect((await guestHub(other.token)).invitations[0].status).toBe('pending');
+    const declined = await saveRsvp(
+      f.token,
+      hub.context,
+      { invitationId: row.id, status: 'declined', additionalGuests: 0 },
+      saved.version,
+    );
+    expect(declined.headcount).toBe('0');
+    expect(
+      (await attendanceOverview(scope.weddingId)).find(
+        (e) => e.eventId === f.event.id,
+      ),
+    ).toMatchObject({ attending: 1, declined: 1, headcount: '2' });
+  });
+  it('checks cutoff, expiry and active lifecycle independently of public publishing', async () => {
+    const scope = await wedding(),
+      f = await issuedFixture(scope),
+      hub = await guestHub(f.token),
+      row = hub.invitations[0];
+    expect(scope.wedding.isPublished).toBe(false);
+    expect(hub.invitations).toHaveLength(1);
+    await writeEvent(
+      scope.adminId,
+      scope.weddingId,
+      {
+        title: f.event.title,
+        description: f.event.description,
+        startsAt: new Date(Date.now() - 1000).toISOString(),
+        endsAt: f.event.endsAt,
+        timezone: f.event.timezone,
+        venue: f.event.venue,
+      },
+      f.event.id,
+      f.event.version,
+    );
+    await expect(
+      saveRsvp(
+        f.token,
+        hub.context,
+        { invitationId: row.id, status: 'attending', additionalGuests: 0 },
+        row.version,
+      ),
+    ).rejects.toMatchObject({ code: 'RSVP_CLOSED' });
+    expect((await guestHub(f.token)).invitations[0].closed).toBe(true);
+    await mongoose.connection
+      .collection('guestInvitationLinks')
+      .updateOne(
+        { _id: new Types.ObjectId(f.issued.link!.id) },
+        { $set: { expiresAt: new Date(Date.now() - 1000) } },
+      );
+    await expect(guestHub(f.token)).rejects.toMatchObject({ status: 401 });
+    expect(await attendanceOverview(scope.weddingId)).toEqual([]);
+    const another = await issuedFixture(scope);
+    await Wedding.updateOne(
+      { _id: scope.wedding._id },
+      { $set: { status: 'archived' } },
+    );
+    await expect(guestHub(another.token)).rejects.toMatchObject({
+      status: 401,
+    });
+  });
+  it('serializes revocation against RSVP and cancels queued mail without calling the provider', async () => {
+    const scope = await wedding(),
+      f = await issuedFixture(scope),
+      hub = await guestHub(f.token),
+      row = hub.invitations[0];
+    const queued = await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'send',
+      undefined,
+      randomUUID(),
+      f.issued.link!.version,
+    );
+    const results = await Promise.allSettled([
+      saveRsvp(
+        f.token,
+        hub.context,
+        { invitationId: row.id, status: 'attending', additionalGuests: 2 },
+        row.version,
+      ),
+      changeInvitation(
+        scope.adminId,
+        scope.weddingId,
+        f.guest.id,
+        'revoke',
+        undefined,
+        undefined,
+        f.issued.link!.version,
+      ),
+    ]);
+    expect(results[1].status).toBe('fulfilled');
+    if (results[0].status === 'rejected')
+      expect(results[0].reason).toMatchObject({ status: 401 });
+    await expect(guestHub(f.token)).rejects.toMatchObject({ status: 401 });
+    const send = vi.fn();
+    expect(
+      (
+        await dispatchGuestEmails(
+          guestEmailEligible,
+          { id: queued.deliveryId },
+          send,
+        )
+      ).cancelled,
+    ).toBe(1);
+    expect(send).not.toHaveBeenCalled();
+    expect(await attendanceOverview(scope.weddingId)).toEqual([]);
+  });
+  it('expires and closes guest sessions without affecting another session or organizer membership', async () => {
+    const scope = await wedding(),
+      f = await issuedFixture(scope),
+      second = await exchangeInvitation(f.capability);
+    const sessionRecord = await mongoose.connection
+      .collection('guestInvitationSessions')
+      .findOne({ tokenHash: hashSecret(f.token) });
+    expect(sessionRecord!.expiresAt.getTime()).toBeLessThanOrEqual(
+      Date.now() + 7 * 86400000,
+    );
+    expect(sessionRecord!.expiresAt.getTime()).toBeLessThanOrEqual(
+      Date.parse(f.issued.link!.expiresAt),
+    );
+    await endGuestSession(f.token);
+    await expect(guestHub(f.token)).rejects.toMatchObject({ status: 401 });
+    expect((await guestHub(second.token)).guestName).toBe(f.guest.displayName);
+    await mongoose.connection
+      .collection('guestInvitationSessions')
+      .updateOne(
+        { tokenHash: hashSecret(second.token) },
+        { $set: { expiresAt: new Date(Date.now() - 1) } },
+      );
+    await expect(guestHub(second.token)).rejects.toMatchObject({ status: 401 });
+    expect(
+      (await User.findById(scope.admin._id).lean())!.weddingId!.toString(),
+    ).toBe(scope.weddingId);
+  });
 });
 afterAll(async () => {
   try {
@@ -1903,5 +2543,699 @@ describe('Invitation HTTP boundaries', () => {
         })
       ).status,
     ).toBe(403);
+  });
+});
+
+describe('Function roster and manual RSVP reminders', () => {
+  it('queues one immutable reminder across matching retries and cancels it after a response', async () => {
+    const scope = await wedding(),
+      f = await issuedFixture(scope),
+      key = randomUUID();
+    const sent = await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'remind',
+      undefined,
+      key,
+      f.issued.link!.version,
+    );
+    const replay = await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'remind',
+      undefined,
+      key,
+      f.issued.link!.version,
+    );
+    expect(replay.deliveryId).toBe(sent.deliveryId);
+    const jobs = await EmailDelivery.find({
+      weddingId: scope.wedding._id,
+      kind: 'guest-reminder',
+    }).lean();
+    expect(jobs).toHaveLength(1);
+    expect(jobs[0].reminderEventIds?.map((id) => id.toString())).toEqual([
+      f.event.id,
+    ]);
+    const payload = await EmailBatch.findById(sent.deliveryId)
+      .select('+encrypted')
+      .lean();
+    const mail = JSON.parse(
+      decryptEmail(payload!.encrypted!, sent.deliveryId!),
+    )[0];
+    expect(mail.subject).toContain('RSVP reminder');
+    const invitation = (await guestHub(f.token)).invitations[0];
+    await saveRsvp(
+      f.token,
+      f.issued.link!.id,
+      { invitationId: invitation.id, status: 'attending', additionalGuests: 2 },
+      invitation.version,
+    );
+    const send = vi.fn(async () => ({
+      kind: 'submitted' as const,
+      id: 'mock-reminder',
+    }));
+    expect(
+      (
+        await dispatchGuestReminders(
+          guestReminderEligible,
+          { id: sent.deliveryId, limit: 1 },
+          send,
+        )
+      ).cancelled,
+    ).toBe(1);
+    expect(send).not.toHaveBeenCalled();
+    await expect(
+      changeInvitation(
+        scope.adminId,
+        scope.weddingId,
+        f.guest.id,
+        'remind',
+        undefined,
+        randomUUID(),
+        f.issued.link!.version,
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+  });
+  it('submits a pending reminder through the existing processor and rejects stale or foreign writers', async () => {
+    const scope = await wedding(),
+      other = await wedding(),
+      f = await issuedFixture(scope);
+    await expect(
+      changeInvitation(
+        other.adminId,
+        other.weddingId,
+        f.guest.id,
+        'remind',
+        undefined,
+        randomUUID(),
+        f.issued.link!.version,
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      changeInvitation(
+        scope.adminId,
+        scope.weddingId,
+        f.guest.id,
+        'remind',
+        undefined,
+        randomUUID(),
+        f.issued.link!.version + 1,
+      ),
+    ).rejects.toMatchObject({ status: 412 });
+    const queued = await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'remind',
+      undefined,
+      randomUUID(),
+      f.issued.link!.version,
+    );
+    const send = vi.fn(async () => ({
+      kind: 'submitted' as const,
+      id: 'mock-reminder',
+    }));
+    expect(
+      (
+        await dispatchGuestReminders(
+          guestReminderEligible,
+          { id: queued.deliveryId, limit: 1 },
+          send,
+        )
+      ).submitted,
+    ).toBe(1);
+    expect(
+      (await organizerInvitation(scope.adminId, f.guest.id)).reminderDelivery,
+    ).toBe('submitted');
+    expect(
+      (await organizerInvitation(scope.adminId, f.guest.id)).delivery,
+    ).toBe('not-requested');
+    const late = await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'remind',
+      undefined,
+      randomUUID(),
+      f.issued.link!.version,
+    );
+    await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'revoke',
+      undefined,
+      undefined,
+      f.issued.link!.version,
+    );
+    expect(
+      (
+        await dispatchGuestReminders(
+          guestReminderEligible,
+          { id: late.deliveryId, limit: 1 },
+          send,
+        )
+      ).cancelled,
+    ).toBe(1);
+    expect(send).toHaveBeenCalledTimes(1);
+  });
+  it('returns only the requested tenant function with explicit inactive history and bound cursors', async () => {
+    const scope = await wedding(),
+      other = await wedding(),
+      f = await issuedFixture(scope);
+    const roster = await functionRoster(scope.adminId, f.event.id);
+    expect(roster.rows).toHaveLength(1);
+    expect(roster.rows[0]).toMatchObject({
+      guestId: f.guest.id,
+      status: 'pending',
+      active: true,
+      headcount: '0',
+    });
+    expect(JSON.stringify(roster)).not.toContain('secret');
+    await expect(
+      functionRoster(other.adminId, f.event.id),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      functionRoster(
+        scope.adminId,
+        f.event.id,
+        other.weddingId + ':' + f.event.id + ':' + new Types.ObjectId(),
+      ),
+    ).rejects.toMatchObject({ status: 400 });
+    await changeInvitation(
+      scope.adminId,
+      scope.weddingId,
+      f.guest.id,
+      'revoke',
+      undefined,
+      undefined,
+      f.issued.link!.version,
+    );
+    expect(
+      (await functionRoster(scope.adminId, f.event.id)).rows[0].active,
+    ).toBe(false);
+  });
+});
+
+function fakePhotos() {
+  const objects = new Map<string, Buffer>();
+  const storage: PhotoStorage = {
+    configured: () => true,
+    uploadUrl: vi.fn(async (key) => 'https://storage.example.test/' + key),
+    read: vi.fn(async (key) => {
+      const data = objects.get(key);
+      if (!data) throw new Error('mock unavailable');
+      return data;
+    }),
+    put: vi.fn(async (key, bytes) => {
+      objects.set(key, Buffer.from(bytes));
+    }),
+    remove: vi.fn(async (key) => {
+      objects.delete(key);
+    }),
+    viewUrl: vi.fn(
+      async (key) => 'https://storage.example.test/' + key + '?temporary=true',
+    ),
+  };
+  return { objects, storage };
+}
+async function stagedPhoto(
+  scope: Awaited<ReturnType<typeof wedding>>,
+  fake: ReturnType<typeof fakePhotos>,
+  bytes: Buffer,
+  key = randomUUID(),
+) {
+  const result = await createUpload(
+    scope.adminId,
+    scope.weddingId,
+    {
+      fileName: 'Private photo.jpg',
+      mimeType: 'image/jpeg',
+      sizeBytes: bytes.length,
+    },
+    key,
+    fake.storage,
+  );
+  const record = await mongoose.connection
+    .collection('photos')
+    .findOne({ _id: new Types.ObjectId(result.photo.id) });
+  fake.objects.set(record!.stagingKey, bytes);
+  return { ...result, key, record: record! };
+}
+describe('Organizer private gallery with mocked R2', () => {
+  it('uses durable upload receipts, strips metadata, commits immutable final keys and never lists signed credentials', async () => {
+    const scope = await wedding(),
+      fake = fakePhotos();
+    const bytes = await sharp({
+      create: { width: 8, height: 6, channels: 3, background: 'pink' },
+    })
+      .jpeg()
+      .withMetadata()
+      .toBuffer();
+    const intent = await stagedPhoto(scope, fake, bytes);
+    const replay = await createUpload(
+      scope.adminId,
+      scope.weddingId,
+      {
+        fileName: 'Private photo.jpg',
+        mimeType: 'image/jpeg',
+        sizeBytes: bytes.length,
+      },
+      intent.key,
+      fake.storage,
+    );
+    expect(replay.photo.id).toBe(intent.photo.id);
+    await expect(
+      createUpload(
+        scope.adminId,
+        scope.weddingId,
+        {
+          fileName: 'Different.jpg',
+          mimeType: 'image/jpeg',
+          sizeBytes: bytes.length,
+        },
+        intent.key,
+        fake.storage,
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+    const result = await completeUpload(
+      scope.adminId,
+      scope.weddingId,
+      intent.photo.id,
+      fake.storage,
+    );
+    expect(result.photo.state).toBe('ready');
+    const row = await mongoose.connection
+      .collection('photos')
+      .findOne({ _id: new Types.ObjectId(intent.photo.id) });
+    expect(row!.objectKey).not.toBe(row!.stagingKey);
+    const cleaned = fake.objects.get(row!.objectKey)!;
+    expect((await sharp(cleaned).metadata()).exif).toBeUndefined();
+    fake.objects.set(row!.stagingKey, Buffer.from('late invalid replacement'));
+    expect(
+      (
+        await completeUpload(
+          scope.adminId,
+          scope.weddingId,
+          intent.photo.id,
+          fake.storage,
+        )
+      ).photo.state,
+    ).toBe('ready');
+    expect(fake.objects.get(row!.objectKey)).toEqual(cleaned);
+    const list = await listPhotos(scope.adminId, {}, fake.storage);
+    expect(list.photos).toHaveLength(1);
+    expect(list.usage.bytes).toBe(cleaned.length);
+    expect(JSON.stringify(list)).not.toContain('objectKey');
+    expect(JSON.stringify(list)).not.toContain('uploadUrl');
+    expect(
+      (await photoView(scope.adminId, intent.photo.id, fake.storage)).url,
+    ).toContain('temporary=true');
+    await mongoose.connection
+      .collection('photos')
+      .updateOne({ _id: row!._id }, { $set: { cleanupAfter: new Date(0) } });
+    await cleanupPhotos(fake.storage);
+    expect(fake.objects.has(row!.stagingKey)).toBe(false);
+    expect(fake.objects.has(row!.objectKey)).toBe(true);
+  });
+  it('isolates photos, rejects foreign functions and stops a removed organizer at completion', async () => {
+    const scope = await wedding(),
+      other = await wedding(),
+      fake = fakePhotos();
+    const bytes = await sharp({
+      create: { width: 2, height: 2, channels: 3, background: 'red' },
+    })
+      .jpeg()
+      .toBuffer();
+    const intent = await stagedPhoto(scope, fake, bytes);
+    await expect(
+      completeUpload(
+        other.adminId,
+        other.weddingId,
+        intent.photo.id,
+        fake.storage,
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      photoView(other.adminId, intent.photo.id, fake.storage),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      createUpload(
+        scope.adminId,
+        scope.weddingId,
+        {
+          fileName: 'x.jpg',
+          mimeType: 'image/jpeg',
+          sizeBytes: 10,
+          eventId: new Types.ObjectId().toString(),
+        },
+        randomUUID(),
+        fake.storage,
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    fake.storage.put = vi.fn(async (key, bytes) => {
+      fake.objects.set(key, bytes);
+      await User.updateOne(
+        { _id: scope.admin._id },
+        {
+          $set: { weddingId: null, role: null },
+          $inc: { membershipVersion: 1 },
+        },
+      );
+    });
+    await expect(
+      completeUpload(
+        scope.adminId,
+        scope.weddingId,
+        intent.photo.id,
+        fake.storage,
+      ),
+    ).rejects.toMatchObject({ status: 403 });
+    expect(
+      (await mongoose.connection
+        .collection('photos')
+        .findOne({ _id: new Types.ObjectId(intent.photo.id) }))!.state,
+    ).not.toBe('ready');
+  });
+  it('serializes quota reservation and retains durable reservations until cleanup succeeds', async () => {
+    const scope = await wedding(),
+      fake = fakePhotos();
+    vi.stubEnv('GALLERY_MAX_PHOTOS', '1');
+    try {
+      const input = {
+        fileName: 'x.jpg',
+        mimeType: 'image/jpeg',
+        sizeBytes: 100,
+      };
+      const results = await Promise.allSettled([
+        createUpload(
+          scope.adminId,
+          scope.weddingId,
+          input,
+          randomUUID(),
+          fake.storage,
+        ),
+        createUpload(
+          scope.adminId,
+          scope.weddingId,
+          input,
+          randomUUID(),
+          fake.storage,
+        ),
+      ]);
+      expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+      expect(
+        (results.find((r) => r.status === 'rejected') as PromiseRejectedResult)
+          .reason,
+      ).toMatchObject({ code: 'GALLERY_FULL' });
+      const page = await listPhotos(scope.adminId, {}, fake.storage);
+      expect(page.usage.bytes).toBe(MAX_PHOTO_BYTES);
+      const row = page.photos[0];
+      await removePhoto(scope.adminId, scope.weddingId, row.id, row.version);
+      expect(
+        (await listPhotos(scope.adminId, {}, fake.storage)).usage.count,
+      ).toBe(1);
+      await mongoose.connection
+        .collection('photos')
+        .updateOne(
+          { _id: new Types.ObjectId(row.id) },
+          { $set: { cleanupAfter: new Date(0) } },
+        );
+      fake.storage.remove = vi.fn(async () => {
+        throw new Error('mock retry');
+      });
+      await cleanupPhotos(fake.storage);
+      expect(
+        (await listPhotos(scope.adminId, {}, fake.storage)).usage.count,
+      ).toBe(1);
+      fake.storage.remove = vi.fn(async (key) => {
+        fake.objects.delete(key);
+      });
+      await mongoose.connection
+        .collection('photos')
+        .updateOne(
+          { _id: new Types.ObjectId(row.id) },
+          { $set: { cleanupAfter: new Date(0) } },
+        );
+      await cleanupPhotos(fake.storage);
+      expect(
+        (await listPhotos(scope.adminId, {}, fake.storage)).usage.count,
+      ).toBe(0);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+  it('preserves recoverable provider failures and rejects invalid bytes before publishing', async () => {
+    const scope = await wedding(),
+      fake = fakePhotos();
+    const bytes = await sharp({
+      create: { width: 2, height: 2, channels: 3, background: 'blue' },
+    })
+      .jpeg()
+      .toBuffer();
+    const intent = await stagedPhoto(scope, fake, bytes);
+    const put = fake.storage.put;
+    fake.storage.put = vi.fn(async () => {
+      throw new Error('mock timeout');
+    });
+    await expect(
+      completeUpload(
+        scope.adminId,
+        scope.weddingId,
+        intent.photo.id,
+        fake.storage,
+      ),
+    ).rejects.toThrow();
+    expect(
+      (await listPhotos(scope.adminId, {}, fake.storage)).photos[0].state,
+    ).toBe('pending');
+    fake.storage.put = put;
+    await completeUpload(
+      scope.adminId,
+      scope.weddingId,
+      intent.photo.id,
+      fake.storage,
+    );
+    const ready = (await listPhotos(scope.adminId, {}, fake.storage)).photos[0];
+    await expect(
+      removePhoto(scope.adminId, scope.weddingId, ready.id, ready.version - 1),
+    ).rejects.toMatchObject({ status: 412 });
+    await removePhoto(scope.adminId, scope.weddingId, ready.id, ready.version);
+    await expect(
+      photoView(scope.adminId, ready.id, fake.storage),
+    ).rejects.toMatchObject({ status: 404 });
+    const invalid = await stagedPhoto(
+      scope,
+      fake,
+      Buffer.from('invalid image bytes'),
+    );
+    await expect(
+      completeUpload(
+        scope.adminId,
+        scope.weddingId,
+        invalid.photo.id,
+        fake.storage,
+      ),
+    ).rejects.toMatchObject({ code: 'INVALID_PHOTO' });
+    expect(
+      (await listPhotos(scope.adminId, {}, fake.storage)).photos.find(
+        (p) => p.id === invalid.photo.id,
+      )!.state,
+    ).toBe('rejected');
+  });
+  it('rejects expired uploads, changed tenant contexts and mismatched pagination', async () => {
+    const scope = await wedding(),
+      fake = fakePhotos();
+    const intent = await stagedPhoto(
+      scope,
+      fake,
+      Buffer.from('not actually uploaded'),
+    );
+    await mongoose.connection
+      .collection('photos')
+      .updateOne(
+        { _id: new Types.ObjectId(intent.photo.id) },
+        { $set: { expiresAt: new Date(0) } },
+      );
+    await expect(
+      completeUpload(
+        scope.adminId,
+        scope.weddingId,
+        intent.photo.id,
+        fake.storage,
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+    await expect(
+      listPhotos(
+        scope.adminId,
+        { cursor: new Types.ObjectId() + ':' + intent.photo.id },
+        fake.storage,
+      ),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(
+      createUpload(
+        scope.adminId,
+        new Types.ObjectId().toString(),
+        { fileName: 'x.jpg', mimeType: 'image/jpeg', sizeBytes: 10 },
+        randomUUID(),
+        fake.storage,
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+  });
+});
+
+describe('Exact shared wedding expense ledger', () => {
+  const input = {
+    title: 'Paid venue',
+    amountMinor: '9007199254740993',
+    paidAt: '2027-03-01',
+    currency: 'INR',
+    category: 'Venue',
+    notes: 'Deposit',
+  };
+  it('creates once on retry, edits with versions, removes from totals and retains provenance', async () => {
+    const scope = await wedding(),
+      key = randomUUID();
+    const result = await writeExpense(scope.adminId, scope.weddingId, input, {
+      key,
+    });
+    const replay = await writeExpense(scope.adminId, scope.weddingId, input, {
+      key,
+    });
+    expect(replay.expense.id).toBe(result.expense.id);
+    await expect(
+      writeExpense(
+        scope.adminId,
+        scope.weddingId,
+        { ...input, title: 'changed' },
+        { key },
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+    expect((await expenseSummary(scope.adminId)).summary.amountMinor).toBe(
+      input.amountMinor,
+    );
+    expect(
+      (await weddingOverview(scope.adminId))!.expenseSummary.amountMinor,
+    ).toBe(input.amountMinor);
+    const edited = await writeExpense(
+      scope.adminId,
+      scope.weddingId,
+      { amountMinor: '29', paidAt: '2027-03-02' },
+      { id: result.expense.id, version: 0 },
+    );
+    expect(edited.expense.version).toBe(1);
+    await expect(
+      writeExpense(
+        scope.adminId,
+        scope.weddingId,
+        { title: 'stale' },
+        { id: result.expense.id, version: 0 },
+      ),
+    ).rejects.toMatchObject({ status: 412 });
+    await writeExpense(scope.adminId, scope.weddingId, undefined, {
+      id: result.expense.id,
+      version: 1,
+      archive: true,
+    });
+    expect((await expenseSummary(scope.adminId)).summary.amountMinor).toBe('0');
+    await expect(
+      readExpense(scope.adminId, result.expense.id),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      writeExpense(scope.adminId, scope.weddingId, input, { key }),
+    ).rejects.toMatchObject({ status: 409 });
+    const stored = await mongoose.connection
+      .collection('expenses')
+      .findOne({ _id: new Types.ObjectId(result.expense.id) });
+    expect(stored!.archivedAt).toBeInstanceOf(Date);
+    expect(stored!.updatedBy.toString()).toBe(scope.adminId);
+  });
+  it('enforces tenant and function references, permits Managers and sums above safe integer range', async () => {
+    const scope = await wedding(),
+      other = await wedding(),
+      manager = await user();
+    await User.updateOne(
+      { _id: manager._id },
+      { $set: { weddingId: scope.wedding._id, role: 'manager' } },
+    );
+    const row = await writeExpense(scope.adminId, scope.weddingId, input, {
+      key: randomUUID(),
+    });
+    await writeExpense(
+      manager._id.toString(),
+      scope.weddingId,
+      { ...input, amountMinor: '10' },
+      { key: randomUUID() },
+    );
+    expect((await expenseSummary(scope.adminId)).summary.amountMinor).toBe(
+      '9007199254741003',
+    );
+    await expect(
+      readExpense(other.adminId, row.expense.id),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      writeExpense(
+        other.adminId,
+        other.weddingId,
+        { title: 'foreign' },
+        { id: row.expense.id, version: 0 },
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      writeExpense(
+        scope.adminId,
+        scope.weddingId,
+        { ...input, eventId: new Types.ObjectId().toString() },
+        { key: randomUUID() },
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      writeExpense(scope.adminId, other.weddingId, input, {
+        key: randomUUID(),
+      }),
+    ).rejects.toMatchObject({ status: 409 });
+    expect((await listExpenses(other.adminId, {})).expenses).toHaveLength(0);
+  });
+  it('keeps filtered totals separate and serializes concurrent edits', async () => {
+    const scope = await wedding();
+    const row = await writeExpense(
+      scope.adminId,
+      scope.weddingId,
+      { ...input, amountMinor: '123' },
+      { key: randomUUID() },
+    );
+    await writeExpense(
+      scope.adminId,
+      scope.weddingId,
+      { ...input, category: 'Food', amountMinor: '456', paidAt: '2027-04-01' },
+      { key: randomUUID() },
+    );
+    const page = await listExpenses(scope.adminId, {
+      category: 'Venue',
+      from: '2027-03-01',
+      to: '2027-03-31',
+    });
+    expect(page.expenses).toHaveLength(1);
+    expect(page.summary.amountMinor).toBe('123');
+    await expect(
+      listExpenses(scope.adminId, { cursor: 'wrong:' + row.expense.id }),
+    ).rejects.toMatchObject({ status: 400 });
+    const results = await Promise.allSettled([
+      writeExpense(
+        scope.adminId,
+        scope.weddingId,
+        { amountMinor: '10' },
+        { id: row.expense.id, version: 0 },
+      ),
+      writeExpense(
+        scope.adminId,
+        scope.weddingId,
+        { amountMinor: '20' },
+        { id: row.expense.id, version: 0 },
+      ),
+    ]);
+    expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
   });
 });

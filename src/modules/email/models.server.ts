@@ -11,10 +11,11 @@ export type DeliveryState =
 export interface DeliveryRecord {
   _id: Types.ObjectId;
   scope: 'platform' | 'wedding';
-  kind: 'password-reset' | 'member-invite';
+  kind: 'password-reset' | 'member-invite' | 'guest-invite' | 'guest-reminder';
   weddingId?: Types.ObjectId;
   userId: Types.ObjectId;
   tokenHash: string;
+  reminderEventIds?: Types.ObjectId[];
   logicalKey: string;
   state: DeliveryState;
   attempts: number;
@@ -41,6 +42,7 @@ const deliverySchema = new Schema<DeliveryRecord>(
     weddingId: { type: Schema.Types.ObjectId },
     userId: { type: Schema.Types.ObjectId, required: true },
     tokenHash: { type: String, required: true, select: false },
+    reminderEventIds: [Schema.Types.ObjectId],
     logicalKey: { type: String, required: true },
     state: { type: String, required: true },
     attempts: { type: Number, default: 0 },

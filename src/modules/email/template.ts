@@ -6,6 +6,18 @@ const escapeHtml = (value: string) =>
         char
       ]!,
   );
+export function guestInviteEmail(
+  link: string,
+  name: string,
+  couple: string,
+  functions: string[],
+) {
+  return {
+    subject: 'Your wedding invitation from ShaadiPilot',
+    text: `Dear ${name},\n\nYou’re invited to celebrate ${couple}.\n\nYour invited functions:\n${functions.map((title) => `• ${title}`).join('\n')}\n\nOpen your private invitation and RSVP without an account:\n${link}\n\nRespond separately for each function before it starts. Keep this personal link private: anyone with it can view and change your responses.`,
+    html: `<!doctype html><html lang="en"><body style="margin:0;background:#fcf8ff;color:#29232a;font-family:Arial,sans-serif"><main style="max-width:520px;margin:32px auto;padding:32px;background:white;border-radius:12px"><p style="color:#4c2f3d;font-size:22px">ShaadiPilot</p><h1>You’re invited to celebrate</h1><p>Dear ${escapeHtml(name)},</p><p>Join ${escapeHtml(couple)} for their wedding celebrations.</p><ul>${functions.map((title) => `<li>${escapeHtml(title)}</li>`).join('')}</ul><p style="margin:32px 0"><a href="${escapeHtml(link)}" style="display:inline-block;padding:16px 24px;background:#4c2f3d;color:white;text-decoration:none;border-radius:6px">Open your invitation</a></p><p>No account is needed. Respond separately for each function before it starts.</p><p>Keep this link private. Anyone with it can view and change your responses.</p></main></body></html>`,
+  };
+}
 export function resetEmail(link: string) {
   return {
     subject: 'Reset your ShaadiPilot password',
@@ -18,5 +30,24 @@ export function managerInviteEmail(link: string, couple: string) {
     subject: 'You’re invited to plan a wedding on ShaadiPilot',
     text: `Join ${couple}’s wedding planning team as a Manager.\n\nReview invitation: ${link}\n\nSign in or create an account using this email, then accept. This link expires in seven days. If you were not expecting it, you can ignore this email.`,
     html: `<!doctype html><html lang="en"><body style="margin:0;background:#fcf8ff;color:#29232a;font-family:Arial,sans-serif"><main style="max-width:520px;margin:32px auto;padding:32px;background:#fff;border-radius:12px"><p style="color:#4c2f3d;font-size:22px">ShaadiPilot</p><h1>You’re invited to plan together</h1><p>Help plan ${escapeHtml(couple)}’s wedding as a Manager.</p><p>Managers can manage wedding planning. Only Admins manage organizer membership.</p><p style="margin:32px 0"><a href="${escapeHtml(link)}" style="display:inline-block;padding:16px 24px;background:#4c2f3d;color:white;text-decoration:none;border-radius:6px">Review invitation</a></p><p>Sign in or create an account using this email, then accept. This invitation expires in seven days.</p><p>If you were not expecting it, you can ignore this email.</p></main></body></html>`,
+  };
+}
+
+export function guestReminderEmail(
+  link: string,
+  name: string,
+  couple: string,
+  functions: string[],
+) {
+  const original = guestInviteEmail(link, name, couple, functions);
+  return {
+    subject: 'A gentle RSVP reminder from ShaadiPilot',
+    text:
+      'Please let your organizers know whether you can join these celebrations.\n\n' +
+      original.text,
+    html: original.html.replace(
+      'You’re invited to celebrate</h1>',
+      'A gentle RSVP reminder</h1>',
+    ),
   };
 }

@@ -3,7 +3,12 @@ import { Types, type ClientSession } from 'mongoose';
 import { hashSecret } from '@/modules/auth/security.server';
 import { encryptEmail, decryptEmail } from './crypto.server';
 import { emailEnvironment } from './config.server';
-import { resetEmail, managerInviteEmail } from './template';
+import {
+  resetEmail,
+  managerInviteEmail,
+  guestInviteEmail,
+  guestReminderEmail,
+} from './template';
 import {
   claimDelivery,
   emailDatabase,
@@ -58,9 +63,10 @@ type Eligible = (
   tokenHash: string,
   now: Date,
   weddingId?: string,
+  reminderEventIds?: string[],
 ) => Promise<boolean>;
 async function dispatchKind(
-  kind: 'password-reset' | 'member-invite',
+  kind: 'password-reset' | 'member-invite' | 'guest-invite' | 'guest-reminder',
   eligible: Eligible,
   options: { id?: string; limit?: number } = {},
   send = sendResendBatch,
@@ -92,6 +98,7 @@ async function dispatchKind(
         delivery.tokenHash,
         now,
         delivery.weddingId?.toString(),
+        delivery.reminderEventIds?.map((id) => id.toString()),
       ))
     ) {
       await finishDelivery(delivery, 'cancelled');
@@ -159,6 +166,69 @@ export const dispatchInvitationEmails = (
   send = sendResendBatch,
 ) => dispatchKind('member-invite', eligible, options, send);
 export const invitationMailStates = weddingDeliveryStates;
+export const guestInvitationMailStates = (
+  weddingId: Types.ObjectId,
+  ids: Types.ObjectId[],
+) => weddingDeliveryStates(weddingId, ids, 'guest-invite');
+export const dispatchGuestEmails = (
+  eligible: Eligible,
+  options: { id?: string; limit?: number } = {},
+  send = sendResendBatch,
+) => dispatchKind('guest-invite', eligible, options, send);
+export async function queueGuestInvitation(
+  data: {
+    id: Types.ObjectId;
+    weddingId: Types.ObjectId;
+    guestId: Types.ObjectId;
+    recipient: string;
+    tokenHash: string;
+    link: string;
+    guestName: string;
+    couple: string;
+    functions: string[];
+    expiresAt: Date;
+    reminderEventIds?: Types.ObjectId[];
+  },
+  session: ClientSession,
+) {
+  const { from } = emailEnvironment();
+  const payload = JSON.stringify([
+    {
+      from,
+      to: [data.recipient],
+      ...(data.reminderEventIds ? guestReminderEmail : guestInviteEmail)(
+        data.link,
+        data.guestName,
+        data.couple,
+        data.functions,
+      ),
+    },
+  ]);
+  await insertDelivery(
+    {
+      _id: data.id,
+      scope: 'wedding',
+      kind: data.reminderEventIds ? 'guest-reminder' : 'guest-invite',
+      reminderEventIds: data.reminderEventIds,
+      weddingId: data.weddingId,
+      userId: data.guestId,
+      tokenHash: data.tokenHash,
+      logicalKey: `${data.reminderEventIds ? 'guest-reminder' : 'guest-invite'}/${data.id}`,
+      state: 'pending',
+      attempts: 0,
+      nextAttemptAt: new Date(),
+      leaseUntil: null,
+      leaseOwner: null,
+      expiresAt: data.expiresAt,
+      purgeAt: new Date(data.expiresAt.getTime() + 7 * 86400000),
+    },
+    {
+      payloadHash: hashSecret(payload),
+      encrypted: encryptEmail(payload, data.id.toString()),
+    },
+    session,
+  );
+}
 export async function queueManagerInvitation(
   data: {
     id: Types.ObjectId;
@@ -205,3 +275,13 @@ export async function queueManagerInvitation(
     session,
   );
 }
+
+export const dispatchGuestReminders = (
+  eligible: Eligible,
+  options: { id?: string; limit?: number } = {},
+  send = sendResendBatch,
+) => dispatchKind('guest-reminder', eligible, options, send);
+export const guestReminderMailStates = (
+  weddingId: Types.ObjectId,
+  ids: Types.ObjectId[],
+) => weddingDeliveryStates(weddingId, ids, 'guest-reminder');

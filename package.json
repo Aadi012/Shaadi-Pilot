@@ -26,18 +26,24 @@
     "db:events:indexes": "node scripts/event-indexes.mjs",
     "db:tasks:indexes": "node scripts/task-indexes.mjs",
     "db:guests:indexes": "node scripts/guest-indexes.mjs",
+    "db:invitations:indexes": "node scripts/invitation-indexes.mjs",
     "design:check": "node scripts/stitch-reference.mjs",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:http": "npm run build && vitest run --config vitest.http.config.ts",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm test"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
+    "db:gallery:indexes": "node scripts/gallery-indexes.mjs",
+    "db:expenses:indexes": "node scripts/expense-indexes.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1159.0",
+    "@aws-sdk/s3-request-presigner": "3.1159.0",
     "argon2": "0.45.1",
     "mongoose": "9.11.4",
     "next": "16.4.3",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "server-only": "0.0.1",
+    "sharp": "0.35.5",
     "zod": "4.6.7"
   },
   "devDependencies": {

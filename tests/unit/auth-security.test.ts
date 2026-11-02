@@ -105,6 +105,36 @@ describe('authentication security policies', () => {
       ),
     ).toThrow();
   });
+  it('accepts port 3001 only when it is explicitly configured locally', () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    vi.stubEnv('APP_BASE_URL', 'http://localhost:3001');
+    for (const origin of ['http://localhost:3001', 'http://127.0.0.1:3001'])
+      expect(() =>
+        requireOrigin(
+          new Request('http://localhost:3001/api/v1/expenses', {
+            headers: { Origin: origin },
+          }),
+        ),
+      ).not.toThrow();
+    for (const origin of ['http://localhost:3000', 'https://evil.test'])
+      expect(() =>
+        requireOrigin(
+          new Request('http://localhost:3001/api/v1/expenses', {
+            headers: { Origin: origin },
+          }),
+        ),
+      ).toThrow();
+    expect(() =>
+      requireOrigin(
+        new Request('http://localhost:3001/api/v1/expenses', {
+          headers: {
+            Origin: 'http://localhost:3001',
+            'Sec-Fetch-Site': 'cross-site',
+          },
+        }),
+      ),
+    ).toThrow();
+  });
   it('ignores spoofed proxy headers outside Vercel', () => {
     vi.stubEnv('VERCEL', '');
     expect(

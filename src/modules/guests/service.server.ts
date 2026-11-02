@@ -14,6 +14,8 @@ import {
 } from '@/modules/memberships/contracts';
 import { guestInput, guestPatch, guestQuery, type GuestDto } from './contracts';
 import * as repository from './repository.server';
+// Invitation workflows validate this contact within their transaction and tenant.
+export { find as invitableGuest } from './repository.server';
 const fail = (status: number, code: string, message: string) =>
   new ApiError({ status, code, message });
 async function context(userId: string, session?: ClientSession) {

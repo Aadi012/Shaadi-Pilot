@@ -15,6 +15,7 @@ import { findRequest, recordRequest } from './requests.server';
 const fail = (status: number, code: string, message: string) =>
   new ApiError({ status, code, message });
 export { findPlanningEvents as planningEvents } from './repository.server';
+export { findInvitationEvents as invitationEvents } from './repository.server';
 async function context(userId: string, session?: ClientSession) {
   const user = await loadOrganizerMembership(userId, session);
   if (!user) throw fail(401, 'UNAUTHENTICATED', 'Please log in.');

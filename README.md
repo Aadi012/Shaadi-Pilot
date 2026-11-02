@@ -29,6 +29,10 @@ the v1 indexes without dropping existing indexes or records. Authentication fail
 closed if its required indexes are absent. Atlas must support transactions.
 Set `APP_BASE_URL` to the exact application origin (HTTPS in production).
 Local development accepts `localhost` and `127.0.0.1` on the configured port.
+If Next.js starts on port 3001, set `APP_BASE_URL=http://localhost:3001` in
+ignored `.env.local` and restart the development server if it does not reload the
+environment automatically. Keep browser access and emailed links on that port;
+other local ports remain rejected by the Origin check.
 
 ## Commands
 
@@ -260,10 +264,35 @@ The private Guest directory is at `/account/guests`. Run
 `npm run db:guests:indexes` per environment after existing setup. Both organizer
 roles can create/edit/archive contacts, search name/email and select functions.
 Email is required; shared family mailboxes warn without merging contacts.
-Selections are planning intent; this slice creates no invitations, sends no mail
-and grants no guest access. Existing access references block removal or changes
-to email/function selections until the revocation workflow is implemented.
+Selections are planning intent; saving a contact creates no invitations, sends no
+mail and grants no guest access. Active invitation references block removal and
+email/function-selection changes until access is revoked. Existing gallery
+references remain fail-closed.
 The [Guest plan](docs/guests-plan.md) documents REST and concurrency contracts.
+
+## Private guest invitations and RSVP
+
+Run `npm run db:invitations:indexes` once per environment after the existing
+setup. In Guest details, review selected functions and issue a personal invitation.
+Copy its private link or explicitly request email; resend is another confirmed
+request. Revoke disables the whole personal link and its derived guest sessions.
+Reviewed reissue replaces the secret and uses current selections without resetting
+existing responses. Contacts sharing an email retain separate links and responses.
+
+The accountless `/invitation` hub exchanges its fragment secret for a separate
+HttpOnly guest cookie and removes the fragment. Links expire 30 days after the
+latest invited function ends, fixed at issue/reissue. Guest sessions last at most
+seven days and never outlive the link. Each RSVP closes when its function starts.
+Website publication is independent of private access. Totals include one primary
+invitee plus additional guests and use exact decimal strings for headcounts.
+
+Sending uses the existing encrypted MongoDB delivery batches and Resend adapter.
+Submitted means provider acceptance, not inbox delivery. The existing protected
+email cron also drains guest invitations; no production schedule is created here.
+Retain the configured token-encryption key while invitations remain active; email
+queue draining alone is insufficient before key replacement. See the
+[invitation plan](docs/guest-invitations-plan.md) for contracts, safe reissue and
+remaining launch work. Bulk send, reminders, gallery and QR remain later slices.
 
 ## Project documents and progress
 
@@ -288,3 +317,17 @@ does not silently approve provisional defaults in the source documents.
 
 Before implementing the first business feature, complete the
 [feature approval gates](docs/architecture-decisions.md#feature-approval-gates).
+
+Guest Directory includes an issued-invitation roster by function. Contact Details
+provides reviewed RSVP reminders and manual WhatsApp sharing after private-link
+retrieval. Reminder jobs use the existing protected email drain; production cron
+invocation still requires environment-specific setup. No automatic WhatsApp sends.
+
+Organizer Gallery now has private upload, validation, viewing and removal flows.
+See [gallery setup](docs/gallery-setup.md) for private R2 settings, additive index
+setup and required cleanup invocation. Storage verification currently uses mocks;
+real R2, guest gallery access and QR codes remain pending.
+
+Expense Tracking supports INR paid entries with exact paise amounts, calendar-date
+filters, editable entries and archived removal. Run npm run db:expenses:indexes
+against the intended database before enabling writes. See docs/expenses-plan.md.

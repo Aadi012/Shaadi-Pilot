@@ -148,12 +148,14 @@ export async function hasAccessReferences(
   const db = await connectDatabase();
   for (const name of ['eventInvitations', 'galleryTokens'])
     if (
-      await db.connection
-        .collection(name)
-        .findOne(
-          { weddingId, guestContactId: guestId },
-          { session, projection: { _id: 1 } },
-        )
+      await db.connection.collection(name).findOne(
+        {
+          weddingId,
+          guestContactId: guestId,
+          ...(name === 'eventInvitations' ? { revokedAt: null } : {}),
+        },
+        { session, projection: { _id: 1 } },
+      )
     )
       return true;
   return false;

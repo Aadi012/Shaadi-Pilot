@@ -1,6 +1,6 @@
 # ShaadiPilot project status
 
-Last updated: 29 October 2026 (Asia/Kolkata).
+Last updated: 2 November 2026 (Asia/Kolkata).
 
 This is the implementation progress record. The [PRD](prd.md) defines product
 scope; [architecture decisions](architecture-decisions.md) record accepted
@@ -9,12 +9,23 @@ resolve an open product decision.
 
 ## Current position
 
+Paid expense tracking is implemented locally while real R2 setup is pending.
+See milestone 16 for scope, setup requirements and verification. Gallery remains
+limited to organizer access with mocked storage verification; guest gallery and
+QR access are not complete. On 2 November the user authorized committing and
+pushing all pending work to origin/dev. The delivery includes private invitation/
+RSVP, reminder/share, organizer gallery, expense tracking and review corrections.
+The commit is identifiable in Git history as "feat: add private invitations,
+organizer gallery and expense tracking". Push verification is reported at handoff;
+this entry does not claim any Vercel deployment or live R2 verification.
+
 Guest contacts and planned function selection, including the review corrections,
 were accepted for commit/push on 29 October. Functions and Tasks are already on
-dev. The latest Guest checks pass 85 unit/render tests, formatting, lint and types;
-see milestone 12 for persistence/HTTP evidence and browser limitations. Private
-guest invitations and RSVP are the next authorized feature, with access-policy
-decisions being confirmed before implementation.
+dev. See milestone 12 for its verification history. Private guest invitations and
+per-function RSVP are now implemented locally for review under the policies
+approved on 29 October. The latest invitation increment passes 97 unit/render tests and all 98
+isolated database tests pass. See milestone 13 for the final verification results,
+delivery scope and remaining guest-browser/live-email checks.
 
 Manager removal is complete for the approved slice following user authorization
 on 27 October. Documentation handoff resumed on 28 October after a tooling usage
@@ -617,6 +628,233 @@ Guest retry/pagination corrections — 29 October:
   whitespace checks pass excluding the independent .env.example edit. No API or
   database behavior changed; prior integration/HTTP results were not rerun.
   Interactive browser verification is not claimed. No commit/push/deploy.
+
+## 13. Private guest invitation hub and RSVP
+
+- Started: 29 October 2026. Status: In progress.
+- Guest contacts and review fixes were committed and pushed as
+  [f7333f5](https://github.com/Aadi012/Shaadi-Pilot/commit/f7333f547de5e79c754a28b1745dc9513e4c1d70);
+  origin/dev was verified equal to local HEAD. The independent .env.example edit
+  was excluded. Pre-commit check passed 85 tests and production build passed after
+  retrying a Windows generated-junction permission failure with local permission.
+- The user approved the hub/cookie, expiry and RSVP/publication policies. See the
+  [implementation plan](guest-invitations-plan.md).
+- Implemented the first vertical slice locally: both organizer roles review a
+  contact's selections, explicitly issue a private invitation, retrieve/copy its
+  personal fragment link, request/resend email, inspect truthful provider state,
+  revoke all invitation access and review/reissue a replacement link. Current
+  selected-function versions prevent issuing an unseen changed selection.
+- Added a responsive accountless invitation hub with one response per explicitly
+  invited function, attending/declined choices, additional guest count, exact
+  party totals, conflict review and retained failed-save drafts. Separate random
+  HttpOnly guest sessions, hashed at rest, survive reload for at most seven days;
+  link expiry is fixed at issue/reissue. Every operation checks link generation,
+  lifecycle and scope. RSVP closes at function start, independent of publication.
+- MongoDB transactions serialize issue/reissue/revoke/RSVP against shared wedding
+  writes. Durable issue/send/reissue request receipts protect retries. Capability
+  secrets and queued recipient/link payloads are separately domain-encrypted;
+  email dispatch rechecks capability eligibility outside provider calls. Existing
+  recovery/member mail behavior is retained. No new dependency or service.
+- Overview now shows per-function pending, attending, declined and exact confirmed
+  headcounts. MongoDB double-to-decimal conversion lost precision at the safe
+  integer boundary in the first regression; converting to int64 before decimal
+  summing fixed it. The boundary regression now passes above JavaScript's safe
+  summed-number range. Headcounts are decimal strings, never rounded numbers.
+- Four live Stitch desktop/mobile exports were retrieved and inspected; the
+  approved multi-function mobile hub guides entry. Existing brand and V1 scope
+  override generated logistics, household names, guest caps, seating and delivery
+  claims. The first organizer controls live in Guest details; a full dispatch
+  roster, bulk actions, reminders, WhatsApp action, gallery and QR remain later.
+- Verification: npm run check passes 90 unit/render tests plus formatting,
+  lint and types. All 95 isolated database tests pass. Production build passes
+  with database/Resend credentials blanked for that process. The first HTTP run
+  passed the new secure-cookie/RSVP/revocation test; an older broad search matched
+  its fixture too and was corrected to target the intended shared email. All ten
+  running-server HTTP tests now pass, including the full accountless exchange,
+  secure-cookie attributes, Origin/CSRF/context/version guards, repeated RSVP,
+  private projection, static landing protections and revocation. Provider delivery
+  was mocked in database tests; the HTTP flow queued no email.
+- Local additive invitation indexes were applied without changing existing
+  records. Browser testing verified temporary contact creation, reviewed issue,
+  active link status, email-not-requested status and private-link retrieval.
+  The browser helper then disconnected with a local setup error; the full guest
+  RSVP journey and desktop/mobile visual checks remain unverified. The temporary
+  contact and its invitation/session/request records were removed by exact scoped
+  guards. Existing contacts, functions and all organizer memberships matched the
+  pre-test fingerprints. No QA email was queued and no real guest email was sent.
+- Retention/purge, production scheduler invocation, sender-domain rollout,
+  encryption-key replacement and real email-client fragment compatibility remain
+  release work. This new slice has not been committed, pushed or deployed. Status
+  remains In progress pending final verification and user review.
+
+### Invitation retry recovery — 29 October 2026
+
+- Fixed review findings: Refresh reconciles pending requests once a newer link
+  generation is observed. An uncertain request for the current generation retains
+  its original key; provider status alone is not treated as proof of its outcome.
+- Separately confirmed revocation uses the reviewed current version and no email
+  retry key. Failed revocation preserves the unresolved attempt; successful
+  revocation releases it. Stale revocation still requires refresh and review.
+- Edit contact, Close and Escape remain blocked while a request is unresolved,
+  preventing contact editing from unmounting the panel and losing an email key.
+  The panel explains recovery and keeps Refresh, same-action retry and revocation
+  available. Full-page reload persistence is not introduced.
+- Five focused regressions cover obsolete send/reissue recovery, same-generation
+  key preservation, navigation blocking, issue reconciliation and independent
+  revocation. npm run check passes formatting, lint, types and all 95 unit/render
+  tests. Changed-file whitespace checks pass. No server/API changes
+  or live email sends; prior database/HTTP suites were not rerun for these UI fixes.
+- Browser connection was attempted twice and failed because the trusted Node
+  helper exited unexpectedly. Interactive reproduction remains unverified.
+  Production build was attempted twice and blocked by Windows EPERM unlinking
+  generated .next/server/route-cache. The feature remains In progress, not complete.
+
+## 14. Function invitation roster, manual sharing and RSVP reminders
+
+- Started: 29 October 2026. Status: In progress — implemented and automated checks passed;
+  awaiting user review and populated browser verification. The user reported production login fixed after Vercel
+  configuration correction; this is user confirmation, not a new agent login test.
+- Added a function selector and paginated issued-invitation roster in Guests &
+  RSVPs. Lists primary contacts, per-function responses and exact headcounts;
+  revoked/expired access is labelled historical. Reads derive the tenant from
+  current organizer membership and bind cursors to wedding/function.
+- Contact Details now supports explicitly reviewed individual RSVP reminders and
+  a manual WhatsApp composer link after private-link retrieval. Reminders cover
+  only unanswered upcoming invited functions. WhatsApp sends are performed by the
+  organizer; no automated messages or delivery claims. Bulk dispatch/dry-run,
+  roster search/status filters and automatic event-relative scheduling remain later.
+- Reminder messages use a separate durable MongoDB job kind, immutable encrypted
+  payload and stable retry key. Request Origin/CSRF/context/version checks and
+  shared-wedding transactions are retained. Before provider submission, validate
+  capability generation and every targeted RSVP in one database snapshot. Cancel
+  the immutable message if a target answered, started, disappeared or lost access.
+  The earliest target start bounds job expiry. Existing bounded email drain handles
+  retries; no infrastructure or dependency added and no external cron provisioned.
+- Three focused integration tests cover retry deduplication, mocked submission,
+  cancellation after response/revocation, stale and foreign writes, roster tenant
+  isolation and cursor binding. Full isolated database suite passes 98 tests.
+  Unit coverage includes reminder escaping and obsolete-reminder retry recovery;
+  npm run check passed 97 unit/render tests plus formatting/lint/types. All ten real HTTP tests pass against the final production build, including
+  new roster authentication/no-store and reminder body/CSRF/precondition checks.
+  The final snapshot-based reminder eligibility tests were rerun: three pass.
+- The initial sandboxed full database run could not reach its isolated databases;
+  the permitted network retry passed. Windows cache permissions blocked builds; preserving the affected generated
+  static directory under ignored .next/cache allowed the final build to pass
+  without live database/email credentials. Whitespace and private-value scans pass.
+- Browser access recovered. The signed-in local wedding is empty: no functions or
+  guest records. Verified directory/roster empty state; populated interactions and
+  real reminder delivery remain unverified in browser. No existing wedding/guest
+  data was changed and no real email or WhatsApp message was sent. No commit,
+  push, deploy or production setting changes in this increment.
+- See [invitation contract addendum](guest-invitations-plan.md#organizer-reminder-and-roster-increment--29-october-2026).
+
+## 15. Organizer private gallery
+
+- Started: 29 October 2026. Status: In progress — implemented locally; verification
+  and user review pending. User approved mocked R2 verification first and pilot
+  limits: JPEG/PNG/WebP, 20 MiB per file, 1,000 photos / 5 GiB per wedding.
+- Added organizer Gallery navigation and responsive private collection, one-file
+  upload progress, retained file/retry state, verification retry, preview retry,
+  explicit removal confirmation and honest unconfigured-storage state.
+- Module-owned Mongoose metadata, durable upload receipts, wedding-serialized
+  quota reservation, expiring completion leases and scoped cursors back thin REST
+  handlers. Fresh roles/tenant, CSRF/Origin/context and version checks apply.
+- Browser uploads directly to five-minute staging URLs with signed content type
+  and exact length. Server validates actual bytes and decoder dimensions, strips
+  metadata/orients/re-encodes to WebP and publishes a separate immutable hash key.
+  Removed membership is rechecked before ready commit. One-minute view URLs are
+  excluded from metadata listings and public image caches.
+- Durable rejected/deleting state and a secret-protected bounded cleanup route
+  preserve recoverability; reservations release only after successful deletion.
+  Expired staging URLs/processing leases are allowed to elapse before cleanup.
+  External calls stay outside transactions. No external cleanup schedule created.
+- Added exact dependencies for AWS S3 signing/client and Sharp decoding; npm
+  install audit reported zero vulnerabilities. Five gallery unit tests verify
+  decoding/metadata stripping, invalid bytes, strict inputs, quotas/config and
+  private signing. Five isolated integration tests verify idempotency, immutable
+  finals, foreign access, revoked organizer completion, quota races and failures.
+  Full database suite passed 103 tests; earlier check passed 102 unit/render tests.
+  Final npm run check passes 102 unit/render tests plus formatting/lint/types.
+  Production build passes with database/email credentials blank. All 11 real
+  HTTP tests pass, including gallery authentication, no-store metadata, missing-R2
+  failure, CSRF and bodyless versioned removal.
+- Stitch metadata confirms the desktop reference; authenticated screenshot export
+  failed and visual reference inspection is not claimed. Local browser inventory
+  currently says browser use is disabled, so browser verification is pending.
+- No R2 credentials/bucket changes or real uploads. No fake storage product mode:
+  application uploads fail closed until private R2 settings are configured.
+  Guest gallery capabilities/uploads and QR remain separate later increments.
+- See [plan](gallery-plan.md) and [private setup guide](gallery-setup.md). No commit,
+  push, deployment or existing user-record changes in this gallery slice.
+- Review corrections on 2 November: opening a photo requests a fresh authorized
+  view independently of its thumbnail and displays it in a private modal viewer.
+  Removal failures now appear inside the confirmation modal. Stale versions block
+  repeat removal until Refresh gallery and review reloads the roster and requires
+  selecting the current photo again. Failed refresh keeps recovery guidance in
+  the modal. Focused tests cover fresh requests, tenant/revocation failures and
+  in-dialog error/retry controls; real R2 browser verification remains pending.
+
+## 16. Paid expense tracking
+
+- Started: 30 October 2026. Last verified: 2 November 2026.
+  Status: In progress — implemented locally; populated browser review pending.
+- User approved INR-only editable/removable paid expenses while R2 setup is pending.
+- Implemented module-owned Mongoose ledger/receipts, versioned REST writes, strict
+  references/tenant checks, exact paise arithmetic and filtered/paginated lists.
+- Added responsive expense form/list, filters, per-function totals and overview
+  spending. Archived removal excludes spending while preserving actor provenance.
+- Three focused expense database tests pass: exact sums above safe-integer range,
+  durable create retries, edits/removal, provenance, Manager/foreign access and
+  concurrent stale writes. The first test caught removal hashing undefined; fixed
+  by normalizing the empty payload before hashing.
+- npm run check passes formatting, lint, types and 105 unit/render tests. Production
+  build passes without database/email credentials. All 12 running-server HTTP
+  tests pass, including expense creation/retry, exact filtered totals, CSRF,
+  versioned edits and bodyless deletion. On 2 November, npm run check again
+  passes all 105 tests, npm run build passes, and npx vitest run --config
+  vitest.http.config.ts passes all 12 HTTP tests. The permitted-network npm run
+  test:integration completes with all 106 tests passing; the separate focused
+  expense rerun also passes all three tests. The sandboxed database attempt
+  failed during setup and was stopped before the successful network retry.
+  A prior interrupted run has no final result and is not counted as a pass.
+- No live expense records were created or edited. Additive expense index setup was
+  initially pending; see the approved follow-up below. Browser access works:
+  the locally built server is running on port 3000 and /account/expenses redirects
+  signed-out users to Login. Sign-in was requested; populated expense/browser and
+  mobile visual verification remain unverified. The initial development server
+  hit a Windows EPERM error in generated .next/dev files; the production build
+  and local production server start successfully. Stitch lists four relevant
+  screen metadata entries; exported design
+  visual matching is not claimed. No new runtime dependency.
+- Follow-up browser check on 2 November: the user supplied port 3001. The
+  Expenses page shows the workspace-unavailable state; its authenticated API
+  returns SERVICE_UNAVAILABLE with "Expense database setup is required."
+  The user then approved setup: npm run db:expenses:indexes passed, adding the two
+  required indexes without changing existing records. Expenses now loads for the
+  signed-in organizer with the real empty ledger and function options. Browser
+  checks pass for untouched Cancel, dirty-draft confirmation, cleared fields on
+  reopening after discard, category/function filtering and visible Reset. Desktop
+  layout was inspected. A requested mobile viewport override did not take effect
+  (the actual viewport stayed 1280 pixels wide), so mobile verification is not
+  claimed. No expense records were created or changed; populated create/edit/
+  removal flows remain covered by automated HTTP/database tests rather than this
+  browser check.
+- Private-value and whitespace scans pass. Existing unrelated changes, including
+  .env.example, were preserved. Status remains In progress pending user review.
+- Review corrections on 2 November: malformed paise strings now produce schema
+  validation errors without unsafe BigInt conversion; POST/PATCH HTTP regressions
+  were added. Workspace headers use the active Expenses/Gallery title. Updated
+  only APP_BASE_URL in ignored .env.local to http://localhost:3001 to match the
+  user's running development origin; production Origin validation is unchanged.
+  README documents keeping the local origin and configured port aligned.
+  Browser control initially failed, then recovered after resetting the control
+  session. The signed-in port-3001 Expenses header now visibly reads Expenses.
+  No live expense save or R2 removal was submitted during this correction;
+  post-fix writes are verified through isolated HTTP tests. Final npm run check
+  passes 111 unit/render tests plus formatting/lint/types; npm run build passes.
+  The running-server HTTP suite passes all 13 tests, including malformed paise
+  POST/PATCH returning 422 VALIDATION_ERROR rather than 500. No commit or push.
+- See [expense contract](expenses-plan.md). No commit, push or deployment.
 
 ## Keeping this record current
 

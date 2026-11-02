@@ -1,0 +1,33 @@
+{
+  "projectId": "7444919587454097178",
+  "references": [
+    {
+      "name": "projects/7444919587454097178/screens/a8b9e8a0c2194834bc0e9daceed197a9",
+      "title": "ShaadiPilot — Guest Invitation & RSVP Hub (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "a8b9e8a0c2194834bc0e9daceed197a9.png",
+      "html": "a8b9e8a0c2194834bc0e9daceed197a9.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/58322f3dcc554d469384b92c9095f593",
+      "title": "ShaadiPilot — Invitations & RSVP Reminders (Mobile)",
+      "deviceType": "MOBILE",
+      "screenshot": "58322f3dcc554d469384b92c9095f593.png",
+      "html": "58322f3dcc554d469384b92c9095f593.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/50cc4d663cba49cd9ccc6e50f69d04fb",
+      "title": "ShaadiPilot — Function Invitation Roster & Dispatch Hub (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "50cc4d663cba49cd9ccc6e50f69d04fb.png",
+      "html": "50cc4d663cba49cd9ccc6e50f69d04fb.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/7e40bfee55654fbdbf29c21118b5263c",
+      "title": "ShaadiPilot — Guest Hub: Invited Functions & RSVPs (Mobile · Alt A)",
+      "deviceType": "MOBILE",
+      "screenshot": "7e40bfee55654fbdbf29c21118b5263c.png",
+      "html": "7e40bfee55654fbdbf29c21118b5263c.html"
+    }
+  ]
+}

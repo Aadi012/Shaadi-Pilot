@@ -35,7 +35,14 @@ export function WorkspaceShell({
   name: string;
   role: 'admin' | 'manager';
   active?:
-    'Overview' | 'Settings' | 'Team' | 'Functions' | 'Tasks' | 'Guests & RSVPs';
+    | 'Overview'
+    | 'Settings'
+    | 'Team'
+    | 'Functions'
+    | 'Tasks'
+    | 'Guests & RSVPs'
+    | 'Gallery'
+    | 'Expenses';
 }) {
   const drawer = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -63,20 +70,26 @@ export function WorkspaceShell({
                 item.label === 'Functions' ||
                 item.label === 'Tasks' ||
                 item.label === 'Guests & RSVPs' ||
+                item.label === 'Gallery' ||
+                item.label === 'Expenses' ||
                 item.label === 'Team' ? (
                   <a
                     href={
-                      item.label === 'Guests & RSVPs'
-                        ? '/account/guests'
-                        : item.label === 'Tasks'
-                          ? '/account/tasks'
-                          : item.label === 'Functions'
-                            ? '/account/functions'
-                            : item.label === 'Team'
-                              ? '/account/team'
-                              : item.label === 'Settings'
-                                ? '/account/settings/wedding'
-                                : '/account'
+                      item.label === 'Expenses'
+                        ? '/account/expenses'
+                        : item.label === 'Gallery'
+                          ? '/account/gallery'
+                          : item.label === 'Guests & RSVPs'
+                            ? '/account/guests'
+                            : item.label === 'Tasks'
+                              ? '/account/tasks'
+                              : item.label === 'Functions'
+                                ? '/account/functions'
+                                : item.label === 'Team'
+                                  ? '/account/team'
+                                  : item.label === 'Settings'
+                                    ? '/account/settings/wedding'
+                                    : '/account'
                     }
                     aria-current={item.label === active ? 'page' : undefined}
                     className={
@@ -149,15 +162,11 @@ export function WorkspaceShell({
               {wedding.displayNames.partnerTwo}
             </strong>
             <small>
-              {active === 'Team'
-                ? 'Team'
+              {active === 'Overview'
+                ? 'Workspace overview'
                 : active === 'Settings'
                   ? 'Settings · Wedding details'
-                  : active === 'Tasks' ||
-                      active === 'Functions' ||
-                      active === 'Guests & RSVPs'
-                    ? active
-                    : 'Workspace overview'}
+                  : active}
             </small>
           </div>
           <span className={styles.badge}>Private workspace</span>

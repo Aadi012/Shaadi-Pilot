@@ -7,7 +7,13 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ['127.0.0.1'],
   reactStrictMode: true,
   async headers() {
-    return ['/forgot-password', '/reset-password', '/join'].map((source) => ({
+    return [
+      '/forgot-password',
+      '/reset-password',
+      '/join',
+      '/invitation',
+      '/account/gallery',
+    ].map((source) => ({
       source,
       headers: [
         { key: 'Referrer-Policy', value: 'no-referrer' },

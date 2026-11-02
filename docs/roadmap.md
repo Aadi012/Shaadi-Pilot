@@ -13,13 +13,14 @@ still unverified. Manager invitation/revocation/acceptance is implemented and on
 real email-to-acceptance flow succeeded. Admin removal of Managers is implemented;
 see project status for its actual checks and boundaries.
 
-28 October update: Functions and Tasks were accepted and pushed to dev. Guest
-records and planned function selection are now implemented for review. Private
-guest invitations, capability links and RSVP are the next separate slice; no guest
-email or access is created by contact selection alone.
+29 October update: Functions, Tasks and Guest contacts were accepted and pushed to
+dev. The first private invitation/RSVP slice is implemented locally for review: personal hub, explicit
+issue/send/revoke/reissue, independent per-function responses and overview
+headcounts. Contact selection alone never sends email or grants guest access.
 
-The dashboard has tenant-scoped counts, upcoming functions and real task summaries.
-It is partial: RSVP headcounts and nonempty expense totals await their modules.
+The dashboard has tenant-scoped counts, upcoming functions, real task summaries,
+exact expense totals and invitation headcounts. Populated browser verification
+and the remaining modules are still required before release.
 Most public-wedding and guest
 media requirements are still ahead. No completion percentage has been measured.
 
@@ -39,9 +40,11 @@ media requirements are still ahead. No completion percentage has been measured.
 | 10    | Private gallery and personal QR    | Organizer/authorized guest uploads, R2 validation/completion, scoped view/download, removal and per-guest QR entry. Decide formats, quotas, retention and abuse controls first.                                                                                                                          |
 | 11    | V1 integration and release         | Finish real dashboard aggregation; verify organizer/guest journeys, mobile/accessibility, email retries, secrets, retention, backups, monitoring and Vercel configuration. Deploy only when authorized.                                                                                                  |
 
-Review the Guest contact slice, then implement private invitations/RSVP before gallery
-capabilities; public website work depends on the function schedule. Tasks, expenses
-and saved vendors can be reordered if priorities change.
+Review the first private invitation/RSVP slice, then add organizer-triggered RSVP
+reminders, manual WhatsApp sharing and bulk dispatch incrementally before moving
+to Expenses. Gallery capabilities remain separate; public website work depends on
+the function schedule. Expenses and saved vendors can be reordered if priorities
+change.
 
 ## How each feature ships
 
@@ -70,3 +73,21 @@ tenant isolation accompany every slice.
 
 Currency, guest email, guest-link lifecycle and gallery limits remain in the
 architecture decision log. Decide them at their feature boundary.
+
+29 October follow-up: function roster, reviewed individual RSVP reminders and
+manual WhatsApp sharing are implemented locally for verification/review. Bulk
+selection and dispatch remain the next invitation increment; then Expenses.
+
+Gallery priority update — 29 October: user approved organizer gallery first, with
+mocked R2 verification and explicit pilot quotas. Guest gallery access/uploads and
+QR follow separately; Expenses, Vendors, public website and Livestream remain.
+
+30 October: INR paid Expense Tracking implemented locally for verification while
+R2 setup is pending. Vendors is the next independent planning module after review.
+
+2 November: expense review corrections and automated checks pass. User authorized
+commit/push of pending work. Recommended next slice is manually saved Vendors,
+followed by Google Places discovery. Real R2 setup/verification, guest gallery
+and personal QR, bulk invitation dispatch, public wedding website, YouTube
+livestream and release verification remain. Dashboard panels should continue to
+grow with their owning modules; there is no separate dashboard rewrite planned.

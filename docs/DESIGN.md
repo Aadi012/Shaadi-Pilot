@@ -35,6 +35,18 @@ Never show a completed operation or fabricated planning activity as real data.
 
 ## 5. Layout
 
+Private invitations use the four inspected desktop/mobile references in
+designs/guest-invitations. The mobile multi-function Hub (Alt A) is the approved
+entry direction; the desktop direct-function variant contributes RSVP form and
+venue styling. Use the existing ShaadiPilot heart mark, Newsreader/Manrope,
+lavender/plum palette and restrained motion. The organizer controls live inside
+Guest details for this first slice; a full dispatch roster is later. The guest
+hub has a warm centered welcome, a chronological stack of function cards, labelled
+attending/declined choices, numeric additional guests and an exact party total.
+No accompanying-person names, guest caps, seating, transport, rooms, concierge,
+dietary schema, generated photos, state inspectors or fake delivery/live-sync
+claims. Gallery access remains separate and is not shown as available.
+
 Guest contacts uses the inspected directory, contact detail, add/edit and mobile
 references in designs/guests. Preserve the existing brand/shell, editorial title,
 quiet filter panel, desktop rows and mobile cards. Use a native modal with clear
@@ -102,3 +114,21 @@ billing, concierge, public join codes, offline cache, budgets or custom roles.
 Do not expose design state inspectors in the product. No sample records in the
 private workspace. Preserve per-function RSVP semantics and Admin-only membership
 controls. Published public website assets and planning modules are later slices.
+
+The invitation follow-up uses the inspected Function Invitation Roster & Dispatch
+desktop and Invitations & Reminders mobile exports. Guest Directory hosts a
+function selector and stacked responsive recipient rows with truthful active or
+historical access and RSVP counts. Contact Details retains reviewed single-guest
+reminder/email actions and manual WhatsApp sharing. No capacity percentages,
+seating/dietary details, live-sync claims, fabricated bounces or provider logos.
+
+Organizer Gallery uses the existing workspace brand, editorial heading, private
+collection grid, quiet upload panel and clear pending/rejected/removal states.
+Desktop uses three columns, tablet two, mobile one. No sample images or fake
+storage metrics. Live Stitch desktop metadata is available, but the image export
+failed, so exact design matching is not claimed. Guest sharing/QR are later.
+
+Expenses follows the shared workspace typography, quiet summary/filter panels,
+responsive ledger rows and native edit/remove/conflict dialogs. Stitch lists four
+desktop/mobile expense references; exact visual matching has not been verified.
+Use real paid totals, no budgets, unpaid balances or refund/reversal controls.

@@ -10,6 +10,9 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { authIndexes } from '@/modules/auth/indexes';
 import { weddingIndexes } from '@/modules/weddings/indexes';
 import { membershipIndexes } from '@/modules/memberships/indexes';
+import { expenseIndexes } from '@/modules/expenses/indexes';
+import { galleryIndexes } from '@/modules/gallery/indexes';
+import { invitationIndexes } from '@/modules/invitations/indexes';
 
 const database =
   'sp_http_test_' + randomUUID().replaceAll('-', '').slice(0, 24);
@@ -105,6 +108,9 @@ beforeAll(async () => {
       ...authIndexes,
       ...weddingIndexes,
       ...membershipIndexes,
+      ...invitationIndexes,
+      ...galleryIndexes,
+      ...expenseIndexes,
     ])
       await connection.collection(collection).createIndex(key, options);
     admin = new Types.ObjectId();
@@ -157,6 +163,12 @@ beforeAll(async () => {
           RESEND_FROM_EMAIL: '',
           EMAIL_FROM: '',
           CRON_SECRET: '',
+          TOKEN_ENCRYPTION_KEY: randomBytes(32).toString('base64'),
+          TOKEN_ENCRYPTION_KEY_ID: 'http-invitations-v1',
+          R2_ACCOUNT_ID: '',
+          R2_ACCESS_KEY_ID: '',
+          R2_SECRET_ACCESS_KEY: '',
+          R2_BUCKET: '',
           NEXT_TELEMETRY_DISABLED: '1',
         },
       },
@@ -215,6 +227,245 @@ afterAll(async () => {
   }
 });
 
+describe('Guest invitation flow through the running Next.js HTTP server', () => {
+  it('exchanges a fragment capability into a secure cookie, saves RSVP and blocks access after revocation', async () => {
+    const eventId = new Types.ObjectId(),
+      guestId = new Types.ObjectId();
+    await connection!.collection('events').insertOne({
+      _id: eventId,
+      weddingId: wedding,
+      title: 'HTTP private function',
+      description: 'Test function',
+      status: 'active',
+      startsAt: new Date(Date.now() + 2 * 86400000),
+      endsAt: new Date(Date.now() + 3 * 86400000),
+      timezone: 'Asia/Kolkata',
+      venue: { name: 'Test venue', address: 'Private address' },
+      __v: 0,
+    });
+    await connection!.collection('guestContacts').insertOne({
+      _id: guestId,
+      weddingId: wedding,
+      displayName: 'HTTP private guest',
+      emailNormalized: 'http-private@example.test',
+      phone: '12345',
+      notes: 'Organizer only',
+      archivedAt: null,
+      selectedEventIds: [eventId],
+      __v: 0,
+    });
+    const endpoint = `/api/v1/guest-contacts/${guestId}/invitation`;
+    const createKey = randomUUID(),
+      issueHeaders = {
+        ...headers(adminSecret),
+        'Content-Type': 'application/json',
+        'Idempotency-Key': createKey,
+      };
+    const issue = await fetch(base + endpoint, {
+      method: 'POST',
+      headers: issueHeaders,
+      body: JSON.stringify({ guestVersion: 0 }),
+    });
+    expect(issue.status).toBe(201);
+    const issued = (await issue.json()).data;
+    expect(issued.invitations).toHaveLength(1);
+    const roster = await fetch(
+      base + '/api/v1/events/' + eventId + '/invitations',
+      { headers: headers(adminSecret) },
+    );
+    expect(roster.status).toBe(200);
+    expect(roster.headers.get('Cache-Control')).toBe('no-store');
+    expect((await roster.json()).data.rows[0]).toMatchObject({
+      guestId: guestId.toString(),
+      active: true,
+      status: 'pending',
+    });
+    expect(
+      (await fetch(base + '/api/v1/events/' + eventId + '/invitations')).status,
+    ).toBe(401);
+    expect(
+      (
+        await fetch(base + endpoint + '/remind', {
+          method: 'POST',
+          headers: { ...headers(adminSecret), 'X-CSRF-Token': '' },
+        })
+      ).status,
+    ).toBe(403);
+    expect(
+      (
+        await fetch(base + endpoint + '/remind', {
+          method: 'POST',
+          headers: headers(adminSecret),
+          body: ' ',
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(base + endpoint + '/remind', {
+          method: 'POST',
+          headers: { ...headers(adminSecret), 'If-Match': '' },
+        })
+      ).status,
+    ).toBe(428);
+
+    expect(
+      (
+        await fetch(base + endpoint, {
+          method: 'POST',
+          headers: issueHeaders,
+          body: JSON.stringify({ guestVersion: 0 }),
+        })
+      ).status,
+    ).toBe(201);
+    expect(
+      (
+        await fetch(base + endpoint + '/share', {
+          method: 'POST',
+          headers: { ...headers(adminSecret), 'X-CSRF-Token': '' },
+        })
+      ).status,
+    ).toBe(403);
+    const shared = await fetch(base + endpoint + '/share', {
+      method: 'POST',
+      headers: headers(adminSecret),
+    });
+    expect(shared.status).toBe(200);
+    const link = new URL((await shared.json()).data.link);
+    expect(link.pathname).toBe('/invitation');
+    expect(link.search).toBe('');
+    const fragment = Object.fromEntries(
+      new URLSearchParams(link.hash.slice(1)),
+    );
+    const exchange = await fetch(base + '/api/v1/guest/invitations/exchange', {
+      method: 'POST',
+      headers: { ...headers(adminSecret), 'Content-Type': 'application/json' },
+      body: JSON.stringify(fragment),
+    });
+    expect(exchange.status).toBe(200);
+    const cookieHeader = exchange.headers
+      .getSetCookie()
+      .find((value) => value.startsWith('__Host-shaadipilot_guest='));
+    expect(cookieHeader).toContain('HttpOnly');
+    expect(cookieHeader).toContain('Secure');
+    expect(cookieHeader).toContain('SameSite=lax');
+    expect(cookieHeader).not.toContain('Domain=');
+    const guestCookie = cookieHeader!.split(';')[0];
+    const hubResponse = await fetch(
+      base + '/api/v1/guest/invitations/current',
+      { headers: { Cookie: guestCookie } },
+    );
+    expect(hubResponse.status).toBe(200);
+    expect(hubResponse.headers.get('Cache-Control')).toBe('no-store');
+    const hub = (await hubResponse.json()).data,
+      row = hub.invitations[0];
+    expect(JSON.stringify(hub)).not.toContain('Organizer only');
+    expect(JSON.stringify(hub)).not.toContain('http-private@example.test');
+    const body = JSON.stringify({
+      invitationId: row.id,
+      status: 'attending',
+      additionalGuests: 15,
+    });
+    const rsvpHeaders = {
+      Origin: origin,
+      Cookie: guestCookie,
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': hub.csrfToken,
+      'X-Guest-Context': hub.context,
+      'If-Match': `"${row.version}"`,
+    };
+    expect(
+      (
+        await fetch(base + '/api/v1/guest/invitations/current/rsvp', {
+          method: 'PUT',
+          headers: { ...rsvpHeaders, 'X-CSRF-Token': '' },
+          body,
+        })
+      ).status,
+    ).toBe(403);
+    expect(
+      (
+        await fetch(base + '/api/v1/guest/invitations/current/rsvp', {
+          method: 'PUT',
+          headers: {
+            ...rsvpHeaders,
+            'X-Guest-Context': new Types.ObjectId().toString(),
+          },
+          body,
+        })
+      ).status,
+    ).toBe(409);
+    expect(
+      (
+        await fetch(base + '/api/v1/guest/invitations/current/rsvp', {
+          method: 'PUT',
+          headers: { ...rsvpHeaders, 'If-Match': '' },
+          body,
+        })
+      ).status,
+    ).toBe(428);
+    const saved = await fetch(base + '/api/v1/guest/invitations/current/rsvp', {
+      method: 'PUT',
+      headers: rsvpHeaders,
+      body,
+    });
+    expect(saved.status).toBe(200);
+    expect((await saved.json()).data.invitation.headcount).toBe('16');
+    expect(
+      (
+        await fetch(base + '/api/v1/guest/invitations/current/rsvp', {
+          method: 'PUT',
+          headers: rsvpHeaders,
+          body,
+        })
+      ).status,
+    ).toBe(200);
+    const account = await fetch(base + '/account', {
+      headers: headers(adminSecret),
+    });
+    expect(account.status).toBe(200);
+    expect(await account.text()).toContain('HTTP private function');
+    const landing = await fetch(base + '/invitation');
+    expect(landing.status).toBe(200);
+    expect(landing.headers.get('Referrer-Policy')).toBe('no-referrer');
+    expect(landing.headers.get('X-Robots-Tag')).toContain('noindex');
+    const html = await landing.text();
+    expect(html).not.toContain('HTTP private guest');
+    expect(html).not.toContain(fragment.secret);
+    const revoked = await fetch(base + endpoint + '/revoke', {
+      method: 'POST',
+      headers: {
+        ...headers(adminSecret),
+        'If-Match': `"${issued.link.version}"`,
+      },
+    });
+    expect(revoked.status).toBe(200);
+    expect(
+      (
+        await fetch(base + '/api/v1/guest/invitations/current', {
+          headers: { Cookie: guestCookie },
+        })
+      ).status,
+    ).toBe(401);
+    expect(
+      (
+        await fetch(base + '/api/v1/guest/invitations/exchange', {
+          method: 'POST',
+          headers: {
+            ...headers(adminSecret),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(fragment),
+        })
+      ).status,
+    ).toBe(401);
+    expect(
+      await connection!
+        .collection('emailDeliveries')
+        .countDocuments({ weddingId: wedding, kind: 'guest-invite' }),
+    ).toBe(0);
+  });
+});
 describe('Manager removal through the running Next.js HTTP server', () => {
   it('runs Guest contact create/replay/search/edit/archive through real Next HTTP', async () => {
     const fixture = await manager(),
@@ -265,7 +516,9 @@ describe('Manager removal through the running Next.js HTTP server', () => {
     });
     expect(second.status).toBe(201);
     expect((await second.json()).data.guest.duplicateEmail).toBe(true);
-    const list = await fetch(path + '?search=HTTP', { headers: writeHeaders });
+    const list = await fetch(path + '?search=guest-http%40example.test', {
+      headers: writeHeaders,
+    });
     expect(list.headers.get('Cache-Control')).toBe('no-store');
     // Both contacts match the shared email guest-http@example.test.
     expect((await list.json()).data.guests).toHaveLength(2);
@@ -553,4 +806,218 @@ describe('Manager removal through the running Next.js HTTP server', () => {
       ).toMatchObject({ state: 'accepted' });
     },
   );
+});
+
+describe('Private gallery through running Next HTTP', () => {
+  it('protects metadata, rejects unsafe upload writes and accepts bodyless removal without contacting R2', async () => {
+    const photo = new Types.ObjectId();
+    await connection!.collection('photos').insertOne({
+      _id: photo,
+      weddingId: wedding,
+      uploadedById: admin,
+      name: 'HTTP private gallery fixture',
+      mimeType: 'image/jpeg',
+      expectedBytes: 100,
+      sizeBytes: 90,
+      state: 'ready',
+      stagingKey: 'weddings/' + wedding + '/staging/' + photo,
+      objectKey: 'weddings/' + wedding + '/photos/' + photo + '.webp',
+      cleanupKeys: [],
+      uploadUntil: new Date(0),
+      expiresAt: new Date(0),
+      cleanupAfter: new Date(Date.now() + 86400000),
+      createdAt: new Date(),
+      __v: 0,
+      width: 3,
+      height: 2,
+    });
+    expect((await fetch(base + '/api/v1/gallery/photos')).status).toBe(401);
+    const list = await fetch(base + '/api/v1/gallery/photos', {
+      headers: headers(adminSecret),
+    });
+    expect(list.status).toBe(200);
+    expect(list.headers.get('Cache-Control')).toBe('no-store');
+    const data = (await list.json()).data;
+    expect(data.storageReady).toBe(false);
+    expect(
+      data.photos.find((p: { id: string }) => p.id === photo.toString()).name,
+    ).toContain('HTTP private');
+    expect(JSON.stringify(data)).not.toContain('objectKey');
+    const body = JSON.stringify({
+      fileName: 'photo.jpg',
+      mimeType: 'image/jpeg',
+      sizeBytes: 100,
+    });
+    expect(
+      (
+        await fetch(base + '/api/v1/gallery/uploads', {
+          method: 'POST',
+          headers: {
+            ...headers(adminSecret),
+            'X-CSRF-Token': '',
+            'Content-Type': 'application/json',
+          },
+          body,
+        })
+      ).status,
+    ).toBe(403);
+    expect(
+      (
+        await fetch(base + '/api/v1/gallery/uploads', {
+          method: 'POST',
+          headers: {
+            ...headers(adminSecret),
+            'Idempotency-Key': randomUUID(),
+            'Content-Type': 'application/json',
+          },
+          body,
+        })
+      ).status,
+    ).toBe(503);
+    const removeHeaders = { ...headers(adminSecret), 'If-Match': '"0"' };
+    expect(
+      (
+        await fetch(base + '/api/v1/gallery/photos/' + photo, {
+          method: 'DELETE',
+          headers: removeHeaders,
+          body: ' ',
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(base + '/api/v1/gallery/photos/' + photo, {
+          method: 'DELETE',
+          headers: removeHeaders,
+        })
+      ).status,
+    ).toBe(202);
+    expect(
+      (await connection!.collection('photos').findOne({ _id: photo }))!.state,
+    ).toBe('deleting');
+    expect(
+      (
+        await fetch(base + '/api/v1/gallery/photos/' + new Types.ObjectId(), {
+          method: 'DELETE',
+          headers: removeHeaders,
+        })
+      ).status,
+    ).toBe(404);
+  });
+});
+
+describe('Expense ledger through running Next HTTP', () => {
+  it('returns 422 for malformed paise strings on POST and PATCH', async () => {
+    for (const amountMinor of ['abc', '1.5', '1e3', '0x10']) {
+      for (const method of ['POST', 'PATCH']) {
+        const response = await fetch(
+          base +
+            '/api/v1/expenses' +
+            (method === 'PATCH' ? '/' + new Types.ObjectId() : ''),
+          {
+            method,
+            headers: {
+              ...headers(adminSecret),
+              'Content-Type': 'application/json',
+              'Idempotency-Key': randomUUID(),
+            },
+            body: JSON.stringify(
+              method === 'POST'
+                ? {
+                    title: 'Invalid payment',
+                    paidAt: '2027-03-14',
+                    amountMinor,
+                  }
+                : { amountMinor },
+            ),
+          },
+        );
+        expect(response.status).toBe(422);
+        expect((await response.json()).error.code).toBe('VALIDATION_ERROR');
+      }
+    }
+  });
+  it('creates with a durable key, filters exact totals and enforces bodyless versioned edits/removal', async () => {
+    const body = {
+      title: 'HTTP paid expense',
+      amountMinor: '9007199254740993',
+      currency: 'INR',
+      paidAt: '2027-03-14',
+      category: 'HTTP ledger',
+    };
+    const writeHeaders = {
+      ...headers(adminSecret),
+      'Content-Type': 'application/json',
+      'Idempotency-Key': randomUUID(),
+    };
+    expect((await fetch(base + '/api/v1/expenses')).status).toBe(401);
+    expect(
+      (
+        await fetch(base + '/api/v1/expenses', {
+          method: 'POST',
+          headers: { ...writeHeaders, 'X-CSRF-Token': '' },
+          body: JSON.stringify(body),
+        })
+      ).status,
+    ).toBe(403);
+    const create = await fetch(base + '/api/v1/expenses', {
+      method: 'POST',
+      headers: writeHeaders,
+      body: JSON.stringify(body),
+    });
+    expect(create.status).toBe(201);
+    const row = (await create.json()).data.expense;
+    const replay = await fetch(base + '/api/v1/expenses', {
+      method: 'POST',
+      headers: writeHeaders,
+      body: JSON.stringify(body),
+    });
+    expect((await replay.json()).data.expense.id).toBe(row.id);
+    const list = await fetch(base + '/api/v1/expenses?category=HTTP%20ledger', {
+      headers: headers(adminSecret),
+    });
+    expect(list.headers.get('Cache-Control')).toBe('no-store');
+    expect((await list.json()).data.summary.amountMinor).toBe(body.amountMinor);
+    expect(
+      (
+        await fetch(base + '/api/v1/expenses/' + row.id, {
+          method: 'PATCH',
+          headers: { ...writeHeaders, 'If-Match': '"0"' },
+          body: JSON.stringify({ amountMinor: '29' }),
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await fetch(base + '/api/v1/expenses/' + row.id, {
+          method: 'DELETE',
+          headers: { ...headers(adminSecret), 'If-Match': '"0"' },
+        })
+      ).status,
+    ).toBe(412);
+    expect(
+      (
+        await fetch(base + '/api/v1/expenses/' + row.id, {
+          method: 'DELETE',
+          headers: { ...headers(adminSecret), 'If-Match': '"1"' },
+          body: ' ',
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(base + '/api/v1/expenses/' + row.id, {
+          method: 'DELETE',
+          headers: { ...headers(adminSecret), 'If-Match': '"1"' },
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await fetch(base + '/api/v1/expenses/' + row.id, {
+          headers: headers(adminSecret),
+        })
+      ).status,
+    ).toBe(404);
+  });
 });

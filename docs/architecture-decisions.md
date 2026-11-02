@@ -224,6 +224,15 @@ The first implementation is still under review; see project status for limitatio
 
 ## Remaining open product and contract decisions
 
+Guest invitation approval — 29 October 2026: one personal multi-function hub with
+a secure guest-only cookie; gallery remains separate. Links expire 30 days after
+the latest explicitly invited function ends (fixed at issue/reissue), guest
+sessions at most seven days and never beyond the link. RSVP editing closes at the
+function start; public publishing is independent of private invitation access.
+This supersedes per-event bearer access and optional-cookie proposals for this
+slice. See [guest-invitations-plan.md](guest-invitations-plan.md) for the additive
+contracts, revocation/reissue behavior and incremental delivery boundaries.
+
 Guest records approval — 28 October 2026: the user requires email for V1, following
 the PRD over the API's optional-email proposal. Separate contacts may share an
 email with a duplicate warning and no automatic merging. Selected functions are
@@ -233,16 +242,16 @@ RSVP behavior remains the next slice. See guests-plan.md for the additive contra
 | Topic                  | Conflict or missing decision                                                                                                     | Proposal awaiting confirmation                                                   |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | Admin policy           | PRD leaves Admin onboarding and transfer open; later contracts provisionally support it                                          | Admin may manage other Admins, with last-Admin protection                        |
-| Guest entry            | PRD shows multiple invited functions from one link; technical contracts issue per-event capabilities and a separate gallery link | Confirm the entry experience before implementing capability contracts            |
+| Guest entry            | PRD shows multiple invited functions from one link; technical contracts issue per-event capabilities and a separate gallery link | Resolved 29 October: one personal multi-function invitation hub                  |
 | Guest email            | PRD requires email; API permits manually shared contacts without email                                                           | Resolved 28 October: required; shared emails allowed with warning                |
 | Public website images  | PRD permits image customization; only private gallery media is modeled                                                           | Define separately published website assets and authorization                     |
 | Expense corrections    | PRD permits edits/deletions; later contracts introduce refunds/reversals                                                         | Confirm editable entries versus reversal semantics                               |
 | Currency               | PRD includes currency; database/API choose INR-only                                                                              | Confirm INR-only scope                                                           |
 | Routes and DTOs        | Signup/register, nested/flat tenant paths, me/current and error envelopes differ                                                 | Prefer the API document's flat tenant-relative routes and one canonical envelope |
-| Guest access transport | Architecture suggests a cookie; API specifies memory-only signed bearer tokens                                                   | Choose transport and page-reload/re-entry behavior                               |
-| RSVP cutoff            | Later documents suggest event start, but mark it provisional                                                                     | Allow edits until that function starts                                           |
+| Guest access transport | Architecture suggests a cookie; API specifies memory-only signed bearer tokens                                                   | Resolved 29 October: separate secure guest cookie, at most seven days            |
+| RSVP cutoff            | Later documents suggest event start, but mark it provisional                                                                     | Resolved 29 October: edits close at that function’s start                        |
 | Reminders              | PRD proposes manual RSVP reminders; technical contracts also include scheduled/event reminders                                   | Start with organizer-triggered RSVP reminders                                    |
-| Publication            | API scenario couples unpublishing to guest denial; other sections tie denial to lifecycle status                                 | Keep public visibility independent of private guest access                       |
+| Publication            | API scenario couples unpublishing to guest denial; other sections tie denial to lifecycle status                                 | Resolved 29 October: private guest access is independent of publishing           |
 | Gallery constraints    | Formats, size, quotas and moderation are provisional                                                                             | Consider JPEG/PNG/WebP, 20 MiB and publication after validation                  |
 | Lifecycle              | Guest-link expiry, photo retention, deletion grace and purge timing are unset                                                    | Define explicit retention and revocation policies before launch                  |
 | Hosting and scale      | Pilot scale, email delay, quotas and recovery targets are unset                                                                  | Confirm commercial Vercel plan, batch cadence and operating limits               |
@@ -439,3 +448,26 @@ the approval above describes policy, and does not itself establish verification.
 6. Release verification, recovery, quotas, retention and deployment readiness.
 
 Security, tenant isolation and focused tests accompany each phase.
+
+## Organizer gallery approval — 29 October 2026
+
+The user approved organizer uploads/private viewing before Expenses, with mocked
+R2 verification first. JPEG/PNG/WebP up to 20 MiB each, 1,000 photos and 5 GiB per
+wedding are approved configurable pilot limits. Validate image bytes, strip
+location/private metadata and publish only the sanitized image. Admin and Manager
+have equal gallery planning rights. Guest gallery capabilities, moderation of guest
+uploads, personal QR expiry and long-term retention remain later decisions.
+
+Use the API document's flat /api/v1/gallery paths over nested wedding routes.
+Normalize to WebP with orientation applied and metadata stripped, bounded to
+40 megapixels and 16,000 pixels per side as decoder resource limits. Preserve
+recoverable upload/deletion state, reserve maximum sanitized size while pending,
+and commit to immutable final keys. See gallery-plan.md for the actual contract.
+
+## Expense approval — 30 October 2026
+
+The user approved INR-only paid expense tracking with editable and removable
+entries. This resolves the PRD versus later refund/reversal contract in favor of
+editable entries, archived removal and actor/version provenance. No budgets or
+refund entries. Payment dates are validated calendar dates; amounts and totals
+are exact decimal-string paise. See expenses-plan.md for implemented contracts.

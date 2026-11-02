@@ -19,6 +19,14 @@ import {
 import { dispatchResetEmails } from '@/modules/email/service.server';
 import { dispatchInvitationEmails } from '@/modules/email/service.server';
 import { invitationEmailEligible } from '@/modules/memberships/service.server';
+import {
+  dispatchGuestEmails,
+  dispatchGuestReminders,
+} from '@/modules/email/service.server';
+import {
+  guestEmailEligible,
+  guestReminderEligible,
+} from '@/modules/invitations/service.server';
 async function checkCsrf(request: Request) {
   requireOrigin(request);
   const current = await currentSession();
@@ -109,6 +117,15 @@ export const emailCronHandler = withApiHandler(
       invitationEmailEligible,
       { limit: 3 },
     );
-    return apiSuccess({ resets, invitations }, requestId);
+    const guestInvitations = await dispatchGuestEmails(guestEmailEligible, {
+      limit: 2,
+    });
+    const guestReminders = await dispatchGuestReminders(guestReminderEligible, {
+      limit: 2,
+    });
+    return apiSuccess(
+      { resets, invitations, guestInvitations, guestReminders },
+      requestId,
+    );
   },
 );

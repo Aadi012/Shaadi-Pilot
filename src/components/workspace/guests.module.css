@@ -239,3 +239,39 @@
     font-size: 16px;
   }
 }
+.invitation {
+  margin: 28px 0;
+  padding: 20px;
+  border: 1px solid #e9e1e7;
+  background: #fcf8ff;
+  border-radius: 12px;
+}
+.invitationRow {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  display: grid;
+  gap: 6px;
+  padding: 14px 0;
+  border-top: 1px solid #e9e1e7;
+  font-size: 13px;
+}
+.confirmation {
+  background: white;
+  padding: 16px;
+  border: 1px solid #e9e1e7;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+.privateLink {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  margin-top: 16px;
+}
+.privateLink textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 12px;
+  font: inherit;
+  overflow-wrap: anywhere;
+}

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { formatInr, type ExpenseSummary } from '@/modules/expenses/contracts';
 import {
   MarketingIcon,
   type MarketingIconName,
@@ -11,6 +12,7 @@ import {
 import type { WeddingDto } from '@/modules/weddings/contracts';
 import styles from './workspace.module.css';
 import type { TaskDto } from '@/modules/tasks/contracts';
+import type { Attendance } from '@/modules/invitations/contracts';
 type Counts = {
   functions: number;
   tasks: number;
@@ -30,12 +32,16 @@ export function WeddingOverview({
   role,
   now,
   taskOverview,
+  attendance = [],
+  expenseSummary,
 }: {
   wedding: WeddingDto;
   counts: Counts;
   name: string;
   role: 'admin' | 'manager';
   now: string;
+  attendance?: Attendance[];
+  expenseSummary?: ExpenseSummary;
   taskOverview?: {
     summary: { total: number; done: number; overdue: number };
     assigned: TaskDto[];
@@ -152,8 +158,8 @@ export function WeddingOverview({
         </div>
         <p className={styles.phaseNote}>
           Your wedding is saved. Admins can now invite Managers from Team.
-          Functions, tasks and guest contacts are ready to plan. Private guest
-          invitations and RSVPs are coming in the next update.
+          Functions, tasks and guest contacts are ready to plan. Open a guest’s
+          details to review, issue and send their private invitation.
         </p>
       </section>
       <section aria-labelledby="indicators">
@@ -183,9 +189,14 @@ export function WeddingOverview({
             },
             {
               label: 'Recorded expenses',
-              value: counts.expenseRecords === 0 ? '₹0' : '—',
-              unit:
-                counts.expenseRecords === 0
+              value: expenseSummary
+                ? formatInr(expenseSummary.amountMinor)
+                : counts.expenseRecords === 0
+                  ? '₹0'
+                  : '—',
+              unit: expenseSummary
+                ? expenseSummary.count + ' paid entries'
+                : counts.expenseRecords === 0
                   ? 'No expenses recorded'
                   : 'Totals available with expense tracking',
               icon: 'wallet' as const,
@@ -258,7 +269,8 @@ export function WeddingOverview({
             <div className={styles.tableWrap}>
               <table>
                 <caption className={styles.srOnly}>
-                  RSVP summaries will be shown separately for each function.
+                  Active invitation responses and confirmed headcounts,
+                  separately for each function.
                 </caption>
                 <thead>
                   <tr>
@@ -268,6 +280,7 @@ export function WeddingOverview({
                       'Attending',
                       'Declined',
                       'Awaiting',
+                      'Headcount',
                     ].map((value) => (
                       <th key={value} scope="col">
                         {value}
@@ -276,20 +289,34 @@ export function WeddingOverview({
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td colSpan={5}>
-                      <MarketingIcon name="users" size={25} />
-                      <p>
-                        Function invitations and RSVPs are coming in a later
-                        update.
-                        <br />
-                        No attendance responses have been collected through
-                        ShaadiPilot yet.
-                      </p>
-                    </td>
-                  </tr>
+                  {attendance.map((row) => (
+                    <tr key={row.eventId}>
+                      <td>{row.title}</td>
+                      <td>{row.pending + row.attending + row.declined}</td>
+                      <td>{row.attending}</td>
+                      <td>{row.declined}</td>
+                      <td>{row.pending}</td>
+                      <td>{row.headcount}</td>
+                    </tr>
+                  ))}
+                  {!attendance.length && (
+                    <tr>
+                      <td colSpan={6}>
+                        <MarketingIcon name="users" size={25} />
+                        <p>
+                          No active function invitations yet. Open Guests &
+                          RSVPs to review selected functions and issue a
+                          personal link.
+                        </p>
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
+              <p className={styles.phaseNote}>
+                Attending counts primary invitees; headcount includes their
+                additional guests. Revoked or expired access is excluded.
+              </p>
             </div>
           </section>
         </div>
