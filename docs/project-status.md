@@ -1,6 +1,6 @@
 # ShaadiPilot project status
 
-Last updated: 2 November 2026 (Asia/Kolkata).
+Last updated: 4 November 2026 (Asia/Kolkata).
 
 This is the implementation progress record. The [PRD](prd.md) defines product
 scope; [architecture decisions](architecture-decisions.md) record accepted
@@ -8,6 +8,10 @@ contracts and unresolved choices. A status entry does not approve new scope or
 resolve an open product decision.
 
 ## Current position
+
+Manual saved Vendor Management is implemented locally with its overview count,
+approved live indexes and passing automated verification. See milestone 17 for
+scope and the outstanding browser/user review. Google Places remains separate.
 
 Paid expense tracking is implemented locally while real R2 setup is pending.
 See milestone 16 for scope, setup requirements and verification. Gallery remains
@@ -855,6 +859,72 @@ Guest retry/pagination corrections — 29 October:
   The running-server HTTP suite passes all 13 tests, including malformed paise
   POST/PATCH returning 422 VALIDATION_ERROR rather than 500. No commit or push.
 - See [expense contract](expenses-plan.md). No commit, push or deployment.
+
+## 17. Manual saved Vendor Management
+
+- Started: 2 November 2026. Status: In progress — implemented locally; browser
+  verification and user review pending.
+- User approved manual vendor contacts before Google Places discovery. Inspected
+  and exported the approved desktop and mobile Stitch references; preserved the
+  established brand, typography and palette. See [scope](vendors-plan.md).
+- Implemented tenant-scoped saved contacts, strict input validation, paginated
+  name/category filters, versioned edits, archived removal and durable create
+  receipts. Both organizer roles can manage vendors; no external provider calls.
+  Overview shows the actual saved-vendor count and a link to the directory.
+- npm run check passes formatting/lint/types and all 114 unit/render tests. Three
+  focused isolated database tests pass: create retries, archive/provenance and
+  preserved expenses, tenant/role/context/state checks, version races, literal
+  search and filter-bound pagination. Production build passes. All 14 running-
+  server HTTP tests pass, including vendor session, Origin/CSRF/context, strict
+  inputs, retry, filtered totals, preconditions, updates and bodyless removal.
+  Full npm run test:integration passes all 109 tests across four files.
+- User approved live index setup; npm run db:vendors:indexes passed, adding two
+  indexes without changing existing records. Private-value and whitespace scans
+  pass. No new dependency or Places credentials required.
+- Browser attempt was blocked by "Local browser use is disabled in Work settings";
+  enablement was requested. No interactive vendor CRUD or mobile verification is
+  claimed. All test writes used isolated databases. No commit, push, deployment
+  or existing user-record changes in this increment.
+- Browser follow-up, 3 November: access recovered after the user signed in.
+  Verified the signed-in Vendors header, actual empty directory, Add form,
+  untouched Cancel without confirmation, dirty-draft confirmation, cleared
+  fields after discard/reopening, name/category Apply with no-results guidance,
+  and Reset clearing both inputs/restoring the empty state. At the actual
+  319-pixel viewport, page and modal have no horizontal overflow; the mobile
+  heading, action and stacked fields were inspected. No vendor was saved,
+  edited or removed. Populated CRUD and desktop visual checks remain unverified
+  interactively; automated HTTP/database coverage above still applies. Left the
+  directory open with filters cleared and the test draft discarded.
+- 4 November review: user observed singular wording and a slow but eventually
+  successful removal. Fixed "1 saved vendor" wording. Added 15-second deadlines
+  per browser request (including JSON body reads), uncertain-result guidance,
+  in-modal refresh/review recovery, and released write busy state before list
+  refresh. Session bootstrap and mutation each have their own deadline. Original
+  latency cause remains unconfirmed; retained logs do not establish it.
+  New tests verify stalled transport/body reads, abort/timer cleanup, retained
+  create receipts and singular rendering. npm run check passes 117 tests plus
+  formatting/lint/types. Browser retry was blocked by Work settings. Production
+  build and all 14 running-server HTTP tests pass. Private-value and whitespace
+  scans pass; .env.local stays ignored. User authorized commit/push of all pending
+  work; delivery commit title: "feat: add saved vendor management and request recovery".
+
+## Local login recovery — 2 November 2026
+
+- Confirmed port 3000 was an older agent-started production-mode server. Its
+  login requests failed with CONFIGURATION_ERROR because the local APP_BASE_URL
+  used HTTP; the development server on port 3001 reached normal validation.
+- Stopped the older production server and the verified duplicate development
+  process. Updated only APP_BASE_URL in ignored .env.local to localhost:3000 and
+  started npm run dev -- --port 3000 successfully. Production HTTPS and strict
+  Origin policies are unchanged; no account credentials or memberships changed.
+- Actual local HTTP checks: Login page 200; empty login payload 422
+  VALIDATION_ERROR; generated nonexistent diagnostic account 401
+  INVALID_CREDENTIALS. The 500 is resolved for these checks. A real user sign-in
+  remains user-performed/unverified; diagnostic requests only touched normal
+  login rate-limit state. No commit, push or deployment.
+- 3 November: user confirmed successful sign-in; browser inspection confirmed
+  authenticated Functions and Vendors pages on localhost:3000. The local login
+  recovery is now verified through actual user sign-in and workspace access.
 
 ## Keeping this record current
 

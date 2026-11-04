@@ -33,6 +33,16 @@ If Next.js starts on port 3001, set `APP_BASE_URL=http://localhost:3001` in
 ignored `.env.local` and restart the development server if it does not reload the
 environment automatically. Keep browser access and emailed links on that port;
 other local ports remain rejected by the Origin check.
+Use `npm run dev` for local HTTP testing. `npm run start` runs in production mode,
+where `APP_BASE_URL` must be HTTPS and session cookies require HTTPS. Do not leave
+a production-mode server on port 3000 alongside a development server on another
+port. Stop the existing local server before restarting on the intended port.
+
+Saved Vendor Management is available at `/account/vendors`: manual contacts,
+name/category filters, versioned editing and archived removal. Apply the additive
+indexes with `npm run db:vendors:indexes` in each approved environment before use.
+See [vendor scope and verification](docs/vendors-plan.md). Google Places search
+is a separate increment; manual contacts require no Places key.
 
 ## Commands
 

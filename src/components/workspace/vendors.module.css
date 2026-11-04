@@ -1,0 +1,263 @@
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 30px 64px;
+}
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.heading h1 {
+  font:
+    400 clamp(32px, 4vw, 44px)/1.15 var(--font-heading),
+    serif;
+  margin: 10px 0;
+}
+.heading p,
+.helper {
+  color: var(--muted);
+  line-height: 1.7;
+}
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 24px;
+}
+.summary > div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.summaryNumber {
+  font:
+    400 36px var(--font-heading),
+    serif;
+}
+.summary p,
+.summary span:last-child {
+  color: var(--muted);
+  font-size: 13px;
+}
+.filters {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.filterFields,
+.formGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 20px;
+}
+.filterFields label,
+.wideField {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+.filterFields input,
+.dialog input,
+.dialog textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--foreground);
+  border-radius: 8px;
+  font: inherit;
+}
+.filterFields input:focus-visible,
+.dialog input:focus-visible,
+.dialog textarea:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 20px;
+}
+.actions > * {
+  min-height: 44px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cardTop small {
+  color: var(--muted);
+  font-size: 11px;
+}
+.category {
+  padding: 5px 10px;
+  background: var(--surface-soft);
+  border-radius: 20px;
+  color: var(--foreground);
+  font-size: 12px;
+}
+.card h2 {
+  font:
+    400 28px/1.2 var(--font-heading),
+    serif;
+  margin: 20px 0 12px;
+}
+.address {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.contacts {
+  background: var(--surface-soft);
+  padding: 16px;
+  border-radius: 10px;
+  display: grid;
+  gap: 12px;
+  margin: 20px 0;
+  font-size: 13px;
+}
+.contacts a {
+  text-underline-offset: 3px;
+}
+.contacts p {
+  margin: 0;
+  color: var(--muted);
+}
+.notes {
+  background: var(--surface-soft);
+  border-left: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  margin: 16px 0;
+}
+.notes small {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-size: 10px;
+}
+.notes p {
+  margin: 10px 0 0;
+  line-height: 1.8;
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+.empty {
+  padding: 52px 24px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  text-align: center;
+}
+.empty h2 {
+  font:
+    400 30px var(--font-heading),
+    serif;
+}
+.empty p {
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+.notice {
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--surface-soft);
+  line-height: 1.7;
+}
+.dialog {
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--foreground);
+}
+.dialog::backdrop {
+  background: #29232a66;
+}
+.dialogHeading h2 {
+  font:
+    400 32px var(--font-heading),
+    serif;
+  margin: 12px 0 24px;
+}
+.fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.formGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.wideField {
+  grid-column: 1 / -1;
+}
+.helper,
+.confirm p {
+  font-size: 13px;
+  line-height: 1.8;
+}
+@media (max-width: 767px) {
+  .container {
+    padding: 26px 16px 48px;
+  }
+  .heading,
+  .summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .heading > button {
+    width: 100%;
+  }
+  .grid,
+  .filterFields,
+  .formGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dialog {
+    padding: 20px;
+  }
+  .dialog input,
+  .dialog textarea,
+  .filterFields input {
+    font-size: 16px;
+  }
+  .card {
+    padding: 20px;
+  }
+}

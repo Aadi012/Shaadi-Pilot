@@ -471,3 +471,13 @@ entries. This resolves the PRD versus later refund/reversal contract in favor of
 editable entries, archived removal and actor/version provenance. No budgets or
 refund entries. Payment dates are validated calendar dates; amounts and totals
 are exact decimal-string paise. See expenses-plan.md for implemented contracts.
+
+## Manual vendor slice — 2 November 2026
+
+The user approved the recommended manually saved Vendor Management increment,
+followed separately by Google Places discovery. Deliver the PRD's simple contact
+directory first. Database/API optional status, function associations and provider
+fields are deferred and rejected by the current manual contract. Both organizer
+roles have equal rights. Removal archives the saved contact and preserves all
+expense records. No booking/payment operation, vendor login or verification
+claim. See vendors-plan.md for the precise fields and API/retry contract.

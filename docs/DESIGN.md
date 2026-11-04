@@ -90,6 +90,16 @@ sections and two-column indicators. No page-level horizontal overflow at 320px.
 
 ## 6. Motion and interaction
 
+Saved Vendors uses the inspected desktop/mobile references in designs/vendors.
+Retain the existing heart mark, Newsreader headings and Manrope controls with
+lavender canvas and plum actions. Use a balanced two-column desktop directory,
+single-column mobile cards, quiet contact blocks and clearly labelled team notes.
+The native modal groups identity, contacts and notes, preserves failed drafts,
+resets discarded drafts and asks before removal or loading latest details.
+No perpetual animation, replacement logo, prototype controls, verification or
+offline claims, fake metrics, financial commitments or unimplemented discovery.
+See vendors-plan.md for the approved first slice and excluded generated content.
+
 Manager removal follow-up uses the existing Team reference's Manager-only Remove
 control. Reuse the native confirmation dialog with the organizer's name, explicit
 access consequences, Keep Manager and Remove Manager actions. Do not add Admin

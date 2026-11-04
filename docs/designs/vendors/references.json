@@ -1,0 +1,19 @@
+{
+  "projectId": "7444919587454097178",
+  "references": [
+    {
+      "name": "projects/7444919587454097178/screens/0c922a934f494c56a40f9ded7ebaf9cd",
+      "title": "ShaadiPilot — Saved Vendors Directory & Detail Hub (Desktop)",
+      "deviceType": "DESKTOP",
+      "screenshot": "0c922a934f494c56a40f9ded7ebaf9cd.png",
+      "html": "0c922a934f494c56a40f9ded7ebaf9cd.html"
+    },
+    {
+      "name": "projects/7444919587454097178/screens/6eecac3be03248f88031c7bee0f11c2d",
+      "title": "ShaadiPilot — Saved Vendors & Discovery (Mobile)",
+      "deviceType": "MOBILE",
+      "screenshot": "6eecac3be03248f88031c7bee0f11c2d.png",
+      "html": "6eecac3be03248f88031c7bee0f11c2d.html"
+    }
+  ]
+}

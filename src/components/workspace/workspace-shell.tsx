@@ -42,7 +42,8 @@ export function WorkspaceShell({
     | 'Tasks'
     | 'Guests & RSVPs'
     | 'Gallery'
-    | 'Expenses';
+    | 'Expenses'
+    | 'Vendors';
 }) {
   const drawer = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -72,24 +73,27 @@ export function WorkspaceShell({
                 item.label === 'Guests & RSVPs' ||
                 item.label === 'Gallery' ||
                 item.label === 'Expenses' ||
+                item.label === 'Vendors' ||
                 item.label === 'Team' ? (
                   <a
                     href={
-                      item.label === 'Expenses'
-                        ? '/account/expenses'
-                        : item.label === 'Gallery'
-                          ? '/account/gallery'
-                          : item.label === 'Guests & RSVPs'
-                            ? '/account/guests'
-                            : item.label === 'Tasks'
-                              ? '/account/tasks'
-                              : item.label === 'Functions'
-                                ? '/account/functions'
-                                : item.label === 'Team'
-                                  ? '/account/team'
-                                  : item.label === 'Settings'
-                                    ? '/account/settings/wedding'
-                                    : '/account'
+                      item.label === 'Vendors'
+                        ? '/account/vendors'
+                        : item.label === 'Expenses'
+                          ? '/account/expenses'
+                          : item.label === 'Gallery'
+                            ? '/account/gallery'
+                            : item.label === 'Guests & RSVPs'
+                              ? '/account/guests'
+                              : item.label === 'Tasks'
+                                ? '/account/tasks'
+                                : item.label === 'Functions'
+                                  ? '/account/functions'
+                                  : item.label === 'Team'
+                                    ? '/account/team'
+                                    : item.label === 'Settings'
+                                      ? '/account/settings/wedding'
+                                      : '/account'
                     }
                     aria-current={item.label === active ? 'page' : undefined}
                     className={

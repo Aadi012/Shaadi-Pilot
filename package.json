@@ -32,7 +32,8 @@
     "test:http": "npm run build && vitest run --config vitest.http.config.ts",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
     "db:gallery:indexes": "node scripts/gallery-indexes.mjs",
-    "db:expenses:indexes": "node scripts/expense-indexes.mjs"
+    "db:expenses:indexes": "node scripts/expense-indexes.mjs",
+    "db:vendors:indexes": "node scripts/vendor-indexes.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1159.0",

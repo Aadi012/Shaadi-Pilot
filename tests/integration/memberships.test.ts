@@ -85,12 +85,18 @@ import {
 import { guestIndexes } from '@/modules/guests/indexes';
 import sharp from 'sharp';
 import { expenseIndexes } from '@/modules/expenses/indexes';
+import { vendorIndexes } from '@/modules/vendors/indexes';
 import {
   writeExpense,
   listExpenses,
   readExpense,
   expenseSummary,
 } from '@/modules/expenses/service.server';
+import {
+  writeVendor,
+  listVendors,
+  readVendor,
+} from '@/modules/vendors/service.server';
 import { weddingOverview } from '@/modules/dashboard/service.server';
 import { galleryIndexes } from '@/modules/gallery/indexes';
 import {
@@ -216,6 +222,7 @@ beforeAll(async () => {
       ...invitationIndexes,
       ...galleryIndexes,
       ...expenseIndexes,
+      ...vendorIndexes,
     ])
       await mongoose.connection
         .collection(collection)
@@ -3083,6 +3090,181 @@ describe('Organizer private gallery with mocked R2', () => {
         fake.storage,
       ),
     ).rejects.toMatchObject({ status: 409 });
+  });
+});
+
+describe('Manual saved vendor directory', () => {
+  const input = {
+    name: 'Studio [A]',
+    category: 'Photography',
+    phone: '+91 90000 00000',
+    email: 'STUDIO@example.test',
+    website: 'https://example.test',
+    address: 'Jaipur',
+    notes: 'Private team note',
+  };
+  it('deduplicates concurrent creates, rejects changed retries and preserves expenses on archive', async () => {
+    const scope = await wedding(),
+      key = randomUUID();
+    const [one, two] = await Promise.all([
+      writeVendor(scope.adminId, scope.weddingId, input, { key }),
+      writeVendor(scope.adminId, scope.weddingId, input, { key }),
+    ]);
+    expect(one.vendor.id).toBe(two.vendor.id);
+    expect(one.vendor).toMatchObject({
+      email: 'studio@example.test',
+      source: 'manual',
+      version: 0,
+    });
+    await expect(
+      writeVendor(
+        scope.adminId,
+        scope.weddingId,
+        { ...input, name: 'Changed' },
+        { key },
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+    const expense = await writeExpense(
+      scope.adminId,
+      scope.weddingId,
+      {
+        title: 'Independent expense',
+        amountMinor: '15000',
+        paidAt: '2027-03-01',
+      },
+      { key: randomUUID() },
+    );
+    // Existing references must survive vendor removal, even before the expense
+    // UI supports adding vendor references in a later increment.
+    await mongoose.connection
+      .collection('expenses')
+      .updateOne(
+        { _id: new Types.ObjectId(expense.expense.id) },
+        { $set: { vendorId: new Types.ObjectId(one.vendor.id) } },
+      );
+    await writeVendor(scope.adminId, scope.weddingId, undefined, {
+      id: one.vendor.id,
+      version: 0,
+      archive: true,
+    });
+    expect((await listVendors(scope.adminId)).total).toBe(0);
+    expect(
+      (await readExpense(scope.adminId, expense.expense.id)).expense
+        .amountMinor,
+    ).toBe('15000');
+    await expect(
+      readVendor(scope.adminId, one.vendor.id),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      writeVendor(scope.adminId, scope.weddingId, input, { key }),
+    ).rejects.toMatchObject({ code: 'VENDOR_ARCHIVED' });
+    const archived = await mongoose.connection
+      .collection('vendors')
+      .findOne({ _id: new Types.ObjectId(one.vendor.id) });
+    expect(archived!.archivedAt).toBeInstanceOf(Date);
+    expect(archived!.updatedBy.toString()).toBe(scope.adminId);
+  });
+  it('enforces tenants, current membership, wedding state and stale concurrent edits', async () => {
+    const scope = await wedding(),
+      other = await wedding(),
+      manager = await user();
+    await User.updateOne(
+      { _id: manager._id },
+      { $set: { weddingId: scope.wedding._id, role: 'manager' } },
+    );
+    const { vendor } = await writeVendor(
+      manager._id.toString(),
+      scope.weddingId,
+      input,
+      { key: randomUUID() },
+    );
+    expect((await weddingOverview(scope.adminId))!.vendorCount).toBe(1);
+    expect((await listVendors(other.adminId)).vendors).toEqual([]);
+    await expect(readVendor(other.adminId, vendor.id)).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(
+      writeVendor(
+        other.adminId,
+        other.weddingId,
+        { name: 'Foreign' },
+        { id: vendor.id, version: 0 },
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      writeVendor(scope.adminId, other.weddingId, input, { key: randomUUID() }),
+    ).rejects.toMatchObject({ status: 409 });
+    const updates = await Promise.allSettled(
+      ['One', 'Two'].map((name) =>
+        writeVendor(
+          scope.adminId,
+          scope.weddingId,
+          { name },
+          { id: vendor.id, version: 0 },
+        ),
+      ),
+    );
+    expect(updates.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+    expect(updates.find((r) => r.status === 'rejected')).toMatchObject({
+      reason: { status: 412 },
+    });
+    await User.updateOne(
+      { _id: manager._id },
+      { $set: { weddingId: null, role: null } },
+    );
+    await expect(
+      writeVendor(manager._id.toString(), scope.weddingId, input, {
+        key: randomUUID(),
+      }),
+    ).rejects.toMatchObject({ status: 403 });
+    await Wedding.updateOne(
+      { _id: scope.wedding._id },
+      { $set: { status: 'archived' } },
+    );
+    await expect(
+      writeVendor(scope.adminId, scope.weddingId, input, { key: randomUUID() }),
+    ).rejects.toMatchObject({ status: 404 });
+  });
+  it('uses literal search and filter-bound pagination with complete filtered counts', async () => {
+    const scope = await wedding();
+    for (let i = 0; i < 27; i++)
+      await writeVendor(
+        scope.adminId,
+        scope.weddingId,
+        { ...input, name: 'Studio [A] ' + i },
+        { key: randomUUID() },
+      );
+    await writeVendor(
+      scope.adminId,
+      scope.weddingId,
+      { name: 'Different', category: 'Catering' },
+      { key: randomUUID() },
+    );
+    const first = await listVendors(scope.adminId, {
+      search: '[A]',
+      category: 'Photography',
+    });
+    expect(first.total).toBe(27);
+    expect(first.vendors).toHaveLength(25);
+    const second = await listVendors(scope.adminId, {
+      search: '[A]',
+      category: 'Photography',
+      cursor: first.nextCursor,
+    });
+    expect(second.vendors).toHaveLength(2);
+    expect(second.nextCursor).toBeNull();
+    expect(
+      new Set([...first.vendors, ...second.vendors].map((v) => v.id)).size,
+    ).toBe(27);
+    expect(
+      (await listVendors(scope.adminId, { search: '.*' })).vendors,
+    ).toHaveLength(0);
+    await expect(
+      listVendors(scope.adminId, {
+        category: 'Catering',
+        cursor: first.nextCursor,
+      }),
+    ).rejects.toMatchObject({ status: 400 });
   });
 });
 

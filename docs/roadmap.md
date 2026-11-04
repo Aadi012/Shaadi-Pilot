@@ -91,3 +91,8 @@ followed by Google Places discovery. Real R2 setup/verification, guest gallery
 and personal QR, bulk invitation dispatch, public wedding website, YouTube
 livestream and release verification remain. Dashboard panels should continue to
 grow with their owning modules; there is no separate dashboard rewrite planned.
+
+Vendor follow-up: the user approved manual saved contacts. Implementation is
+under verification, including a real saved-vendor count/link on the overview.
+Inspect milestone 17 for actual checks and pending setup; Google Places discovery
+remains the next vendor increment.

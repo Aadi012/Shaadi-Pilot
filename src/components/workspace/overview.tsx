@@ -34,6 +34,7 @@ export function WeddingOverview({
   taskOverview,
   attendance = [],
   expenseSummary,
+  vendorCount,
 }: {
   wedding: WeddingDto;
   counts: Counts;
@@ -42,6 +43,7 @@ export function WeddingOverview({
   now: string;
   attendance?: Attendance[];
   expenseSummary?: ExpenseSummary;
+  vendorCount?: number;
   taskOverview?: {
     summary: { total: number; done: number; overdue: number };
     assigned: TaskDto[];
@@ -217,6 +219,21 @@ export function WeddingOverview({
           bank balance.
         </p>
       </section>
+      {vendorCount !== undefined && (
+        <section className={styles.overviewPanel}>
+          <div className={styles.panelHeading}>
+            <p className={styles.eyebrow}>Your wedding team’s directory</p>
+            <h2>Saved vendors</h2>
+          </div>
+          <p>
+            {vendorCount} saved {vendorCount === 1 ? 'vendor' : 'vendors'} ·
+            organizer-entered contacts and notes
+          </p>
+          <Link href="/account/vendors" className={styles.textButton}>
+            Manage vendors
+          </Link>
+        </section>
+      )}
       <div className={styles.overviewColumns}>
         <div>
           <section className={styles.overviewPanel}>

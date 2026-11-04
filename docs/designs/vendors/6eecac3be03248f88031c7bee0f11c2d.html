@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'on-tertiary': '#ffffff', 'on-tertiary-fixed': '#201b15', 'on-secondary-fixed-variant': '#564428', 'surface': '#fcf8ff', 'surface-container-high': '#ebe6f0', 'on-surface': '#1c1b22', 'on-tertiary-fixed-variant': '#4d453e', 'surface-container': '#f0ecf6', 'on-secondary': '#ffffff', 'surface-container-highest': '#e5e1ea', 'on-surface-variant': '#4e4448', 'inverse-on-surface': '#f3eff9', 'on-primary-fixed': '#2c1320', 'inverse-primary': '#e5bbcd', 'on-error-container': '#93000a', 'tertiary': '#28221b', 'on-tertiary-container': '#aaa096', 'on-background': '#1c1b22', 'surface-bright': '#fcf8ff', 'on-primary-fixed-variant': '#5c3e4c', 'surface-container-lowest': '#ffffff', 'primary': '#341a27', 'inverse-surface': '#312f37', 'surface-dim': '#dcd8e2', 'secondary-fixed': '#fbdeb8', 'background': '#fcf8ff', 'primary-fixed': '#ffd8e8', 'on-primary': '#ffffff', 'outline': '#807478', 'surface-variant': '#e5e1ea', 'on-primary-container': '#be96a7', 'surface-tint': '#765564', 'on-secondary-fixed': '#271903', 'secondary-container': '#fbdeb8', 'outline-variant': '#d2c3c7', 'secondary': '#705b3d', 'error-container': '#ffdad6', 'secondary-fixed-dim': '#dec29e', 'tertiary-fixed': '#ede0d6', 'surface-container-low': '#f6f2fc', 'error': '#ba1a1a', 'primary-container': '#4c2f3d', 'on-error': '#ffffff', 'on-secondary-container': '#766143', 'tertiary-fixed-dim': '#d0c4bb', 'primary-fixed-dim': '#e5bbcd', 'tertiary-container': '#3e3730' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'margin': '3rem', 'gutter-mobile': '1rem', 'space-xs': '0.25rem', 'space-lg': '1.5rem', 'gutter': '1.5rem', 'margin-mobile': '1.25rem', 'space-sm': '0.5rem', 'space-md': '1rem', 'space-xl': '2.5rem' }, fontFamily: { 'label-md': ['Manrope'], 'title-lg': ['Manrope'], 'title-md': ['Manrope'], 'body-sm': ['Manrope'], 'headline-lg': ['Newsreader'], 'display-lg-mobile': ['Newsreader'], 'headline-md': ['Newsreader'], 'headline-sm': ['Newsreader'], 'headline-lg-mobile': ['Newsreader'], 'display-lg': ['Newsreader'], 'body-lg': ['Manrope'], 'label-sm': ['Manrope'], 'body-md': ['Manrope'] }, fontSize: { 'label-md': ['13px', { lineHeight: '18px', letterSpacing: '0.02em', fontWeight: '600' }], 'title-lg': ['18px', { lineHeight: '24px', fontWeight: '600' }], 'title-md': ['16px', { lineHeight: '22px', fontWeight: '600' }], 'body-sm': ['12px', { lineHeight: '18px', fontWeight: '400' }], 'headline-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.015em', fontWeight: '400' }], 'display-lg-mobile': ['40px', { lineHeight: '44px', letterSpacing: '-0.01em', fontWeight: '400' }], 'headline-md': ['28px', { lineHeight: '36px', fontWeight: '500' }], 'headline-sm': ['22px', { lineHeight: '28px', fontWeight: '500' }], 'headline-lg-mobile': ['28px', { lineHeight: '36px', fontWeight: '400' }], 'display-lg': ['56px', { lineHeight: '64px', letterSpacing: '-0.02em', fontWeight: '400' }], 'body-lg': ['16px', { lineHeight: '26px', fontWeight: '400' }], 'label-sm': ['11px', { lineHeight: '16px', letterSpacing: '0.06em', fontWeight: '700' }], 'body-md': ['14px', { lineHeight: '22px', fontWeight: '400' }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-full selection:bg-secondary-fixed selection:text-on-secondary-fixed"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(76,47,61,0.04)]"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0 flex-1"><div class="w-9 h-9 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm flex-shrink-0 select-none shadow-[0_2px_8px_rgba(76,47,61,0.12)]"><span class="italic font-headline-sm">SP</span></div><div class="flex flex-col min-w-0 pr-space-xs"><span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest truncate">ShaadiPilot</span><h1 class="font-title-md text-title-md text-primary font-semibold tracking-tight truncate leading-tight">Vendors &amp; Discovery</h1></div></div><div class="flex items-center gap-1 flex-shrink-0"><button aria-label="Search vendors" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">search</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1 flex-shrink-0 cursor-pointer shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-20 bg-surface"><div class="flex flex-col w-full">
+<!-- Top Wedding Context Pill & Scope -->
+<div class="px-gutter-mobile pt-space-sm pb-space-xs">
+<div class="flex items-center justify-between bg-surface-container px-3 py-2 rounded-xl">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-2 h-2 rounded-full bg-secondary flex-shrink-0 animate-pulse"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest truncate leading-tight">Wedding Portfolio Context</span>
+<p class="font-title-md text-title-md text-primary font-semibold truncate leading-tight">Jaipur 2027 • Oberoi Rajvilas</p>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-lowest rounded-lg shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[15px] text-secondary">hotel_class</span>
+<span class="font-label-md text-label-md text-on-surface">Tier-1 Curated</span>
+</div>
+</div>
+</div>
+<!-- Segmented Top Mode Switcher -->
+<div class="px-gutter-mobile py-space-xs">
+<div class="bg-surface-container-high p-1 rounded-xl flex items-center shadow-inner relative">
+<button class="flex-1 py-2.5 px-3 rounded-lg text-center font-title-md text-title-md transition-all duration-200 flex items-center justify-center gap-1.5 bg-surface-container-lowest text-primary shadow-sm" id="btnTabSaved" onclick="switchMainTab('saved')">
+<span class="material-symbols-outlined text-[18px]">bookmark_heart</span>
+<span>Saved Artisans (8)</span>
+</button>
+<button class="flex-1 py-2.5 px-3 rounded-lg text-center font-title-md text-title-md transition-all duration-200 flex items-center justify-center gap-1.5 text-on-surface-variant hover:text-primary" id="btnTabDiscover" onclick="switchMainTab('discover')">
+<span class="material-symbols-outlined text-[18px]">travel_explore</span>
+<span>Discover Directory</span>
+</button>
+</div>
+</div>
+<!-- OFFLINE TOAST / RECOVERY BANNER (Section C) -->
+<div class="px-gutter-mobile my-1.5" id="offlineBanner">
+<div class="bg-secondary-fixed text-on-secondary-fixed p-3 rounded-xl flex items-start gap-2.5 shadow-sm">
+<span class="material-symbols-outlined text-[20px] text-on-secondary-fixed-variant flex-shrink-0 mt-0.5">cloud_sync</span>
+<div class="flex-1 min-w-0">
+<p class="font-title-md text-title-md font-semibold leading-tight">Directory Lookup Syncing Offline</p>
+<p class="font-body-sm text-body-sm text-on-secondary-fixed-variant mt-0.5">Showing cached Rajasthan artisan records. You can still manually log commitments or edit internal vendor ledgers.</p>
+</div>
+<button class="text-on-secondary-fixed-variant hover:text-on-secondary-fixed p-1" onclick="dismissOfflineBanner()">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- ==================== TAB CONTENT A: SAVED VENDORS ==================== -->
+<div class="flex flex-col w-full" id="viewSavedVendors">
+<!-- Search Bar & Filters -->
+<div class="px-gutter-mobile py-2 flex flex-col gap-2.5">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/50 font-body-md text-body-md pl-10 pr-10 py-2.5 rounded-xl shadow-sm focus:outline-none" placeholder="Search by artisan name, role, or notes..." type="text"/>
+<button class="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary p-1">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+</div>
+<!-- Category Filter Pills (Horizontal non-scroll clipped carousel) -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+<button class="px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap shadow-sm">All (8)</button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-primary font-label-md text-label-md whitespace-nowrap">Venue (2)</button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-primary font-label-md text-label-md whitespace-nowrap">Photo &amp; Film (2)</button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-primary font-label-md text-label-md whitespace-nowrap">Sufi &amp; Folk (1)</button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-primary font-label-md text-label-md whitespace-nowrap">Catering &amp; Bar (3)</button>
+</div>
+</div>
+<!-- Vendor Cards List -->
+<div class="px-gutter-mobile py-1 flex flex-col gap-3.5">
+<!-- CARD 1: Venue (Saved from Directory) -->
+<article class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 flex flex-col gap-3 relative overflow-hidden">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">Heritage Venue</span>
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">verified</span> Directory Verified
+              </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary tracking-tight truncate">The Rajvilas Courtyards</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">location_on</span>
+              Goner Road, Babaji Ka Thikana, Jaipur
+            </p>
+</div>
+<div class="relative">
+<button class="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant" onclick="toggleCardMenu('menu-1')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+<!-- Dropdown Menu -->
+<div class="hidden absolute right-0 top-9 w-40 bg-surface-container-lowest rounded-xl shadow-xl z-20 py-1.5 flex flex-col" id="menu-1">
+<button class="px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2" onclick="openEditModal('The Rajvilas Courtyards')">
+<span class="material-symbols-outlined text-[16px]">edit</span> Edit Details
+              </button>
+<button class="px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container flex items-center gap-2" onclick="openRemoveModal('The Rajvilas Courtyards', '₹18,50,000 across 2 Milestones')">
+<span class="material-symbols-outlined text-[16px]">delete</span> Remove
+              </button>
+</div>
+</div>
+</div>
+<!-- Touch Shortcuts Grid (Min 44px hit regions) -->
+<div class="grid grid-cols-3 gap-2 py-1">
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="tel:+911412680101">
+<span class="material-symbols-outlined text-[18px] text-secondary">call</span>
+<span class="font-label-md text-label-md">Call</span>
+</a>
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="mailto:events.rajvilas@oberoigroup.com">
+<span class="material-symbols-outlined text-[18px] text-secondary">mail</span>
+<span class="font-label-md text-label-md">Email</span>
+</a>
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="https://oberoihotels.com" target="_blank">
+<span class="material-symbols-outlined text-[18px] text-secondary">open_in_new</span>
+<span class="font-label-md text-label-md">Dossier</span>
+</a>
+</div>
+<!-- Private Organizer Note Strip -->
+<div class="bg-surface-container-low rounded-xl p-2.5 flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary mt-0.5 flex-shrink-0">lock</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Private Ledger Note</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">40% Deposit Logged</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2 mt-0.5">
+              Advance paid ₹12.5L via HDFC Escrow. Mandap clearance height approved for 18ft floral dome by GM Ranawat.
+            </p>
+</div>
+</div>
+</article>
+<!-- CARD 2: Photography (Manual Record) -->
+<article class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 flex flex-col gap-3 relative overflow-hidden">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">Candid Visuals</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">edit_note</span> Manual Record
+              </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary tracking-tight truncate">Rudra &amp; Tara Fine-Art Stories</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">badge</span>
+              Independent Artist Collective (Mumbai/Jaipur)
+            </p>
+</div>
+<div class="relative">
+<button class="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant" onclick="toggleCardMenu('menu-2')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+<div class="hidden absolute right-0 top-9 w-40 bg-surface-container-lowest rounded-xl shadow-xl z-20 py-1.5 flex flex-col" id="menu-2">
+<button class="px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2" onclick="openEditModal('Rudra &amp; Tara Fine-Art Stories')">
+<span class="material-symbols-outlined text-[16px]">edit</span> Edit Details
+              </button>
+<button class="px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container flex items-center gap-2" onclick="openRemoveModal('Rudra &amp; Tara Fine-Art Stories', '₹4,20,000 booked in Timeline')">
+<span class="material-symbols-outlined text-[16px]">delete</span> Remove
+              </button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 py-1">
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="tel:+919820014389">
+<span class="material-symbols-outlined text-[18px] text-secondary">call</span>
+<span class="font-label-md text-label-md">Call</span>
+</a>
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="mailto:rudra@tarafilms.studio">
+<span class="material-symbols-outlined text-[18px] text-secondary">mail</span>
+<span class="font-label-md text-label-md">Email</span>
+</a>
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="https://instagram.com" target="_blank">
+<span class="material-symbols-outlined text-[18px] text-secondary">photo_camera</span>
+<span class="font-label-md text-label-md">Folio</span>
+</a>
+</div>
+<div class="bg-surface-container-low rounded-xl p-2.5 flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary mt-0.5 flex-shrink-0">lock</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Private Ledger Note</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">Drone NOC Approved</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2 mt-0.5">
+              Requires 4 twin rooms in guest wing. Master deliverable contract includes RAW reels + archival 35mm film reel by Nov 28.
+            </p>
+</div>
+</div>
+</article>
+<!-- CARD 3: Sangeet Music (Saved from Directory) -->
+<article class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 flex flex-col gap-3 relative overflow-hidden">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm">Sufi &amp; Folk</span>
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">verified</span> Directory Verified
+              </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary tracking-tight truncate">Ustaad Anwar Khan Manganiyar Ensemble</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">location_on</span>
+              C-Scheme / Thar Heritage Foundation, Jaipur
+            </p>
+</div>
+<div class="relative">
+<button class="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant" onclick="toggleCardMenu('menu-3')">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+<div class="hidden absolute right-0 top-9 w-40 bg-surface-container-lowest rounded-xl shadow-xl z-20 py-1.5 flex flex-col" id="menu-3">
+<button class="px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2" onclick="openEditModal('Ustaad Anwar Khan Ensemble')">
+<span class="material-symbols-outlined text-[16px]">edit</span> Edit Details
+              </button>
+<button class="px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container flex items-center gap-2" onclick="openRemoveModal('Ustaad Anwar Khan Ensemble', '₹2,50,000 in Sangeet Line Items')">
+<span class="material-symbols-outlined text-[16px]">delete</span> Remove
+              </button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 py-1">
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="tel:+911412209930">
+<span class="material-symbols-outlined text-[18px] text-secondary">call</span>
+<span class="font-label-md text-label-md">Call</span>
+</a>
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="mailto:bookings@manganivocal.org">
+<span class="material-symbols-outlined text-[18px] text-secondary">mail</span>
+<span class="font-label-md text-label-md">Email</span>
+</a>
+<a class="h-11 min-h-[44px] bg-surface-container rounded-xl flex items-center justify-center gap-1.5 text-primary hover:bg-surface-container-high active:scale-95 transition-transform" href="https://spotify.com" target="_blank">
+<span class="material-symbols-outlined text-[18px] text-secondary">play_circle</span>
+<span class="font-label-md text-label-md">Audio</span>
+</a>
+</div>
+<div class="bg-surface-container-low rounded-xl p-2.5 flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary mt-0.5 flex-shrink-0">lock</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Private Ledger Note</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">Kamaicha &amp; Dholak Included</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2 mt-0.5">
+              Requested strictly acoustic set during Royal Welcome High Tea, 12 performers total. Sound check set at 3:30 PM sharp.
+            </p>
+</div>
+</div>
+</article>
+</div>
+</div>
+<!-- ==================== TAB CONTENT B: DISCOVER NEW (DRAWER / VIEW) ==================== -->
+<div class="hidden flex-col w-full" id="viewDiscoverVendors">
+<!-- Explicit Location Anchor (No automatic device GPS request) -->
+<div class="px-gutter-mobile py-2.5">
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Directory Geotag Scope</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Manual Setting</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container px-3 py-2.5 rounded-xl">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[20px] text-primary">pin_drop</span>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-title-md text-primary font-semibold truncate leading-tight">Jaipur, Rajasthan (Wedding City)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Anchored to destination contract coordinates</span>
+</div>
+</div>
+<button class="px-2.5 py-1 bg-surface-container-lowest rounded-lg font-label-md text-label-md text-primary hover:bg-surface-container-high shadow-xs" onclick="toggleCityPicker()">
+            Change
+          </button>
+</div>
+<!-- Collapsible City Options -->
+<div class="hidden flex-wrap gap-1.5 pt-1" id="cityPickerOptions">
+<span class="font-body-sm text-body-sm text-on-surface-variant w-full">Select alternative luxury planning cluster:</span>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-primary hover:text-on-primary" onclick="setCity('Udaipur, Rajasthan')">Udaipur</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-primary hover:text-on-primary" onclick="setCity('Jodhpur, Rajasthan')">Jodhpur</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-primary hover:text-on-primary" onclick="setCity('New Delhi &amp; NCR')">New Delhi</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-primary hover:text-on-primary" onclick="setCity('Mumbai, Maharashtra')">Mumbai</button>
+</div>
+</div>
+</div>
+<!-- Discovery Search Filter Header -->
+<div class="px-gutter-mobile py-1 flex items-center justify-between">
+<div>
+<p class="font-headline-sm text-headline-sm text-primary">Artisans for Rajasthan Palaces</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Curated from verified heritage wedding indexes</p>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-fixed px-2.5 py-1 rounded-full font-bold">14 Available</span>
+</div>
+<!-- External Directory Stream Cards -->
+<div class="px-gutter-mobile py-2 flex flex-col gap-3.5">
+<!-- EXTERNAL DISCOVERY CARD 1 -->
+<article class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden flex flex-col">
+<div class="relative h-44 w-full bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Opulent Indian wedding floral setup at a Jaipur palace courtyard with marigold garlands, antique brass lamps, and lotus water basins under soft dusk lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjtkHIbYPS4FvdO-RM80uHMmiXKrDe22eT46vvdlXDwOUHO6ojyOznlk28CP1E6G0lpQtn0BscFpc8pBcqh8j4NT38KmQmZO7mPFqd446S5x6-aP2zA6kwgXK0vwoTd6YFygQ_Uzbk1kltTDPe3B2qQ-D8WgqafrwkHZj9DLsqfR9C11Yvm5yYwHU5zrn2COPTJeIjmUVt300QJbDTO8ak-zRoQBFRvNBOL9jTMdVUAJvfSbVXDJiG"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold">Floral &amp; Scenography</span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 text-on-primary">
+<h3 class="font-headline-sm text-headline-sm font-normal text-on-primary leading-tight">Devika Narain &amp; Co. Studios</h3>
+<p class="font-body-sm text-body-sm text-on-primary/90">Heritage Botanicals • Luxury Royal Mandaps</p>
+</div>
+</div>
+<div class="p-3.5 flex flex-col gap-2.5">
+<!-- Attribution & Score Tag -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[16px] text-secondary">database</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wide">Source: Local Wedding Index (Rajasthan)</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] text-secondary">star</span>
+<span class="font-label-md text-label-md text-primary font-bold">4.95</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(42 reviews)</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+            Specializes in sustainable heritage marigold tapestries, imported Dutch carnations, and multi-tier regal shamianas for Rambagh &amp; Rajvilas ceremonies.
+          </p>
+<div class="flex items-center gap-2 pt-1">
+<div class="flex-1 min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Estimated Investment</span>
+<span class="font-title-md text-title-md text-primary font-bold">₹15,00,000 - ₹35,00,000</span>
+</div>
+<button class="min-h-[44px] px-4 py-2.5 bg-primary text-on-primary rounded-xl font-title-md text-title-md font-semibold flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-transform" onclick="openSaveModal('Devika Narain &amp; Co. Studios', 'Floral &amp; Scenography', 'Source: Local Wedding Index (Rajasthan)')">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>+ Save Vendor</span>
+</button>
+</div>
+</div>
+</article>
+<!-- EXTERNAL DISCOVERY CARD 2 -->
+<article class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden flex flex-col">
+<div class="relative h-44 w-full bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Gourmet Rajasthani royal thali display with silverware, saffron kheer, and artisanal delicacies illuminated by warm banquet candlelight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgkklt6vgpWmUa4fc05kvYvXfYYf20usbRHGw69s38GpsPO-N3MPWbM4RSKQqfm5saaIWcRmpX1xoRl3ExHgLvc2hblKxys8o29JNxawS5zLDMaIgZ02LU0Drm_pWW0XZ6oAf64-JEtDRlGGqEoGljaswVgUF_-5WKM3q1Yle2POKii-F8Ygiuh0NeG2BIgFDneSND8YEX0rZaE5Dsz6tkekPYSNwUWLdWOaWlbHOtnq8dXSb1eIX2"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-black/20"></div>
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold">Gastronomy &amp; High Tea</span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 text-on-primary">
+<h3 class="font-headline-sm text-headline-sm font-normal text-on-primary leading-tight">Marwar Regal Banquets &amp; Mixology</h3>
+<p class="font-body-sm text-body-sm text-on-primary/90">Curated Royal Thalis &amp; Heritage Cocktail Bars</p>
+</div>
+</div>
+<div class="p-3.5 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[16px] text-secondary">database</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wide">Source: Jaipur Guild Registry</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] text-secondary">star</span>
+<span class="font-label-md text-label-md text-primary font-bold">4.88</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(31 reviews)</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+            Heirloom recipes passed down through royal thikana chefs, pairing traditional Dal Baati Churma stations with modern molecular cocktails.
+          </p>
+<div class="flex items-center gap-2 pt-1">
+<div class="flex-1 min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Plate Range</span>
+<span class="font-title-md text-title-md text-primary font-bold">₹4,500 - ₹8,000 / cover</span>
+</div>
+<button class="min-h-[44px] px-4 py-2.5 bg-primary text-on-primary rounded-xl font-title-md text-title-md font-semibold flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-transform" onclick="openSaveModal('Marwar Regal Banquets', 'Gastronomy &amp; High Tea', 'Source: Jaipur Guild Registry')">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>+ Save Vendor</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</div>
+<!-- DOCKED BOTTOM ACTION BAR (44px target for rapid entry) -->
+<div class="sticky bottom-0 w-full px-gutter-mobile py-2.5 bg-surface/90 backdrop-blur-md z-30">
+<button class="w-full h-12 min-h-[44px] bg-primary text-on-primary rounded-xl font-title-md text-title-md font-semibold flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-transform" onclick="openManualCreateModal()">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Add Custom Artisan / Vendor</span>
+</button>
+</div>
+<!-- ==================== MODALS & DRAWERS (Section B & C) ==================== -->
+<!-- MODAL 1: SAVE FROM DIRECTORY (Distinction between Public & Private Notes) -->
+<div class="fixed inset-0 bg-primary/60 backdrop-blur-xs z-50 hidden flex-col justify-end" id="saveModalOverlay">
+<div class="bg-surface-container-lowest rounded-t-3xl p-5 w-full max-h-[751px] overflow-y-auto flex flex-col gap-4 shadow-2xl animate-in slide-in-from-bottom duration-300">
+<div class="w-12 h-1 bg-surface-container-high rounded-full self-center mb-1"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Discovery Importer</span>
+<h3 class="font-headline-sm text-headline-sm text-primary" id="saveModalTitle">Devika Narain &amp; Co. Studios</h3>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary" onclick="closeSaveModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Public Verified Metadata Notice -->
+<div class="bg-surface-container p-3 rounded-xl flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[15px]">public</span>
+<span class="font-label-sm text-label-sm font-semibold" id="saveModalAttribution">Source: Local Wedding Index (Rajasthan)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Public portfolio, ratings, and phone contacts will sync automatically into your ShaadiPilot master database.
+        </p>
+</div>
+<!-- Private Note Input Field (High contrast & clear privacy badge) -->
+<div class="flex flex-col gap-1.5">
+<label class="font-title-md text-title-md text-primary font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">lock</span>
+<span>Private Organizer Note (Confidential to Family &amp; Planner)</span>
+</label>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Record internal budget agreements, secret quotes, or family preferences. Never visible to vendors.</p>
+<textarea class="w-full bg-surface-container-low p-3 rounded-xl font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none" id="saveModalNoteInput" placeholder="e.g. Quoted ₹18 Lakhs for Sangeet &amp; Reception. Father spoken to managing partner for 10% cash discount..." rows="3"></textarea>
+</div>
+<!-- Sub-Event Assignment Chips -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Assign to Function:</label>
+<div class="flex flex-wrap gap-1.5">
+<label class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container rounded-lg font-body-sm text-body-sm text-on-surface cursor-pointer">
+<input checked="" class="accent-primary" type="checkbox"/> Mehendi
+          </label>
+<label class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container rounded-lg font-body-sm text-body-sm text-on-surface cursor-pointer">
+<input checked="" class="accent-primary" type="checkbox"/> Sangeet
+          </label>
+<label class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container rounded-lg font-body-sm text-body-sm text-on-surface cursor-pointer">
+<input checked="" class="accent-primary" type="checkbox"/> Royal Pheras
+          </label>
+</div>
+</div>
+<!-- Commit Action Button -->
+<div class="flex items-center gap-2 pt-2">
+<button class="flex-1 h-12 min-h-[44px] bg-surface-container rounded-xl font-title-md text-title-md text-on-surface hover:bg-surface-container-high" onclick="closeSaveModal()">
+          Cancel
+        </button>
+<button class="flex-2 h-12 min-h-[44px] px-6 bg-primary text-on-primary rounded-xl font-title-md text-title-md font-semibold flex items-center justify-center gap-1.5 shadow-md" onclick="confirmSaveVendor()">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Save to My Vendors</span>
+</button>
+</div>
+</div>
+</div>
+<!-- MODAL 2: REMOVE CONFIRMATION (Section C: Clear Expense Ledger Protection Notice) -->
+<div class="fixed inset-0 bg-primary/60 backdrop-blur-xs z-50 hidden flex-col justify-center items-center px-gutter-mobile" id="removeModalOverlay">
+<div class="bg-surface-container-lowest rounded-2xl p-5 w-full max-w-sm flex flex-col gap-3.5 shadow-2xl animate-in zoom-in-95 duration-200">
+<div class="w-10 h-10 rounded-full bg-error-container text-error flex items-center justify-center self-start">
+<span class="material-symbols-outlined text-[24px]">delete_forever</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Remove Artisan?</h3>
+<p class="font-title-md text-title-md font-semibold text-on-surface mt-0.5" id="removeVendorTarget">The Rajvilas Courtyards</p>
+</div>
+<!-- Financial Safety Assurance Box -->
+<div class="bg-secondary-fixed text-on-secondary-fixed p-3 rounded-xl flex items-start gap-2">
+<span class="material-symbols-outlined text-[20px] text-on-secondary-fixed-variant flex-shrink-0 mt-0.5">shield</span>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md font-bold leading-tight">Ledger Expenses Remain Intact</p>
+<p class="font-body-sm text-body-sm text-on-secondary-fixed-variant mt-0.5">
+            Removing this vendor from your active contacts does <span class="font-semibold">not</span> delete recorded payments or timeline contracts (<span class="font-semibold" id="removeVendorAmount">₹18,50,000</span>). They will be archived under General Budget.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-2">
+<button class="flex-1 h-11 min-h-[44px] bg-surface-container rounded-xl font-title-md text-title-md text-on-surface hover:bg-surface-container-high" onclick="closeRemoveModal()">
+          Keep Vendor
+        </button>
+<button class="flex-1 h-11 min-h-[44px] bg-error text-on-error rounded-xl font-title-md text-title-md font-semibold flex items-center justify-center gap-1 shadow-md" onclick="confirmVendorRemoval()">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span>Remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- MODAL 3: MANUAL VENDOR ENTRY -->
+<div class="fixed inset-0 bg-primary/60 backdrop-blur-xs z-50 hidden flex-col justify-end" id="manualCreateModal">
+<div class="bg-surface-container-lowest rounded-t-3xl p-5 w-full max-h-[795px] overflow-y-auto flex flex-col gap-3.5 shadow-2xl">
+<div class="w-12 h-1 bg-surface-container-high rounded-full self-center mb-1"></div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Custom Entry</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Add Artisan to Jaipur Portfolio</h3>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" onclick="closeManualCreateModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-3">
+<div>
+<label class="font-label-md text-label-md text-on-surface">Artisan / Company Name *</label>
+<input class="w-full bg-surface-container-low px-3 py-2.5 rounded-xl font-body-md text-body-md text-on-surface mt-1 focus:outline-none" placeholder="e.g. Jaipur Safa Tying Maestro" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="font-label-md text-label-md text-on-surface">Category</label>
+<select class="w-full bg-surface-container-low px-3 py-2.5 rounded-xl font-body-md text-body-md text-on-surface mt-1 focus:outline-none">
+<option>Venue</option>
+<option>Photography</option>
+<option>Music &amp; DJ</option>
+<option>Turban / Safa</option>
+<option>Henna / Mehendi</option>
+<option>Choreography</option>
+</select>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface">Phone Contact</label>
+<input class="w-full bg-surface-container-low px-3 py-2.5 rounded-xl font-body-md text-body-md text-on-surface mt-1 focus:outline-none" placeholder="+91 9..." type="tel"/>
+</div>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface">Organizer Notes (Private)</label>
+<textarea class="w-full bg-surface-container-low px-3 py-2 rounded-xl font-body-md text-body-md text-on-surface mt-1 focus:outline-none" placeholder="Agreed package, family contact who referred them..." rows="2"></textarea>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-2">
+<button class="flex-1 h-12 min-h-[44px] bg-surface-container rounded-xl font-title-md text-title-md text-on-surface" onclick="closeManualCreateModal()">
+          Discard
+        </button>
+<button class="flex-2 h-12 min-h-[44px] px-6 bg-primary text-on-primary rounded-xl font-title-md text-title-md font-semibold flex items-center justify-center gap-1.5 shadow-md" onclick="saveManualVendor()">
+<span class="material-symbols-outlined text-[18px]">check</span>
+<span>Save Vendor Record</span>
+</button>
+</div>
+</div>
+</div>
+<!-- SCRIPT: INTERACTIVE LOCAL LOGIC -->
+<script>
+    function switchMainTab(tab) {
+      const savedView = document.getElementById('viewSavedVendors');
+      const discoverView = document.getElementById('viewDiscoverVendors');
+      const btnSaved = document.getElementById('btnTabSaved');
+      const btnDiscover = document.getElementById('btnTabDiscover');
+
+      if (tab === 'saved') {
+        savedView.classList.remove('hidden');
+        discoverView.classList.add('hidden');
+        btnSaved.className = "flex-1 py-2.5 px-3 rounded-lg text-center font-title-md text-title-md transition-all duration-200 flex items-center justify-center gap-1.5 bg-surface-container-lowest text-primary shadow-sm";
+        btnDiscover.className = "flex-1 py-2.5 px-3 rounded-lg text-center font-title-md text-title-md transition-all duration-200 flex items-center justify-center gap-1.5 text-on-surface-variant hover:text-primary";
+      } else {
+        savedView.classList.add('hidden');
+        discoverView.classList.remove('hidden');
+        btnDiscover.className = "flex-1 py-2.5 px-3 rounded-lg text-center font-title-md text-title-md transition-all duration-200 flex items-center justify-center gap-1.5 bg-surface-container-lowest text-primary shadow-sm";
+        btnSaved.className = "flex-1 py-2.5 px-3 rounded-lg text-center font-title-md text-title-md transition-all duration-200 flex items-center justify-center gap-1.5 text-on-surface-variant hover:text-primary";
+      }
+    }
+
+    function toggleCardMenu(menuId) {
+      const menu = document.getElementById(menuId);
+      const isHidden = menu.classList.contains('hidden');
+      document.querySelectorAll('[id^="menu-"]').forEach(m => m.classList.add('hidden'));
+      if (isHidden) menu.classList.remove('hidden');
+    }
+
+    // Dismiss floating popups on background touch
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('[id^="menu-"]') && !e.target.closest('button[onclick^="toggleCardMenu"]')) {
+        document.querySelectorAll('[id^="menu-"]').forEach(m => m.classList.add('hidden'));
+      }
+    });
+
+    function toggleCityPicker() {
+      const opts = document.getElementById('cityPickerOptions');
+      opts.classList.toggle('hidden');
+    }
+
+    function setCity(cityName) {
+      document.getElementById('cityPickerOptions').classList.add('hidden');
+      const banner = document.getElementById('offlineBanner');
+      if (banner) {
+        banner.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function dismissOfflineBanner() {
+      const banner = document.getElementById('offlineBanner');
+      if (banner) banner.remove();
+    }
+
+    function openSaveModal(name, category, source) {
+      document.getElementById('saveModalTitle').textContent = name;
+      document.getElementById('saveModalAttribution').textContent = source;
+      document.getElementById('saveModalOverlay').classList.remove('hidden');
+      document.getElementById('saveModalOverlay').classList.add('flex');
+    }
+
+    function closeSaveModal() {
+      document.getElementById('saveModalOverlay').classList.add('hidden');
+      document.getElementById('saveModalOverlay').classList.remove('flex');
+    }
+
+    function confirmSaveVendor() {
+      closeSaveModal();
+      switchMainTab('saved');
+    }
+
+    function openRemoveModal(vendorName, amountString) {
+      document.getElementById('removeVendorTarget').textContent = vendorName;
+      document.getElementById('removeVendorAmount').textContent = amountString;
+      document.getElementById('removeModalOverlay').classList.remove('hidden');
+      document.getElementById('removeModalOverlay').classList.add('flex');
+      document.querySelectorAll('[id^="menu-"]').forEach(m => m.classList.add('hidden'));
+    }
+
+    function closeRemoveModal() {
+      document.getElementById('removeModalOverlay').classList.add('hidden');
+      document.getElementById('removeModalOverlay').classList.remove('flex');
+    }
+
+    function confirmVendorRemoval() {
+      closeRemoveModal();
+    }
+
+    function openManualCreateModal() {
+      document.getElementById('manualCreateModal').classList.remove('hidden');
+      document.getElementById('manualCreateModal').classList.add('flex');
+    }
+
+    function closeManualCreateModal() {
+      document.getElementById('manualCreateModal').classList.add('hidden');
+      document.getElementById('manualCreateModal').classList.remove('flex');
+    }
+
+    function saveManualVendor() {
+      closeManualCreateModal();
+      switchMainTab('saved');
+    }
+
+    function openEditModal(vendorName) {
+      openManualCreateModal();
+    }
+  </script>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(76,47,61,0.05)]" data-active-classes="text-primary font-semibold [&amp;_span.material-symbols-outlined]:font-[FILL]"><div class="flex items-center justify-around h-16 px-1 max-w-lg mx-auto"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] h-full py-1 text-on-surface-variant hover:text-primary transition-all duration-150" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px] leading-none mb-0.5">dashboard</span><span class="font-label-sm text-[10px] tracking-tight text-center leading-tight">Overview</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] h-full py-1 text-on-surface-variant hover:text-primary transition-all duration-150" data-path="functions" href="#"><span class="material-symbols-outlined text-[22px] leading-none mb-0.5">celebration</span><span class="font-label-sm text-[10px] tracking-tight text-center leading-tight">Functions</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] h-full py-1 text-on-surface-variant hover:text-primary transition-all duration-150" data-path="tasks" href="#"><span class="material-symbols-outlined text-[22px] leading-none mb-0.5">checklist</span><span class="font-label-sm text-[10px] tracking-tight text-center leading-tight">Tasks</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] h-full py-1 text-on-surface-variant hover:text-primary transition-all duration-150" data-path="guests" href="#"><span class="material-symbols-outlined text-[22px] leading-none mb-0.5">groups</span><span class="font-label-sm text-[10px] tracking-tight text-center leading-tight">Guests</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] h-full py-1 transition-all duration-150 text-primary font-semibold [&amp;_span.material-symbols-outlined]:font-[FILL]" data-path="vendors" href="#"><span class="material-symbols-outlined text-[22px] leading-none mb-0.5">storefront</span><span class="font-label-sm text-[10px] tracking-tight text-center leading-tight">Vendors</span></a></div></nav></body></html>

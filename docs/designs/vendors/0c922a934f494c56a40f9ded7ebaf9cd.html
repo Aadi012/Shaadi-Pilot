@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-background": "#1c1b22", "outline": "#807478", "primary-container": "#4c2f3d", "tertiary-fixed-dim": "#d0c4bb", "on-primary-fixed": "#2c1320", "on-primary-fixed-variant": "#5c3e4c", "surface-container": "#f0ecf6", "tertiary-container": "#3e3730", "error-container": "#ffdad6", "secondary-fixed-dim": "#dec29e", "tertiary-fixed": "#ede0d6", "on-tertiary-fixed-variant": "#4d453e", "on-surface": "#1c1b22", "on-tertiary-container": "#aaa096", "surface-tint": "#765564", "on-secondary-fixed-variant": "#564428", "secondary": "#705b3d", "surface-container-highest": "#e5e1ea", "error": "#ba1a1a", "on-secondary": "#ffffff", "outline-variant": "#d2c3c7", "background": "#fcf8ff", "surface": "#fcf8ff", "surface-variant": "#e5e1ea", "on-primary": "#ffffff", "primary": "#341a27", "on-error": "#ffffff", "on-error-container": "#93000a", "inverse-on-surface": "#f3eff9", "secondary-container": "#fbdeb8", "on-primary-container": "#be96a7", "primary-fixed": "#ffd8e8", "secondary-fixed": "#fbdeb8", "inverse-primary": "#e5bbcd", "surface-container-lowest": "#ffffff", "surface-container-high": "#ebe6f0", "on-secondary-fixed": "#271903", "on-surface-variant": "#4e4448", "surface-container-low": "#f6f2fc", "tertiary": "#28221b", "on-secondary-container": "#766143", "inverse-surface": "#312f37", "surface-bright": "#fcf8ff", "surface-dim": "#dcd8e2", "on-tertiary-fixed": "#201b15", "on-tertiary": "#ffffff", "primary-fixed-dim": "#e5bbcd" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter": "1.5rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "space-md": "1rem", "margin": "3rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "margin-mobile": "1.25rem", "space-xl": "2.5rem" }, "fontFamily": { "display-lg": ["Newsreader"], "display-lg-mobile": ["Newsreader"], "body-lg": ["Manrope"], "headline-lg": ["Newsreader"], "body-sm": ["Manrope"], "body-md": ["Manrope"], "headline-sm": ["Newsreader"], "label-md": ["Manrope"], "headline-md": ["Newsreader"], "label-sm": ["Manrope"], "title-lg": ["Manrope"], "headline-lg-mobile": ["Newsreader"], "title-md": ["Manrope"] }, "fontSize": { "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.015em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "headline-sm": ["22px", { "lineHeight": "28px", "fontWeight": "500" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "500" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }], "title-lg": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }], "title-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between pt-space-lg pb-space-lg"><div class="flex flex-col"><div class="px-space-lg mb-space-lg flex items-center gap-space-sm"><div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-container"><span class="material-symbols-outlined text-[20px]">auto_awesome</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">ShaadiPilot</span><span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Concierge OS</span></div></div><div class="px-space-md mb-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant/70 px-space-sm">Planning</span></div><nav class="flex flex-col gap-space-xs px-space-sm mb-space-md" data-active-classes="bg-primary-container text-on-primary-fixed rounded-xl font-title-md"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span>Overview</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="functions" href="#"><span class="material-symbols-outlined text-[20px]">celebration</span><span>Functions</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="tasks" href="#"><span class="material-symbols-outlined text-[20px]">checklist</span><span>Tasks</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="guests-and-rsvps" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span>Guests &amp; RSVPs</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="expenses" href="#"><span class="material-symbols-outlined text-[20px]">payments</span><span>Expenses</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl bg-primary-container text-on-primary-fixed font-title-md transition-colors text-body-md" data-path="vendors" href="#"><span class="material-symbols-outlined text-[20px]">storefront</span><span>Vendors</span></a></nav><div class="px-space-md mb-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant/70 px-space-sm">Management</span></div><nav class="flex flex-col gap-space-xs px-space-sm" data-active-classes="bg-primary-container text-on-primary-fixed rounded-xl font-title-md"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span>Settings</span></a></nav></div><div class="px-space-md"><div class="bg-surface-container rounded-xl p-space-sm flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-label-sm uppercase text-secondary">Ceremony Key</span><span class="font-body-sm text-body-sm text-on-surface-variant">Samode Palace</span></div><span class="material-symbols-outlined text-secondary text-[20px]">verified</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter"><div class="flex items-center gap-space-md"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">Aarav &amp; Ananya</span><span class="font-body-sm text-body-sm text-on-surface-variant">Jaipur 2027 · Royal Heritage Wedding</span></div><div class="hidden xl:inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-secondary-container text-on-secondary-container"><span class="material-symbols-outlined text-[16px]">hourglass_top</span><span class="font-label-md text-label-md">42 Days Remaining</span></div></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-xl w-64"><span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span><input class="bg-transparent border-0 outline-none w-full font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant/60" placeholder="Search ceremony, budget, guests..." type="text"/></div><button class="w-9 h-9 rounded-xl bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="w-2 h-2 rounded-full bg-error absolute top-2 right-2"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-20 w-full min-h-screen bg-surface"><div class="border-b border-outline-variant/40 bg-surface px-gutter pt-space-md pb-0"><div class="flex items-center justify-between mb-space-sm"><div class="flex flex-col"><h1 class="font-headline-md text-headline-md text-primary tracking-tight">Vendor Management &amp; Discovery</h1><p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Curate, hire, and track wedding specialists for Samode Palace ceremonies</p></div></div><nav class="flex gap-space-md" data-active-classes="border-b-2 border-primary text-primary font-title-md pb-space-sm"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface pb-space-sm transition-colors" data-path="saved-vendors" href="#">Saved Vendors (Directory &amp; Details)</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface pb-space-sm transition-colors" data-path="discover-vendors" href="#">Discover Vendors (Directory &amp; Search)</a></nav></div><div class="w-full"><div class="flex flex-col w-full">
+<!-- Interactive View State Bar (Prototype Switcher) -->
+<section class="w-full bg-surface-container-low px-gutter py-space-sm shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">tune</span> Prototype View State:
+      </span>
+<div class="flex items-center gap-1 bg-surface-container rounded-lg p-0.5" id="prototypeSwitcher">
+<button class="px-space-sm py-1 rounded-md text-label-md font-label-md transition-all bg-primary-container text-on-primary-container shadow-sm" id="btn-state-populated" onclick="setViewState('populated')" type="button">
+          Populated Directory (8)
+        </button>
+<button class="px-space-sm py-1 rounded-md text-label-md font-label-md transition-all text-on-surface-variant hover:text-on-surface" id="btn-state-empty" onclick="setViewState('empty')" type="button">
+          Empty State (0)
+        </button>
+<button class="px-space-sm py-1 rounded-md text-label-md font-label-md transition-all text-on-surface-variant hover:text-on-surface" id="btn-state-mismatch" onclick="setViewState('mismatch')" type="button">
+          No Results (Mismatch)
+        </button>
+</div>
+</div>
+<div class="hidden lg:flex items-center gap-space-sm text-body-sm font-body-sm text-on-surface-variant">
+<span class="inline-flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[16px]">lock</span> Private Vault
+      </span>
+<span>•</span>
+<span>Encrypted Wedding Roster</span>
+</div>
+</section>
+<!-- Editorial Masthead / Header Summary -->
+<section class="w-full px-gutter py-space-lg bg-surface">
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 mb-space-sm font-label-sm text-label-sm text-on-surface-variant/70 uppercase tracking-wider">
+<span>ShaadiPilot</span>
+<span class="material-symbols-outlined text-[13px]">chevron_right</span>
+<span>Aarav &amp; Ananya</span>
+<span class="material-symbols-outlined text-[13px]">chevron_right</span>
+<span>Vendors</span>
+<span class="material-symbols-outlined text-[13px]">chevron_right</span>
+<span class="text-primary font-semibold">Saved Vendors</span>
+</nav>
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
+<div class="max-w-3xl">
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Saved Wedding Vendors</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1 max-w-2xl">
+          Private Rolodex and internal production roster for the Royal Heritage wedding ceremonies at Samode Palace.
+        </p>
+</div>
+<!-- Primary Top CTA Actions -->
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="px-space-md py-2.5 rounded-xl bg-primary-container text-on-primary-fixed hover:bg-primary transition-all font-title-md text-title-md flex items-center gap-2 shadow-sm" onclick="openAddModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Add Manual Vendor</span>
+</button>
+<button class="px-space-md py-2.5 rounded-xl bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-all font-title-md text-title-md flex items-center gap-2 shadow-sm" type="button">
+<span>Discover New Vendors</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Metric Status Pills (Luxury Micro Cards) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm mt-space-lg">
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">format_list_bulleted</span>
+</div>
+<div>
+<span class="block font-headline-sm text-headline-sm text-primary leading-none">8</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Saved Vendors</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[22px]">verified</span>
+</div>
+<div>
+<span class="block font-headline-sm text-headline-sm text-primary leading-none">4</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Confirmed Onboard</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">currency_rupee</span>
+</div>
+<div>
+<span class="block font-headline-sm text-headline-sm text-primary leading-none">₹0</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Zero Platform Fees</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
+<span class="material-symbols-outlined text-[22px]">category</span>
+</div>
+<div>
+<span class="block font-headline-sm text-headline-sm text-primary leading-none">5</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Vendor Sectors</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Filter & Search Toolbar Section -->
+<section class="w-full px-gutter py-space-sm bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm">
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-sm">
+<!-- Search Input -->
+<div class="relative flex-1 max-w-xl">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low rounded-xl text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant/60 focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" id="vendorSearchInput" oninput="handleSearchFilter(this.value)" placeholder="Search vendors by name, category, or private notes..." type="text"/>
+</div>
+<!-- Multivariate Dropdowns -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<div class="flex items-center gap-2 bg-surface-container-low px-space-sm py-1.5 rounded-xl">
+<span class="material-symbols-outlined text-secondary text-[18px]">how_to_reg</span>
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="statusFilter">Status:</label>
+<select class="bg-transparent font-body-sm text-body-sm text-on-surface outline-none cursor-pointer" id="statusFilter" onchange="filterCategory(currentCategory)">
+<option value="all">All Statuses</option>
+<option value="confirmed">Confirmed Contract</option>
+<option value="shortlist">Shortlisted &amp; In Talks</option>
+<option value="tentative">Tentative Holds</option>
+</select>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-space-sm py-1.5 rounded-xl">
+<span class="material-symbols-outlined text-secondary text-[18px]">sort</span>
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase" for="sortFilter">Sort:</label>
+<select class="bg-transparent font-body-sm text-body-sm text-on-surface outline-none cursor-pointer" id="sortFilter">
+<option value="name">Alphabetical (A-Z)</option>
+<option value="status">Status Priority</option>
+<option value="recent">Recently Added</option>
+</select>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-xl">
+<button class="p-1.5 rounded-lg bg-surface-container-lowest text-primary shadow-sm" id="btn-view-cards" onclick="setViewMode('cards')" title="Grid Card View" type="button">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface" id="btn-view-table" onclick="setViewMode('table')" title="Tabular Matrix View" type="button">
+<span class="material-symbols-outlined text-[18px]">table_rows</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Category Filter Pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1" id="categoryChips">
+<button class="category-pill active px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-primary-container text-on-primary-container" onclick="filterCategory('All')" type="button">
+        All (8)
+      </button>
+<button class="category-pill px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-surface-container hover:bg-surface-container-high text-on-surface" onclick="filterCategory('Venue &amp; Decor')" type="button">
+        Venue &amp; Decor (3)
+      </button>
+<button class="category-pill px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-surface-container hover:bg-surface-container-high text-on-surface" onclick="filterCategory('Photography &amp; Cinema')" type="button">
+        Photography &amp; Cinema (2)
+      </button>
+<button class="category-pill px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-surface-container hover:bg-surface-container-high text-on-surface" onclick="filterCategory('Music &amp; Sound')" type="button">
+        Music &amp; Sound (1)
+      </button>
+<button class="category-pill px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-surface-container hover:bg-surface-container-high text-on-surface" onclick="filterCategory('Catering &amp; Sweets')" type="button">
+        Catering &amp; Sweets (1)
+      </button>
+<button class="category-pill px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-surface-container hover:bg-surface-container-high text-on-surface" onclick="filterCategory('Styling &amp; Hair')" type="button">
+        Styling &amp; Hair (1)
+      </button>
+</div>
+</section>
+<!-- Main View Canvas -->
+<section class="w-full px-gutter py-space-md">
+<!-- 1. POPULATED STATE: GRID VIEW -->
+<div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-space-md" id="state-populated-cards">
+<!-- Card 1: The Leela Palace -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="Venue &amp; Decor" data-vendor-id="1">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">apartment</span> Venue &amp; Decor
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">person_add</span> Manual
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">The Leela Palace New Delhi</h3>
+<p class="font-body-sm text-body-sm text-secondary font-medium mt-0.5">Primary Hospitality &amp; Welcome Dinner</p>
+</div>
+<!-- Contact Snippet -->
+<div class="mt-4 space-y-2 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+<span class="truncate">Mr. Vikram Rathore (Banquet Dir.)</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-mono text-body-sm">+91 98110 23410</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+<span class="truncate">banquets.delhi@theleela.com</span>
+</div>
+</div>
+<!-- Organizer Private Notes with Lock -->
+<div class="mt-3 p-space-sm rounded-lg bg-primary-fixed/30 text-on-primary-fixed">
+<div class="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">lock</span> Private Logistics
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-1 line-clamp-2">
+              Advance deposit paid ₹15L. Valet parking for 180 cars confirmed. Noise curfew at outer courtyard is 10:30 PM sharp.
+            </p>
+</div>
+</div>
+<div class="mt-space-md pt-3 flex items-center justify-between">
+<button class="text-primary font-title-md text-title-md hover:underline flex items-center gap-1" onclick="openDetailDrawer(1)" type="button">
+<span>View Detail</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="openEditModal(1)" title="Edit Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-error-container text-outline hover:text-error" onclick="openRemoveModal(1, 'The Leela Palace New Delhi')" title="Remove Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 2: ShutterStories by Tarun -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="Photography &amp; Cinema" data-vendor-id="2">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">photo_camera</span> Photography &amp; Cinema
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">travel_explore</span> Directory Search
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">ShutterStories by Tarun</h3>
+<p class="font-body-sm text-body-sm text-secondary font-medium mt-0.5">Lead Cinematographer &amp; Drone Crew</p>
+</div>
+<!-- Contact Snippet -->
+<div class="mt-4 space-y-2 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+<span class="truncate">Tarun Chawla</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-mono text-body-sm">+91 97171 44892</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">link</span>
+<a class="truncate hover:underline text-primary" href="#">shutterstories.co/jaipur</a>
+</div>
+</div>
+<!-- Private Notes -->
+<div class="mt-3 p-space-sm rounded-lg bg-primary-fixed/30 text-on-primary-fixed">
+<div class="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">lock</span> Private Logistics
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-1 line-clamp-2">
+              Advance paid 40%. Requires drone airspace clearance 48h prior from Jaipur ASI. Contact via Ananya only.
+            </p>
+</div>
+</div>
+<div class="mt-space-md pt-3 flex items-center justify-between">
+<button class="text-primary font-title-md text-title-md hover:underline flex items-center gap-1" onclick="openDetailDrawer(2)" type="button">
+<span>View Detail</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="openEditModal(2)" title="Edit Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-error-container text-outline hover:text-error" onclick="openRemoveModal(2, 'ShutterStories by Tarun')" title="Remove Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 3: Electra Soundworks -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="Music &amp; Sound" data-vendor-id="3">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">speaker_group</span> Music &amp; Sound
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">travel_explore</span> Directory Search
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">Electra Soundworks</h3>
+<p class="font-body-sm text-body-sm text-secondary font-medium mt-0.5">Sangeet Line-Array &amp; Intelligent Lighting</p>
+</div>
+<!-- Contact Snippet -->
+<div class="mt-4 space-y-2 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+<span class="truncate">Naveen Grover</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-mono text-body-sm">+91 99201 10834</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+<span class="truncate">booking@electrasound.in</span>
+</div>
+</div>
+<!-- Private Notes -->
+<div class="mt-3 p-space-sm rounded-lg bg-primary-fixed/30 text-on-primary-fixed">
+<div class="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">lock</span> Private Logistics
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-1 line-clamp-2">
+              Requires 3-phase 63A power generator setup by 2 PM on Sangeet day. DJ Chetas rider checklist approved.
+            </p>
+</div>
+</div>
+<div class="mt-space-md pt-3 flex items-center justify-between">
+<button class="text-primary font-title-md text-title-md hover:underline flex items-center gap-1" onclick="openDetailDrawer(3)" type="button">
+<span>View Detail</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="openEditModal(3)" title="Edit Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-error-container text-outline hover:text-error" onclick="openRemoveModal(3, 'Electra Soundworks')" title="Remove Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 4: Royal Rajputana Caterers -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="Catering &amp; Sweets" data-vendor-id="4">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">restaurant</span> Catering &amp; Sweets
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">person_add</span> Manual
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">Royal Rajputana Caterers</h3>
+<p class="font-body-sm text-body-sm text-secondary font-medium mt-0.5">Heritage Marwari &amp; Mewari Feast</p>
+</div>
+<!-- Contact Snippet -->
+<div class="mt-4 space-y-2 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+<span class="truncate">Chef Mahendra Singh</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-mono text-body-sm">+91 94140 88203</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+<span class="truncate text-on-surface-variant/60 italic">Not provided</span>
+</div>
+</div>
+<!-- Private Notes -->
+<div class="mt-3 p-space-sm rounded-lg bg-primary-fixed/30 text-on-primary-fixed">
+<div class="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">lock</span> Private Logistics
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-1 line-clamp-2">
+              Jain food live counter requested by Groom’s dadi. Halwai team arrives 36 hours in advance for Ghewar preparation.
+            </p>
+</div>
+</div>
+<div class="mt-space-md pt-3 flex items-center justify-between">
+<button class="text-primary font-title-md text-title-md hover:underline flex items-center gap-1" onclick="openDetailDrawer(4)" type="button">
+<span>View Detail</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="openEditModal(4)" title="Edit Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-error-container text-outline hover:text-error" onclick="openRemoveModal(4, 'Royal Rajputana Caterers')" title="Remove Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 5: Samode Floral Architecture -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="Venue &amp; Decor" data-vendor-id="5">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">local_florist</span> Venue &amp; Decor
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">travel_explore</span> Directory Search
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">Samode Floral Architecture</h3>
+<p class="font-body-sm text-body-sm text-secondary font-medium mt-0.5">Mandap Floral Scenography &amp; Fragrance</p>
+</div>
+<!-- Contact Snippet -->
+<div class="mt-4 space-y-2 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+<span class="truncate">Anuradha Sen</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-mono text-body-sm">+91 98290 77166</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+<span class="truncate">atelier@samodefloral.com</span>
+</div>
+</div>
+<!-- Private Notes -->
+<div class="mt-3 p-space-sm rounded-lg bg-primary-fixed/30 text-on-primary-fixed">
+<div class="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">lock</span> Private Logistics
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-1 line-clamp-2">
+              Imported tuberoses and Dutch peonies cold-storage van requested at Sheesh Mahal by Nov 12, 6:00 AM.
+            </p>
+</div>
+</div>
+<div class="mt-space-md pt-3 flex items-center justify-between">
+<button class="text-primary font-title-md text-title-md hover:underline flex items-center gap-1" onclick="openDetailDrawer(5)" type="button">
+<span>View Detail</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="openEditModal(5)" title="Edit Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-error-container text-outline hover:text-error" onclick="openRemoveModal(5, 'Samode Floral Architecture')" title="Remove Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 6: Ambika Hair & Bridal Styling -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="Styling &amp; Hair" data-vendor-id="6">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">face</span> Styling &amp; Hair
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">person_add</span> Manual
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">Ambika Pillai Luxury Team</h3>
+<p class="font-body-sm text-body-sm text-secondary font-medium mt-0.5">Bride &amp; Mother of Bride Styling</p>
+</div>
+<!-- Contact Snippet -->
+<div class="mt-4 space-y-2 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+<span class="truncate">Divya Batra (Manager)</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-mono text-body-sm">+91 98101 55291</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+<span class="truncate">bridal@ambikapillai.com</span>
+</div>
+</div>
+<!-- Private Notes -->
+<div class="mt-3 p-space-sm rounded-lg bg-primary-fixed/30 text-on-primary-fixed">
+<div class="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">lock</span> Private Logistics
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-1 line-clamp-2">
+              Requires dedicated bridal dressing suite with 5500K balanced daylight illumination by 11 AM on Pheras day.
+            </p>
+</div>
+</div>
+<div class="mt-space-md pt-3 flex items-center justify-between">
+<button class="text-primary font-title-md text-title-md hover:underline flex items-center gap-1" onclick="openDetailDrawer(6)" type="button">
+<span>View Detail</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="openEditModal(6)" title="Edit Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-error-container text-outline hover:text-error" onclick="openRemoveModal(6, 'Ambika Pillai Luxury Team')" title="Remove Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 7: Jaipur Heritage Dhol Tasha Troupe -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="Music &amp; Sound" data-vendor-id="7">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">music_note</span> Music &amp; Sound
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">person_add</span> Manual
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">Jaipur Heritage Dhol Troupe</h3>
+<p class="font-body-sm text-body-sm text-secondary font-medium mt-0.5">Baraat Procession &amp; Welcome Nagada</p>
+</div>
+<!-- Contact Snippet -->
+<div class="mt-4 space-y-2 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+<span class="truncate">Ustad Fateh Ali Khan</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-mono text-body-sm">+91 94142 39011</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail</span>
+<span class="truncate text-on-surface-variant/60 italic">Not provided</span>
+</div>
+</div>
+<!-- Private Notes -->
+<div class="mt-3 p-space-sm rounded-lg bg-primary-fixed/30 text-on-primary-fixed">
+<div class="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">lock</span> Private Logistics
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-1 line-clamp-2">
+              16 artists with matching Royal Marigold pagris. Cash bhatta to be settled in envelope via Chachaji.
+            </p>
+</div>
+</div>
+<div class="mt-space-md pt-3 flex items-center justify-between">
+<button class="text-primary font-title-md text-title-md hover:underline flex items-center gap-1" onclick="openDetailDrawer(7)" type="button">
+<span>View Detail</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="openEditModal(7)" title="Edit Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-error-container text-outline hover:text-error" onclick="openRemoveModal(7, 'Jaipur Heritage Dhol Troupe')" title="Remove Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 8: Stories by Joseph Radhik -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="Photography &amp; Cinema" data-vendor-id="8">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">photo_camera</span> Photography &amp; Cinema
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">travel_explore</span> Directory Search
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-headline-sm text-headline-sm text-primary tracking-tight">Stories by Joseph Radhik</h3>
+<p class="font-body-sm text-body-sm text-secondary font-medium mt-0.5">Celebrity Wedding Portraiture</p>
+</div>
+<!-- Contact Snippet -->
+<div class="mt-4 space-y-2 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+<span class="truncate">Devika Sundar (Studio Producer)</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">call</span>
+<span class="font-mono text-body-sm">+91 98205 11993</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">link</span>
+<a class="truncate hover:underline text-primary" href="#">storiesbyjosephradhik.com</a>
+</div>
+</div>
+<!-- Private Notes -->
+<div class="mt-3 p-space-sm rounded-lg bg-primary-fixed/30 text-on-primary-fixed">
+<div class="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">lock</span> Private Logistics
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface mt-1 line-clamp-2">
+              Editorial golden hour slot booked exclusively 4:30 PM to 5:45 PM on Sheesh Mahal terrace prior to reception entry.
+            </p>
+</div>
+</div>
+<div class="mt-space-md pt-3 flex items-center justify-between">
+<button class="text-primary font-title-md text-title-md hover:underline flex items-center gap-1" onclick="openDetailDrawer(8)" type="button">
+<span>View Detail</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="openEditModal(8)" title="Edit Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-error-container text-outline hover:text-error" onclick="openRemoveModal(8, 'Stories by Joseph Radhik')" title="Remove Vendor" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+<!-- 1B. POPULATED STATE: MATRIX TABLE VIEW (Initially hidden via toggling) -->
+<div class="hidden w-full bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden" id="state-populated-table">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-space-sm px-space-md">Vendor &amp; Scope</th>
+<th class="py-space-sm px-space-md">Category</th>
+<th class="py-space-sm px-space-md">Source</th>
+<th class="py-space-sm px-space-md">Primary Contact</th>
+<th class="py-space-sm px-space-md">Private Organizer Notes</th>
+<th class="py-space-sm px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container text-body-sm font-body-sm text-on-surface">
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="font-title-md text-title-md text-primary font-semibold">The Leela Palace New Delhi</div>
+<div class="text-secondary text-body-sm">Hospitality &amp; Venue</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Venue &amp; Decor</span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Manual</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>Mr. Vikram Rathore</div>
+<div class="text-on-surface-variant font-mono text-body-sm">+91 98110 23410</div>
+</td>
+<td class="py-3.5 px-space-md max-w-xs">
+<div class="flex items-center gap-1 text-primary font-bold font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">lock</span> Advance Paid</div>
+<div class="text-on-surface-variant truncate">Deposit ₹15L paid. Noise curfew 10:30 PM.</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<button class="text-primary hover:underline font-title-md text-title-md mr-3" onclick="openDetailDrawer(1)" type="button">Detail</button>
+<button class="text-outline hover:text-error" onclick="openRemoveModal(1, 'The Leela Palace')" type="button"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="font-title-md text-title-md text-primary font-semibold">ShutterStories by Tarun</div>
+<div class="text-secondary text-body-sm">Lead Cinematography</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Photography &amp; Cinema</span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">Directory Search</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>Tarun Chawla</div>
+<div class="text-on-surface-variant font-mono text-body-sm">+91 97171 44892</div>
+</td>
+<td class="py-3.5 px-space-md max-w-xs">
+<div class="flex items-center gap-1 text-primary font-bold font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">lock</span> Drone Permit</div>
+<div class="text-on-surface-variant truncate">Advance 40% paid. Needs ASI clearance.</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<button class="text-primary hover:underline font-title-md text-title-md mr-3" onclick="openDetailDrawer(2)" type="button">Detail</button>
+<button class="text-outline hover:text-error" onclick="openRemoveModal(2, 'ShutterStories')" type="button"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="font-title-md text-title-md text-primary font-semibold">Electra Soundworks</div>
+<div class="text-secondary text-body-sm">Stage Sound &amp; Lighting</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Music &amp; Sound</span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">Directory Search</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>Naveen Grover</div>
+<div class="text-on-surface-variant font-mono text-body-sm">+91 99201 10834</div>
+</td>
+<td class="py-3.5 px-space-md max-w-xs">
+<div class="flex items-center gap-1 text-primary font-bold font-label-sm text-label-sm"><span class="material-symbols-outlined text-[13px]">lock</span> Tech Rider</div>
+<div class="text-on-surface-variant truncate">Requires 3-phase generator setup by 2 PM.</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<button class="text-primary hover:underline font-title-md text-title-md mr-3" onclick="openDetailDrawer(3)" type="button">Detail</button>
+<button class="text-outline hover:text-error" onclick="openRemoveModal(3, 'Electra Soundworks')" type="button"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- 2. EMPTY STATE: ZERO VENDORS SAVED -->
+<div class="hidden w-full py-16 px-space-lg bg-surface-container-lowest rounded-2xl shadow-sm text-center flex flex-col items-center justify-center" id="state-empty">
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center text-secondary mb-space-md">
+<span class="material-symbols-outlined text-[40px]">bookmark_add</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary max-w-md">Your Private Vendor Roster is Empty</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mt-2">
+        Begin compiling your dream team for Aarav &amp; Ananya’s celebrations. Save specialists from our curated directory or manually add family artisans.
+      </p>
+<div class="flex items-center gap-space-sm mt-space-lg">
+<button class="px-space-md py-2.5 rounded-xl bg-primary-container text-on-primary-fixed hover:bg-primary transition-all font-title-md text-title-md flex items-center gap-2 shadow-sm" onclick="openAddModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Add First Vendor Manually</span>
+</button>
+<button class="px-space-md py-2.5 rounded-xl bg-surface-container-low text-on-surface hover:bg-surface-container transition-all font-title-md text-title-md flex items-center gap-2 shadow-sm" type="button">
+<span>Explore Verified Vendors</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Feature Highlight Trio -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-12 max-w-3xl text-left">
+<div class="p-space-sm rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-secondary text-[22px]">lock</span>
+<h4 class="font-title-md text-title-md text-primary mt-1">100% Confidential Notes</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Keep negotiation notes, fee advances, and vendor quirks strictly private between planners and family.</p>
+</div>
+<div class="p-space-sm rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-secondary text-[22px]">hub</span>
+<h4 class="font-title-md text-title-md text-primary mt-1">Ceremony Linking</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Assign vendors to specific events: Mehendi, Sangeet, Haldi, Pheras, or Reception.</p>
+</div>
+<div class="p-space-sm rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-secondary text-[22px]">receipt_long</span>
+<h4 class="font-title-md text-title-md text-primary mt-1">Direct Ledger Sync</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Sync payment schedules and advance slips seamlessly with your wedding expenses hub.</p>
+</div>
+</div>
+</div>
+<!-- 3. NO RESULTS STATE: FILTER MISMATCH -->
+<div class="hidden w-full py-16 px-space-lg bg-surface-container-lowest rounded-2xl shadow-sm text-center flex flex-col items-center justify-center" id="state-mismatch">
+<div class="w-16 h-16 rounded-full bg-error-container text-on-error-container flex items-center justify-center mb-space-sm">
+<span class="material-symbols-outlined text-[32px]">filter_alt_off</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">No Matching Vendors Found</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md mt-1" id="mismatchQueryText">
+        No saved vendors correspond with your current category or search filters.
+      </p>
+<button class="mt-space-md px-space-md py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-title-md text-title-md inline-flex items-center gap-2" onclick="resetFilters()" type="button">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+<span>Clear Search &amp; Filters</span>
+</button>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- SLIDE-OVER DRAWER: SAVED VENDOR DETAIL HUB -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 bg-primary/40 backdrop-blur-xs z-50 hidden transition-opacity opacity-0" id="detailDrawerScrim" onclick="closeDetailDrawer()"></div>
+<aside class="fixed top-0 right-0 bottom-0 w-full max-w-xl bg-surface-container-lowest shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between overflow-y-auto" id="detailDrawer">
+<!-- Drawer Header -->
+<div class="p-space-lg border-b border-surface-container flex items-start justify-between bg-surface-container-low">
+<div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm" id="drawerBadgeCategory">
+            Photography &amp; Cinema
+          </span>
+<span class="px-2 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm" id="drawerBadgeSource">
+            Saved from Directory
+          </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary tracking-tight mt-2" id="drawerVendorName">
+          ShutterStories by Tarun
+        </h2>
+<p class="font-body-md text-body-md text-secondary" id="drawerVendorSub">Lead Cinematographer &amp; Drone Crew</p>
+</div>
+<button class="w-9 h-9 rounded-xl bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors" onclick="closeDetailDrawer()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Drawer Body -->
+<div class="p-space-lg space-y-space-lg flex-1">
+<!-- Callout: Internal Logistics Lock Notice -->
+<div class="p-space-md rounded-xl bg-primary-fixed/40 text-on-primary-fixed shadow-sm">
+<div class="flex items-center gap-2 font-headline-sm text-headline-sm text-primary">
+<span class="material-symbols-outlined text-[22px]">lock</span>
+<span>Private Organizer Notes &amp; Internal Logistics</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          These notes are strictly private to the Aarav &amp; Ananya planning family core and never shared with vendors.
+        </p>
+<div class="mt-3 p-3 bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface space-y-2" id="drawerInternalNotes">
+<p>• Advance paid: 40% (₹4,80,000 on 14 Jan via RTGS).</p>
+<p>• Requires drone clearance 48h prior from Jaipur ASI for Sheesh Mahal airspace.</p>
+<p>• Crew size: 7 operators + 2 editors. Requires twin-sharing room allocation at Samode Haveli annex.</p>
+<p>• Contact point: Ananya directly for bridal lookbook aesthetics.</p>
+</div>
+</div>
+<!-- Basic Contact Profile -->
+<div class="space-y-space-sm">
+<h3 class="font-title-lg text-title-lg text-primary">Contact &amp; Representation</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div class="p-3 bg-surface-container-low rounded-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Contact Person</span>
+<div class="font-body-md text-body-md text-on-surface font-semibold mt-0.5" id="drawerContactPerson">Tarun Chawla</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Direct Phone</span>
+<div class="font-body-md text-body-md text-on-surface font-mono mt-0.5" id="drawerPhone">+91 97171 44892</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Email Address</span>
+<div class="font-body-md text-body-md text-on-surface mt-0.5 truncate" id="drawerEmail">tarun@shutterstories.co</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Digital Portfolio / Web</span>
+<div class="font-body-md text-body-md text-primary underline mt-0.5 truncate" id="drawerWebsite">shutterstories.co/jaipur</div>
+</div>
+</div>
+</div>
+<!-- Associated Ceremonies -->
+<div class="space-y-space-sm">
+<h3 class="font-title-lg text-title-lg text-primary">Associated Ceremonial Functions</h3>
+<div class="space-y-2" id="drawerFunctions">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">celebration</span>
+<div>
+<span class="font-title-md text-title-md text-on-surface block leading-tight">Sangeet &amp; Cocktail Gala</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Nov 14, 2027 · Sheesh Mahal Grounds</span>
+</div>
+</div>
+<span class="px-2 py-1 rounded-md bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Primary Coverage</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">auto_stories</span>
+<div>
+<span class="font-title-md text-title-md text-on-surface block leading-tight">Royal Pheras &amp; Varmala</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Nov 15, 2027 · Durbar Hall Courtyard</span>
+</div>
+</div>
+<span class="px-2 py-1 rounded-md bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Mandap 4K Multi-Cam</span>
+</div>
+</div>
+</div>
+<!-- Contract & Financial Glance -->
+<div class="p-space-sm rounded-xl bg-surface-container-high/60 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total Agreed Contract</span>
+<div class="font-headline-sm text-headline-sm text-primary">₹12,00,000</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Ledger Sync</span>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 justify-end">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> 2 Payments Recorded
+          </div>
+</div>
+</div>
+</div>
+<!-- Drawer Action Footer -->
+<div class="p-space-md border-t border-surface-container bg-surface-container-low flex items-center justify-between gap-space-sm">
+<button class="flex-1 py-2.5 rounded-xl bg-primary-container text-on-primary-fixed hover:bg-primary font-title-md text-title-md text-center transition-all" onclick="triggerDrawerEdit()" type="button">
+        Edit Vendor Details
+      </button>
+<button class="px-space-md py-2.5 rounded-xl bg-error-container text-on-error-container hover:bg-error hover:text-on-error font-title-md text-title-md transition-all flex items-center gap-1" onclick="triggerDrawerRemove()" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+<span>Remove</span>
+</button>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MODAL: ADD / EDIT MANUAL VENDOR -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 bg-primary/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-space-md transition-opacity opacity-0" id="vendorModalScrim">
+<div class="w-full max-w-2xl bg-surface-container-lowest rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[921px]">
+<!-- Modal Header -->
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary" id="modalTitle">Add Manual Wedding Vendor</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Add family artisans, independent stylists, or offline specialists to your wedding team.</p>
+</div>
+<button class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" onclick="closeVendorModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Modal Form Body -->
+<form class="p-space-lg space-y-space-md overflow-y-auto flex-1" id="vendorForm" onsubmit="handleFormSubmit(event)">
+<input id="formVendorId" type="hidden" value=""/>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider" for="formVendorName">Vendor or Company Name *</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-xl text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary outline-none" id="formVendorName" placeholder="e.g. Maharani Mehendi Artists" required="" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider" for="formCategory">Service Category *</label>
+<select class="w-full px-3 py-2 bg-surface-container-low rounded-xl text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary outline-none" id="formCategory" required="">
+<option value="Venue &amp; Decor">Venue &amp; Decor</option>
+<option value="Photography &amp; Cinema">Photography &amp; Cinema</option>
+<option value="Music &amp; Sound">Music &amp; Sound</option>
+<option value="Catering &amp; Sweets">Catering &amp; Sweets</option>
+<option value="Styling &amp; Hair">Styling &amp; Hair</option>
+<option value="Invitation &amp; Stationery">Invitation &amp; Stationery</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider" for="formContactPerson">Primary Contact Person</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-xl text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary outline-none" id="formContactPerson" placeholder="e.g. Masterji Naresh" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider" for="formPhone">Phone / WhatsApp</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-xl text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary outline-none font-mono" id="formPhone" placeholder="+91 98000 00000" type="tel"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider" for="formEmail">Email Address</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-xl text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary outline-none" id="formEmail" placeholder="artisan@domain.com" type="email"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider" for="formWebsite">Website / Instagram URL</label>
+<input class="w-full px-3 py-2 bg-surface-container-low rounded-xl text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary outline-none" id="formWebsite" placeholder="instagram.com/artist" type="text"/>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider flex items-center gap-1 font-bold" for="formNotes">
+<span class="material-symbols-outlined text-[15px] text-secondary">lock</span> Private Organizer Notes &amp; Financial Logistics
+            </label>
+<span class="font-label-sm text-label-sm text-secondary">Markdown Supported</span>
+</div>
+<textarea class="w-full px-3 py-2 bg-surface-container-low rounded-xl text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary outline-none" id="formNotes" placeholder="Record payment milestones, dietary restrictions, arrival protocols, or private concerns..." rows="3"></textarea>
+</div>
+<!-- Subtle Auto-Save Draft Notification -->
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">shield_lock</span>
+<span>Changes are cached securely in private wedding memory. Draft preserves on accidental dismiss.</span>
+</div>
+<div class="pt-space-sm flex items-center justify-end gap-space-sm border-t border-surface-container">
+<button class="px-space-md py-2 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-title-md" onclick="closeVendorModal()" type="button">
+            Cancel
+          </button>
+<button class="px-space-md py-2.5 rounded-xl bg-primary-container text-on-primary-fixed hover:bg-primary font-title-md text-title-md flex items-center gap-2 shadow-sm" type="submit">
+<span class="material-symbols-outlined text-[18px]">check</span>
+<span id="modalSubmitText">Save to Private Roster</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- MODAL: CONFIRM REMOVAL -->
+<!-- ========================================================================= -->
+<div class="fixed inset-0 bg-primary/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-space-md transition-opacity opacity-0" id="removeModalScrim">
+<div class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-2xl p-space-lg flex flex-col">
+<div class="w-12 h-12 rounded-xl bg-error-container text-on-error-container flex items-center justify-center mb-space-sm">
+<span class="material-symbols-outlined text-[26px]">delete_forever</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary" id="removeModalVendorName">
+        Remove Vendor from Saved Roster?
+      </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+        Removing this vendor will detach them from your private planning roster and permanently delete internal organizer notes. 
+      </p>
+<div class="mt-3 p-3 bg-surface-container-low rounded-xl text-body-sm font-body-sm text-on-surface flex items-start gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5">verified_user</span>
+<span>Note: It will <strong>not</strong> delete or alter any recorded financial ledger expenses or historical payment transactions.</span>
+</div>
+<div class="mt-space-lg flex items-center justify-end gap-space-sm">
+<button class="px-space-md py-2 rounded-xl text-on-surface hover:bg-surface-container font-title-md text-title-md" onclick="closeRemoveModal()" type="button">
+          Keep Vendor
+        </button>
+<button class="px-space-md py-2 rounded-xl bg-error text-on-error hover:bg-error/90 font-title-md text-title-md shadow-sm" onclick="confirmRemovalAction()" type="button">
+          Confirm Removal
+        </button>
+</div>
+</div>
+</div>
+<!-- Micro-Toast Alert Feedback -->
+<div class="fixed bottom-6 right-6 z-50 bg-inverse-surface text-inverse-on-surface px-space-md py-3 rounded-xl shadow-lg flex items-center gap-2.5 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none" id="toastAlert">
+<span class="material-symbols-outlined text-secondary-fixed text-[20px]" id="toastIcon">check_circle</span>
+<span class="font-body-md text-body-md" id="toastMessage">Vendor updated successfully</span>
+</div>
+</div>
+<!-- Interactive Client-side Script -->
+<script>
+  let currentCategory = 'All';
+  let activeVendorForRemoval = null;
+  let currentViewMode = 'cards'; // 'cards' | 'table'
+
+  const mockVendorsData = {
+    1: {
+      name: "The Leela Palace New Delhi",
+      category: "Venue & Decor",
+      source: "Manual",
+      role: "Primary Hospitality & Welcome Dinner",
+      contactPerson: "Mr. Vikram Rathore (Banquet Director)",
+      phone: "+91 98110 23410",
+      email: "banquets.delhi@theleela.com",
+      website: "theleela.com/delhi",
+      notes: "Advance deposit paid ₹15L. Valet parking for 180 cars confirmed. Noise curfew at outer courtyard is 10:30 PM sharp.",
+      budget: "₹25,00,000",
+      functions: [
+        { title: "Groom's Royal Welcome Dinner", date: "Nov 13, 2027 · Royal Grand Ballroom" },
+        { title: "Presidential Hospitality Lounge", date: "Nov 13 - 16, 2027 · Heritage Wing" }
+      ]
+    },
+    2: {
+      name: "ShutterStories by Tarun",
+      category: "Photography & Cinema",
+      source: "Directory Search",
+      role: "Lead Cinematographer & Drone Crew",
+      contactPerson: "Tarun Chawla",
+      phone: "+91 97171 44892",
+      email: "tarun@shutterstories.co",
+      website: "shutterstories.co/jaipur",
+      notes: "Advance paid 40%. Requires drone airspace clearance 48h prior from Jaipur ASI. Contact via Ananya only.",
+      budget: "₹12,00,000",
+      functions: [
+        { title: "Sangeet & Cocktail Gala", date: "Nov 14, 2027 · Sheesh Mahal Grounds" },
+        { title: "Royal Pheras & Varmala", date: "Nov 15, 2027 · Durbar Hall Courtyard" }
+      ]
+    },
+    3: {
+      name: "Electra Soundworks",
+      category: "Music & Sound",
+      source: "Directory Search",
+      role: "Sangeet Line-Array & Intelligent Lighting",
+      contactPerson: "Naveen Grover",
+      phone: "+91 99201 10834",
+      email: "booking@electrasound.in",
+      website: "electrasound.in",
+      notes: "Requires 3-phase 63A power generator setup by 2 PM on Sangeet day. DJ Chetas rider checklist approved.",
+      budget: "₹6,50,000",
+      functions: [
+        { title: "Sangeet Extravaganza", date: "Nov 14, 2027 · Stepwell Amphitheatre" }
+      ]
+    },
+    4: {
+      name: "Royal Rajputana Caterers",
+      category: "Catering & Sweets",
+      source: "Manual",
+      role: "Heritage Marwari & Mewari Feast",
+      contactPerson: "Chef Mahendra Singh",
+      phone: "+91 94140 88203",
+      email: "",
+      website: "Not provided",
+      notes: "Jain food live counter requested by Groom’s dadi. Halwai team arrives 36 hours in advance for Ghewar preparation.",
+      budget: "₹18,50,000",
+      functions: [
+        { title: "Traditional Royal Luncheon", date: "Nov 15, 2027 · Haveli Dining Gardens" }
+      ]
+    },
+    5: {
+      name: "Samode Floral Architecture",
+      category: "Venue & Decor",
+      source: "Directory Search",
+      role: "Mandap Floral Scenography & Fragrance",
+      contactPerson: "Anuradha Sen",
+      phone: "+91 98290 77166",
+      email: "atelier@samodefloral.com",
+      website: "samodefloral.com",
+      notes: "Imported tuberoses and Dutch peonies cold-storage van requested at Sheesh Mahal by Nov 12, 6:00 AM.",
+      budget: "₹14,00,000",
+      functions: [
+        { title: "Pheras Mandap Scenography", date: "Nov 15, 2027 · Durbar Courtyard" }
+      ]
+    },
+    6: {
+      name: "Ambika Pillai Luxury Team",
+      category: "Styling & Hair",
+      source: "Manual",
+      role: "Bride & Mother of Bride Styling",
+      contactPerson: "Divya Batra (Manager)",
+      phone: "+91 98101 55291",
+      email: "bridal@ambikapillai.com",
+      website: "ambikapillai.com",
+      notes: "Requires dedicated bridal dressing suite with 5500K balanced daylight illumination by 11 AM on Pheras day.",
+      budget: "₹4,20,000",
+      functions: [
+        { title: "Bridal Pheras Glamour", date: "Nov 15, 2027 · Maharani Suite" }
+      ]
+    },
+    7: {
+      name: "Jaipur Heritage Dhol Troupe",
+      category: "Music & Sound",
+      source: "Manual",
+      role: "Baraat Procession & Welcome Nagada",
+      contactPerson: "Ustad Fateh Ali Khan",
+      phone: "+91 94142 39011",
+      email: "",
+      website: "Not provided",
+      notes: "16 artists with matching Royal Marigold pagris. Cash bhatta to be settled in envelope via Chachaji.",
+      budget: "₹1,80,000",
+      functions: [
+        { title: "Grand Royal Baraat March", date: "Nov 15, 2027 · Samode Palace Gate" }
+      ]
+    },
+    8: {
+      name: "Stories by Joseph Radhik",
+      category: "Photography & Cinema",
+      source: "Directory Search",
+      role: "Celebrity Wedding Portraiture",
+      contactPerson: "Devika Sundar (Studio Producer)",
+      phone: "+91 98205 11993",
+      email: "studio@storiesbyjr.com",
+      website: "storiesbyjosephradhik.com",
+      notes: "Editorial golden hour slot booked exclusively 4:30 PM to 5:45 PM on Sheesh Mahal terrace prior to reception entry.",
+      budget: "₹22,00,000",
+      functions: [
+        { title: "Sunset Couple Editorial", date: "Nov 15, 2027 · Sheesh Mahal Roof" }
+      ]
+    }
+  };
+
+  // View state switcher: 'populated', 'empty', 'mismatch'
+  function setViewState(state) {
+    const popCards = document.getElementById('state-populated-cards');
+    const popTable = document.getElementById('state-populated-table');
+    const empty = document.getElementById('state-empty');
+    const mismatch = document.getElementById('state-mismatch');
+
+    ['btn-state-populated', 'btn-state-empty', 'btn-state-mismatch'].forEach(id => {
+      const btn = document.getElementById(id);
+      btn.className = "px-space-sm py-1 rounded-md text-label-md font-label-md transition-all text-on-surface-variant hover:text-on-surface";
+    });
+
+    const activeBtn = document.getElementById('btn-state-' + state);
+    if (activeBtn) {
+      activeBtn.className = "px-space-sm py-1 rounded-md text-label-md font-label-md transition-all bg-primary-container text-on-primary-container shadow-sm";
+    }
+
+    // Toggle panels
+    if (state === 'populated') {
+      popCards.classList.toggle('hidden', currentViewMode !== 'cards');
+      popTable.classList.toggle('hidden', currentViewMode !== 'table');
+      empty.classList.add('hidden');
+      mismatch.classList.add('hidden');
+    } else if (state === 'empty') {
+      popCards.classList.add('hidden');
+      popTable.classList.add('hidden');
+      empty.classList.remove('hidden');
+      mismatch.classList.add('hidden');
+    } else if (state === 'mismatch') {
+      popCards.classList.add('hidden');
+      popTable.classList.add('hidden');
+      empty.classList.add('hidden');
+      mismatch.classList.remove('hidden');
+    }
+  }
+
+  // Toggle Card vs Matrix Table
+  function setViewMode(mode) {
+    currentViewMode = mode;
+    const btnCards = document.getElementById('btn-view-cards');
+    const btnTable = document.getElementById('btn-view-table');
+
+    if (mode === 'cards') {
+      btnCards.className = "p-1.5 rounded-lg bg-surface-container-lowest text-primary shadow-sm";
+      btnTable.className = "p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface";
+      document.getElementById('state-populated-cards').classList.remove('hidden');
+      document.getElementById('state-populated-table').classList.add('hidden');
+    } else {
+      btnTable.className = "p-1.5 rounded-lg bg-surface-container-lowest text-primary shadow-sm";
+      btnCards.className = "p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface";
+      document.getElementById('state-populated-cards').classList.add('hidden');
+      document.getElementById('state-populated-table').classList.remove('hidden');
+    }
+  }
+
+  // Category Pill Filtering
+  function filterCategory(cat) {
+    currentCategory = cat;
+    
+    // Update pills styling
+    const pills = document.querySelectorAll('#categoryChips .category-pill');
+    pills.forEach(pill => {
+      const isMatch = (cat === 'All' && pill.textContent.includes('All')) || pill.textContent.includes(cat);
+      if (isMatch) {
+        pill.className = "category-pill px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-primary-container text-on-primary-container";
+      } else {
+        pill.className = "category-pill px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-surface-container hover:bg-surface-container-high text-on-surface";
+      }
+    });
+
+    const cards = document.querySelectorAll('#state-populated-cards article');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const cardCategory = card.getAttribute('data-category');
+      if (cat === 'All' || cardCategory === cat) {
+        card.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    if (visibleCount === 0) {
+      document.getElementById('state-populated-cards').classList.add('hidden');
+      document.getElementById('state-mismatch').classList.remove('hidden');
+      document.getElementById('mismatchQueryText').textContent = `No saved vendors found under category: "${cat}".`;
+    } else {
+      document.getElementById('state-mismatch').classList.add('hidden');
+      if (currentViewMode === 'cards') {
+        document.getElementById('state-populated-cards').classList.remove('hidden');
+      }
+    }
+  }
+
+  // Dynamic Search Filter
+  function handleSearchFilter(term) {
+    const q = term.toLowerCase().trim();
+    const cards = document.querySelectorAll('#state-populated-cards article');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      if (!q || text.includes(q)) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    if (visible === 0 && q.length > 0) {
+      document.getElementById('state-populated-cards').classList.add('hidden');
+      document.getElementById('state-mismatch').classList.remove('hidden');
+      document.getElementById('mismatchQueryText').textContent = `No vendors matched your search keyword "${term}".`;
+    } else {
+      document.getElementById('state-mismatch').classList.add('hidden');
+      if (currentViewMode === 'cards') {
+        document.getElementById('state-populated-cards').classList.remove('hidden');
+      }
+    }
+  }
+
+  function resetFilters() {
+    document.getElementById('vendorSearchInput').value = '';
+    filterCategory('All');
+    setViewState('populated');
+  }
+
+  // Slide-over Detail Drawer
+  let activeVendorId = 1;
+  function openDetailDrawer(id) {
+    activeVendorId = id;
+    const vendor = mockVendorsData[id] || mockVendorsData[1];
+
+    document.getElementById('drawerVendorName').textContent = vendor.name;
+    document.getElementById('drawerVendorSub').textContent = vendor.role;
+    document.getElementById('drawerBadgeCategory').textContent = vendor.category;
+    document.getElementById('drawerBadgeSource').textContent = vendor.source;
+    document.getElementById('drawerContactPerson').textContent = vendor.contactPerson || 'Not provided';
+    document.getElementById('drawerPhone').textContent = vendor.phone || 'Not provided';
+    document.getElementById('drawerEmail').textContent = vendor.email || 'Not provided';
+    document.getElementById('drawerWebsite').textContent = vendor.website || 'Not provided';
+    document.getElementById('drawerInternalNotes').innerHTML = `<p>${vendor.notes}</p>`;
+
+    // Populate functions
+    const funcContainer = document.getElementById('drawerFunctions');
+    if (vendor.functions && vendor.functions.length > 0) {
+      funcContainer.innerHTML = vendor.functions.map(fn => `
+        <div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary">celebration</span>
+            <div>
+              <span class="font-title-md text-title-md text-on-surface block leading-tight">${fn.title}</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">${fn.date}</span>
+            </div>
+          </div>
+          <span class="px-2 py-1 rounded-md bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Primary Coverage</span>
+        </div>
+      `).join('');
+    } else {
+      funcContainer.innerHTML = `<p class="text-body-sm font-body-sm text-on-surface-variant">No specific functions assigned yet.</p>`;
+    }
+
+    const drawer = document.getElementById('detailDrawer');
+    const scrim = document.getElementById('detailDrawerScrim');
+    scrim.classList.remove('hidden');
+    setTimeout(() => {
+      scrim.classList.remove('opacity-0');
+      scrim.classList.add('opacity-100');
+      drawer.classList.remove('translate-x-full');
+    }, 10);
+  }
+
+  function closeDetailDrawer() {
+    const drawer = document.getElementById('detailDrawer');
+    const scrim = document.getElementById('detailDrawerScrim');
+    drawer.classList.add('translate-x-full');
+    scrim.classList.remove('opacity-100');
+    scrim.classList.add('opacity-0');
+    setTimeout(() => {
+      scrim.classList.add('hidden');
+    }, 300);
+  }
+
+  function triggerDrawerEdit() {
+    closeDetailDrawer();
+    setTimeout(() => {
+      openEditModal(activeVendorId);
+    }, 200);
+  }
+
+  function triggerDrawerRemove() {
+    closeDetailDrawer();
+    setTimeout(() => {
+      const v = mockVendorsData[activeVendorId];
+      openRemoveModal(activeVendorId, v ? v.name : 'Vendor');
+    }, 200);
+  }
+
+  // Add / Edit Modal Logic
+  function openAddModal() {
+    document.getElementById('modalTitle').textContent = "Add Manual Wedding Vendor";
+    document.getElementById('modalSubmitText').textContent = "Save to Private Roster";
+    document.getElementById('formVendorId').value = "";
+    document.getElementById('vendorForm').reset();
+    showVendorModal();
+  }
+
+  function openEditModal(id) {
+    const vendor = mockVendorsData[id];
+    if (!vendor) return;
+    document.getElementById('modalTitle').textContent = "Edit Vendor Details";
+    document.getElementById('modalSubmitText').textContent = "Update Vendor Roster";
+    document.getElementById('formVendorId').value = id;
+    document.getElementById('formVendorName').value = vendor.name;
+    document.getElementById('formCategory').value = vendor.category;
+    document.getElementById('formContactPerson').value = vendor.contactPerson || '';
+    document.getElementById('formPhone').value = vendor.phone || '';
+    document.getElementById('formEmail').value = vendor.email || '';
+    document.getElementById('formWebsite').value = vendor.website !== 'Not provided' ? vendor.website : '';
+    document.getElementById('formNotes').value = vendor.notes || '';
+    showVendorModal();
+  }
+
+  function showVendorModal() {
+    const modal = document.getElementById('vendorModalScrim');
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      modal.classList.remove('opacity-0');
+      modal.classList.add('opacity-100');
+    }, 10);
+  }
+
+  function closeVendorModal() {
+    const modal = document.getElementById('vendorModalScrim');
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 300);
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const id = document.getElementById('formVendorId').value;
+    const name = document.getElementById('formVendorName').value;
+    closeVendorModal();
+
+    if (id) {
+      showToast(`Updated "${name}" in your private roster.`);
+    } else {
+      showToast(`Added "${name}" to Aarav & Ananya’s saved vendors.`);
+    }
+  }
+
+  // Removal Confirmation Modal
+  function openRemoveModal(id, name) {
+    activeVendorForRemoval = id;
+    document.getElementById('removeModalVendorName').textContent = `Remove "${name}" from Saved Vendors?`;
+    const modal = document.getElementById('removeModalScrim');
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      modal.classList.remove('opacity-0');
+      modal.classList.add('opacity-100');
+    }, 10);
+  }
+
+  function closeRemoveModal() {
+    const modal = document.getElementById('removeModalScrim');
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 300);
+  }
+
+  function confirmRemovalAction() {
+    const id = activeVendorForRemoval;
+    closeRemoveModal();
+    if (id) {
+      const card = document.querySelector(`article[data-vendor-id="${id}"]`);
+      if (card) {
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          card.remove();
+        }, 250);
+      }
+      showToast("Vendor removed from active private roster.");
+    }
+  }
+
+  // Notification Toast Helper
+  function showToast(msg) {
+    const toast = document.getElementById('toastAlert');
+    const msgEl = document.getElementById('toastMessage');
+    msgEl.textContent = msg;
+    toast.classList.remove('translate-y-20', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+    setTimeout(() => {
+      toast.classList.add('translate-y-20', 'opacity-0');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }, 3200);
+  }
+</script></div></main></div></body></html>

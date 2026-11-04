@@ -11,6 +11,7 @@ import { authIndexes } from '@/modules/auth/indexes';
 import { weddingIndexes } from '@/modules/weddings/indexes';
 import { membershipIndexes } from '@/modules/memberships/indexes';
 import { expenseIndexes } from '@/modules/expenses/indexes';
+import { vendorIndexes } from '@/modules/vendors/indexes';
 import { galleryIndexes } from '@/modules/gallery/indexes';
 import { invitationIndexes } from '@/modules/invitations/indexes';
 
@@ -111,6 +112,7 @@ beforeAll(async () => {
       ...invitationIndexes,
       ...galleryIndexes,
       ...expenseIndexes,
+      ...vendorIndexes,
     ])
       await connection.collection(collection).createIndex(key, options);
     admin = new Types.ObjectId();
@@ -902,6 +904,125 @@ describe('Private gallery through running Next HTTP', () => {
           headers: removeHeaders,
         })
       ).status,
+    ).toBe(404);
+  });
+});
+
+describe('Manual vendor directory through running Next HTTP', () => {
+  it('enforces session/Origin/CSRF/context/versions and supports safe CRUD retries', async () => {
+    const body = {
+      name: 'HTTP Vendor [A]',
+      category: 'Photography',
+      website: 'https://example.test',
+      notes: 'Private note',
+    };
+    const h = {
+      ...headers(adminSecret),
+      'Content-Type': 'application/json',
+      'Idempotency-Key': randomUUID(),
+    };
+    expect((await fetch(base + '/api/v1/vendors')).status).toBe(401);
+    for (const extra of [
+      { Origin: 'https://evil.test' },
+      { 'X-CSRF-Token': '' },
+    ]) {
+      expect(
+        (
+          await fetch(base + '/api/v1/vendors', {
+            method: 'POST',
+            headers: { ...h, ...extra },
+            body: JSON.stringify(body),
+          })
+        ).status,
+      ).toBe(403);
+    }
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors', {
+          method: 'POST',
+          headers: {
+            ...h,
+            'X-Wedding-Context': new Types.ObjectId().toString(),
+          },
+          body: JSON.stringify(body),
+        })
+      ).status,
+    ).toBe(409);
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors', {
+          method: 'POST',
+          headers: h,
+          body: JSON.stringify({ ...body, googlePlaceId: 'injected' }),
+        })
+      ).status,
+    ).toBe(422);
+    const create = await fetch(base + '/api/v1/vendors', {
+      method: 'POST',
+      headers: h,
+      body: JSON.stringify(body),
+    });
+    expect(create.status).toBe(201);
+    const vendor = (await create.json()).data.vendor;
+    const retry = await fetch(base + '/api/v1/vendors', {
+      method: 'POST',
+      headers: h,
+      body: JSON.stringify(body),
+    });
+    expect((await retry.json()).data.vendor.id).toBe(vendor.id);
+    const list = await fetch(base + '/api/v1/vendors?search=%5BA%5D', {
+      headers: h,
+    });
+    expect(list.headers.get('Cache-Control')).toBe('no-store');
+    expect((await list.json()).data.total).toBe(1);
+    const { ['If-Match']: omitted, ...noMatch } = h;
+    expect(omitted).toBeDefined();
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors/' + vendor.id, {
+          method: 'PATCH',
+          headers: noMatch,
+          body: JSON.stringify({ notes: 'Changed' }),
+        })
+      ).status,
+    ).toBe(428);
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors/' + vendor.id, {
+          method: 'PATCH',
+          headers: { ...h, 'If-Match': '"0"' },
+          body: JSON.stringify({ notes: 'Changed' }),
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors/' + vendor.id, {
+          method: 'DELETE',
+          headers: { ...h, 'If-Match': '"0"' },
+        })
+      ).status,
+    ).toBe(412);
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors/' + vendor.id, {
+          method: 'DELETE',
+          headers: { ...h, 'If-Match': '"1"' },
+          body: ' ',
+        })
+      ).status,
+    ).toBe(400);
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors/' + vendor.id, {
+          method: 'DELETE',
+          headers: { ...h, 'If-Match': '"1"' },
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (await fetch(base + '/api/v1/vendors/' + vendor.id, { headers: h }))
+        .status,
     ).toBe(404);
   });
 });
