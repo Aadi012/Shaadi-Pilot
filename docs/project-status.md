@@ -906,7 +906,8 @@ Guest retry/pagination corrections — 29 October:
   formatting/lint/types. Browser retry was blocked by Work settings. Production
   build and all 14 running-server HTTP tests pass. Private-value and whitespace
   scans pass; .env.local stays ignored. User authorized commit/push of all pending
-  work; delivery commit title: "feat: add saved vendor management and request recovery".
+  work. Implemented in [0996029](https://github.com/Aadi012/Shaadi-Pilot/commit/0996029)
+  ("feat: add saved vendor management and request recovery").
 
 ## Local login recovery — 2 November 2026
 
