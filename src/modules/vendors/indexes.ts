@@ -10,3 +10,15 @@ export const vendorIndexes = [
     name: 'vendor_category_v1',
   },
 ] as const;
+export const vendorPlaceIndexes = [
+  {
+    collection: 'vendors',
+    key: { weddingId: 1, googlePlaceId: 1 },
+    name: 'vendor_google_place_active_v1',
+    unique: true,
+    partialFilterExpression: {
+      googlePlaceId: { $type: 'string' },
+      archivedAt: null,
+    },
+  },
+] as const;

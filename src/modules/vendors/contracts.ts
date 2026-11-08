@@ -57,7 +57,8 @@ export type VendorQuery = z.infer<typeof vendorQuery>;
 export type VendorDto = VendorInput & {
   id: string;
   version: number;
-  source: 'manual';
+  source: 'manual' | 'google';
+  googlePlaceId?: string | null;
 };
 export type VendorPage = {
   weddingId: string;

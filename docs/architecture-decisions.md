@@ -481,3 +481,15 @@ fields are deferred and rejected by the current manual contract. Both organizer
 roles have equal rights. Removal archives the saved contact and preserves all
 expense records. No booking/payment operation, vendor login or verification
 claim. See vendors-plan.md for the precise fields and API/retry contract.
+
+## Google vendor discovery — 4 November 2026
+
+User approved discovery and saving, with mocked Google verification first.
+Use Places API (New) Text Search for the explicitly chosen wedding/function/area
+text because current records have no geographic coordinates. The source API's
+lat/lng/radius example remains deferred, without guessed coordinates or distance
+claims. Provider content is transient: save Place IDs and organizer-written
+labels/notes, not cached provider snapshots. This corrects the architecture's
+generic search-cache/snapshot suggestions against current Google policies.
+Both roles may search/save. Manual contacts remain independent of Google setup.
+See places-setup.md for attribution, policy links, quotas, index and retry rules.

@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-background": "#1c1b22", "outline": "#807478", "primary-container": "#4c2f3d", "tertiary-fixed-dim": "#d0c4bb", "on-primary-fixed": "#2c1320", "on-primary-fixed-variant": "#5c3e4c", "surface-container": "#f0ecf6", "tertiary-container": "#3e3730", "error-container": "#ffdad6", "secondary-fixed-dim": "#dec29e", "tertiary-fixed": "#ede0d6", "on-tertiary-fixed-variant": "#4d453e", "on-surface": "#1c1b22", "on-tertiary-container": "#aaa096", "surface-tint": "#765564", "on-secondary-fixed-variant": "#564428", "secondary": "#705b3d", "surface-container-highest": "#e5e1ea", "error": "#ba1a1a", "on-secondary": "#ffffff", "outline-variant": "#d2c3c7", "background": "#fcf8ff", "surface": "#fcf8ff", "surface-variant": "#e5e1ea", "on-primary": "#ffffff", "primary": "#341a27", "on-error": "#ffffff", "on-error-container": "#93000a", "inverse-on-surface": "#f3eff9", "secondary-container": "#fbdeb8", "on-primary-container": "#be96a7", "primary-fixed": "#ffd8e8", "secondary-fixed": "#fbdeb8", "inverse-primary": "#e5bbcd", "surface-container-lowest": "#ffffff", "surface-container-high": "#ebe6f0", "on-secondary-fixed": "#271903", "on-surface-variant": "#4e4448", "surface-container-low": "#f6f2fc", "tertiary": "#28221b", "on-secondary-container": "#766143", "inverse-surface": "#312f37", "surface-bright": "#fcf8ff", "surface-dim": "#dcd8e2", "on-tertiary-fixed": "#201b15", "on-tertiary": "#ffffff", "primary-fixed-dim": "#e5bbcd" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter": "1.5rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "space-md": "1rem", "margin": "3rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "margin-mobile": "1.25rem", "space-xl": "2.5rem" }, "fontFamily": { "display-lg": ["Newsreader"], "display-lg-mobile": ["Newsreader"], "body-lg": ["Manrope"], "headline-lg": ["Newsreader"], "body-sm": ["Manrope"], "body-md": ["Manrope"], "headline-sm": ["Newsreader"], "label-md": ["Manrope"], "headline-md": ["Newsreader"], "label-sm": ["Manrope"], "title-lg": ["Manrope"], "headline-lg-mobile": ["Newsreader"], "title-md": ["Manrope"] }, "fontSize": { "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.015em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "headline-sm": ["22px", { "lineHeight": "28px", "fontWeight": "500" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "500" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }], "title-lg": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }], "title-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between pt-space-lg pb-space-lg"><div class="flex flex-col"><div class="px-space-lg mb-space-lg flex items-center gap-space-sm"><div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-container"><span class="material-symbols-outlined text-[20px]">auto_awesome</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">ShaadiPilot</span><span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Concierge OS</span></div></div><div class="px-space-md mb-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant/70 px-space-sm">Planning</span></div><nav class="flex flex-col gap-space-xs px-space-sm mb-space-md" data-active-classes="bg-primary-container text-on-primary-fixed rounded-xl font-title-md"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span>Overview</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="functions" href="#"><span class="material-symbols-outlined text-[20px]">celebration</span><span>Functions</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="tasks" href="#"><span class="material-symbols-outlined text-[20px]">checklist</span><span>Tasks</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="guests-and-rsvps" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span>Guests &amp; RSVPs</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="expenses" href="#"><span class="material-symbols-outlined text-[20px]">payments</span><span>Expenses</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl bg-primary-container text-on-primary-fixed font-title-md transition-colors text-body-md" data-path="vendors" href="#"><span class="material-symbols-outlined text-[20px]">storefront</span><span>Vendors</span></a></nav><div class="px-space-md mb-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant/70 px-space-sm">Management</span></div><nav class="flex flex-col gap-space-xs px-space-sm" data-active-classes="bg-primary-container text-on-primary-fixed rounded-xl font-title-md"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span>Settings</span></a></nav></div><div class="px-space-md"><div class="bg-surface-container rounded-xl p-space-sm flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-label-sm uppercase text-secondary">Ceremony Key</span><span class="font-body-sm text-body-sm text-on-surface-variant">Samode Palace</span></div><span class="material-symbols-outlined text-secondary text-[20px]">verified</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter"><div class="flex items-center gap-space-md"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">Aarav &amp; Ananya</span><span class="font-body-sm text-body-sm text-on-surface-variant">Jaipur 2027 · Royal Heritage Wedding</span></div><div class="hidden xl:inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-secondary-container text-on-secondary-container"><span class="material-symbols-outlined text-[16px]">hourglass_top</span><span class="font-label-md text-label-md">42 Days Remaining</span></div></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-xl w-64"><span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span><input class="bg-transparent border-0 outline-none w-full font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant/60" placeholder="Search ceremony, budget, guests..." type="text"/></div><button class="w-9 h-9 rounded-xl bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="w-2 h-2 rounded-full bg-error absolute top-2 right-2"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-20 w-full min-h-screen bg-surface"><div class="border-b border-outline-variant/40 bg-surface px-gutter pt-space-md pb-0"><div class="flex items-center justify-between mb-space-sm"><div class="flex flex-col"><h1 class="font-headline-md text-headline-md text-primary tracking-tight">Vendor Management &amp; Discovery</h1><p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Curate, hire, and track wedding specialists for Samode Palace ceremonies</p></div></div><nav class="flex gap-space-md" data-active-classes="border-b-2 border-primary text-primary font-title-md pb-space-sm"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface pb-space-sm transition-colors" data-path="saved-vendors" href="#">Saved Vendors (Directory &amp; Details)</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface pb-space-sm transition-colors" data-path="discover-vendors" href="#">Discover Vendors (Directory &amp; Search)</a></nav></div><div class="w-full"><div class="flex flex-col w-full">
+<!-- Interactive State Management Script -->
+<script>
+    function switchState(stateName) {
+      const views = ['state-populated', 'state-empty', 'state-offline', 'state-ratelimit'];
+      views.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+
+      const target = document.getElementById('state-' + stateName);
+      if (target) target.classList.remove('hidden');
+
+      // Update state simulator button pill aesthetics
+      document.querySelectorAll('.state-pill-btn').forEach(btn => {
+        btn.classList.remove('bg-primary-container', 'text-on-primary-fixed', 'shadow-sm');
+        btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+      });
+      const activeBtn = document.getElementById('pill-' + stateName);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        activeBtn.classList.add('bg-primary-container', 'text-on-primary-fixed', 'shadow-sm');
+      }
+
+      // Handle toast error simulation
+      const saveErrorBanner = document.getElementById('save-error-toast');
+      if (stateName === 'saveerror') {
+        if (saveErrorBanner) saveErrorBanner.classList.remove('hidden');
+        document.getElementById('state-populated').classList.remove('hidden');
+      } else {
+        if (saveErrorBanner) saveErrorBanner.classList.add('hidden');
+      }
+    }
+
+    function toggleSaveModal(show, vendorName, vendorCategory, vendorRating, vendorAddress, vendorSource) {
+      const modal = document.getElementById('save-vendor-modal');
+      if (!modal) return;
+      if (show) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        if (vendorName) document.getElementById('modal-vendor-title').innerText = vendorName;
+        if (vendorCategory) document.getElementById('modal-vendor-category').innerText = vendorCategory;
+        if (vendorRating) document.getElementById('modal-vendor-rating').innerText = vendorRating;
+        if (vendorAddress) document.getElementById('modal-vendor-address').innerText = vendorAddress;
+        if (vendorSource) document.getElementById('modal-vendor-source').innerText = vendorSource;
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function bookmarkVendor(btnElement) {
+      if (!btnElement) return;
+      btnElement.classList.remove('bg-primary-container', 'text-on-primary');
+      btnElement.classList.add('bg-surface-container-highest', 'text-on-surface-variant');
+      btnElement.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span> Saved to Workspace';
+      btnElement.setAttribute('disabled', 'true');
+    }
+  </script>
+<!-- Top Hero Context & Architectural Controls -->
+<div class="px-gutter pt-space-md pb-space-lg flex flex-col gap-space-md">
+<!-- Breadcrumb & Editorial Header Row -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-sm pb-space-xs">
+<div class="flex flex-col">
+<!-- Breadcrumb Hierarchy -->
+<nav class="flex items-center gap-space-xs text-on-surface-variant mb-1 font-label-md text-label-md">
+<span class="hover:text-primary transition-colors cursor-pointer">ShaadiPilot</span>
+<span class="material-symbols-outlined text-[14px] opacity-40">chevron_right</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Aarav &amp; Ananya</span>
+<span class="material-symbols-outlined text-[14px] opacity-40">chevron_right</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Vendors</span>
+<span class="material-symbols-outlined text-[14px] opacity-40">chevron_right</span>
+<span class="text-primary font-title-md">Discover Vendors</span>
+</nav>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Discover Wedding Artisans &amp; Venues</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl mt-0.5">
+          Federated index search across Rajasthan heritage estates, floral ateliers, and bespoke masters for your ceremony at Samode Palace.
+        </p>
+</div>
+<!-- Live Sync / Destination Badge -->
+<div class="flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-sm rounded-xl shadow-sm self-start lg:self-end">
+<div class="w-8 h-8 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">castle</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-secondary tracking-wider">Wedding Destination</span>
+<span class="font-title-md text-title-md text-on-surface">Jaipur, Rajasthan (Central)</span>
+</div>
+</div>
+</div>
+<!-- Search & Location Specification Bar -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col gap-space-md">
+<!-- Upper Search Inputs (Category, Explicit Location, Style/Name) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-sm">
+<!-- Category Selector -->
+<div class="md:col-span-3 flex flex-col">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">category</span>
+            Craft / Specialty
+          </label>
+<div class="relative">
+<select class="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded-xl px-space-sm py-2.5 outline-none appearance-none cursor-pointer focus:bg-surface-container transition-colors pr-8">
+<option value="all">All Specialties (Heritage &amp; Contemporary)</option>
+<option selected="" value="venues">Palaces &amp; Heritage Venues</option>
+<option value="photo">Cinematography &amp; Photography</option>
+<option value="decor">Floral Decor &amp; Scenography</option>
+<option value="choreography">Sangeet Choreographers</option>
+<option value="mehendi">Bridal Mehendi Artisans</option>
+<option value="sound">DJs, Live Folk &amp; Acoustic Sound</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 text-[18px] text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Explicit Location Selector (Strictly No Device Geolocation) -->
+<div class="md:col-span-4 flex flex-col">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">pin_drop</span>
+            Search Geography
+          </label>
+<div class="relative">
+<select class="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded-xl px-space-sm py-2.5 outline-none appearance-none cursor-pointer focus:bg-surface-container transition-colors pr-8">
+<option selected="" value="jaipur">✦ Event Setting: Jaipur, Rajasthan (Primary)</option>
+<option value="udaipur">Udaipur &amp; Mewar Region (Lake Palaces)</option>
+<option value="jodhpur">Jodhpur (Marwar Heritage Circle)</option>
+<option value="delhincr">Delhi NCR (Bespoke Artisans &amp; Stylists)</option>
+<option value="mumbai">Mumbai (Creative Directors &amp; Sound)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 text-[18px] text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Query Input -->
+<div class="md:col-span-3 flex flex-col">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">search</span>
+            Artisan or Aesthetic
+          </label>
+<div class="relative">
+<input class="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded-xl px-space-sm py-2.5 outline-none placeholder:text-on-surface-variant/50 focus:bg-surface-container transition-colors" placeholder="e.g. Vintage cars, Marigold mandap..." type="text" value="Royal Haveli, Sangeet Production"/>
+</div>
+</div>
+<!-- Search CTA -->
+<div class="md:col-span-2 flex flex-col justify-end">
+<button class="w-full h-[42px] bg-primary-container text-on-primary font-title-md text-title-md rounded-xl px-space-md flex items-center justify-center gap-space-xs shadow-sm hover:opacity-95 transition-opacity" type="button">
+<span class="material-symbols-outlined text-[18px]">travel_explore</span>
+<span>Search</span>
+</button>
+</div>
+</div>
+<!-- Privacy Notice: Explicit non-geolocation assurance -->
+<div class="flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant/80 pt-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
+<span>Targeting anchored strictly to the <strong class="text-on-surface font-semibold">Samode Palace, Jaipur</strong> itinerary profile. ShaadiPilot never requests automatic device geolocation.</span>
+</div>
+<div class="hidden xl:flex items-center gap-space-sm text-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
+<span>Sort: Curated Relevance</span>
+<span class="opacity-30">/</span>
+<span>Verified Licenses Only</span>
+</div>
+</div>
+</div>
+<!-- Interactive Scenario / State Simulator Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-low px-space-md py-space-sm rounded-xl">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+          Scenario Simulator:
+        </span>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="state-pill-btn px-space-sm py-1 rounded-full font-label-md text-label-md transition-colors bg-primary-container text-on-primary-fixed shadow-sm" id="pill-populated" onclick="switchState('populated')" type="button">
+          Active Search (6 Results)
+        </button>
+<button class="state-pill-btn px-space-sm py-1 rounded-full font-label-md text-label-md transition-colors bg-surface-container text-on-surface-variant hover:text-on-surface" id="pill-empty" onclick="switchState('empty')" type="button">
+          Zero Results Found
+        </button>
+<button class="state-pill-btn px-space-sm py-1 rounded-full font-label-md text-label-md transition-colors bg-surface-container text-on-surface-variant hover:text-on-surface" id="pill-offline" onclick="switchState('offline')" type="button">
+          Provider Service Offline
+        </button>
+<button class="state-pill-btn px-space-sm py-1 rounded-full font-label-md text-label-md transition-colors bg-surface-container text-on-surface-variant hover:text-on-surface" id="pill-ratelimit" onclick="switchState('ratelimit')" type="button">
+          Index API Rate-Limited
+        </button>
+<button class="state-pill-btn px-space-sm py-1 rounded-full font-label-md text-label-md transition-colors bg-surface-container text-on-surface-variant hover:text-on-surface" id="pill-saveerror" onclick="switchState('saveerror')" type="button">
+          Save Action Error
+        </button>
+</div>
+</div>
+<!-- Save Failed Simulation Toast Banner (Toggled in Simulator) -->
+<div class="hidden flex items-center justify-between gap-space-md bg-error-container text-on-error-container px-space-md py-space-sm rounded-xl shadow-sm" id="save-error-toast">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-error">error</span>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md font-bold">Unable to Bookmark Provider to Wedding Workspace</span>
+<span class="font-body-sm text-body-sm">Connection timeout while writing private organizer notes. Provider index reference was not saved.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container transition-colors" onclick="document.getElementById('save-error-toast').classList.add('hidden')" type="button">
+          Retry Save
+        </button>
+<button class="text-on-error-container opacity-60 hover:opacity-100" onclick="document.getElementById('save-error-toast').classList.add('hidden')" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Required Provider Attribution & Legal Licensing Banner -->
+<div class="bg-surface-container px-space-md py-space-sm rounded-xl flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-secondary mt-0.5 shrink-0">info</span>
+<div class="flex flex-col text-body-sm text-body-sm text-on-surface-variant">
+<p>
+<strong class="font-semibold text-on-surface">Licensing &amp; Attribution Notice:</strong> Directory data supplied via
+          <em class="font-display-lg italic">Partner Places &amp; The Independent Rajasthan Wedding Index</em>.
+          Provider ratings, contact metadata, and portfolio previews remain the intellectual property of their respective listing owners. ShaadiPilot does not claim permanent ownership, host raw proprietary catalogs, or guarantee calendar availability. Saving a vendor registers a distinct, private bookmark strictly for your wedding planning workspace.
+        </p>
+</div>
+</div>
+</div>
+<!-- STATE 1: POPULATED RESULTS (DEFAULT) -->
+<div class="px-gutter pb-space-xl flex flex-col gap-space-lg" id="state-populated">
+<!-- Results Header Meta -->
+<div class="flex items-center justify-between">
+<div class="flex items-baseline gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-primary">Showing 6 Verified Curations</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Matched for Jaipur ceremonial footprint &amp; royal aesthetics</span>
+</div>
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-secondary">cloud_done</span>
+<span>Directory Cache: Synced 14m ago</span>
+</div>
+</div>
+<!-- 6-Card Directory Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-space-lg">
+<!-- CARD 1: Rambagh Palace Heritage Estate -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col justify-between hover:shadow-xl transition-shadow group">
+<div>
+<!-- Media Preview (Placeholder) -->
+<div class="relative w-full h-48 rounded-lg overflow-hidden mb-space-sm bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Expansive sunset view of Rambagh Palace courtyard in Jaipur with royal sandstone arches, polished marble fountain, illuminated flickering lanterns, and lush peacocks strolling across manicured ceremonial lawns in warm golden hour light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJlXS5f7ZZXvSYn6AOdtcJFQCLfUzfQZd7Iw78g50_BjJh7DA_rznY3TFdF8Tyt7G8rU5w6lERo3e7CNzdEcS0IRwfbLSlrko2U_tIYnwcQ0B5rVOvNqq0uZ_k3PpuEbJOgSyyphiODxNxykCaDcCk3a8RT_90FKyzDXmzdySKhgR98XEHuZTvSwV_vtlXz3guCJm74vvqUzUMFBVKLl2cimoEof60uUeAaa_VRANNwEvpOUNZdEpx"/>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-primary/90 text-on-primary backdrop-blur-md px-2.5 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+<span>Heritage Certified</span>
+</div>
+<div class="absolute bottom-2.5 right-2.5 bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded font-label-sm text-label-sm text-primary">
+              12 km from Samode Hub
+            </div>
+</div>
+<!-- Metadata & Title -->
+<div class="flex items-start justify-between gap-space-xs mb-1">
+<h3 class="font-headline-sm text-headline-sm text-primary leading-tight">Rambagh Palace Estate</h3>
+<div class="flex items-center gap-1 text-secondary shrink-0 pt-0.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">4.9</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(184)</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded">Venues &amp; Palaces</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Bhawani Singh Rd, Jaipur</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
+            Former residence of the Maharaja of Jaipur, featuring sprawling Mughal gardens, regal banqueting halls, and private suites for Royal Varmala ceremonies.
+          </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs border-t-0">
+<!-- Availability & Links -->
+<div class="flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>View Map</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+<span class="opacity-20">•</span>
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>Website</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+<span class="text-on-surface-variant font-label-sm">+91 141 221 1919</span>
+</div>
+<!-- Provider Attribution Subtext -->
+<div class="flex items-center justify-between text-label-sm text-label-sm text-on-surface-variant/70">
+<span>Source: Partner Index ID #RAJ-882</span>
+<span>Read-Only External Data</span>
+</div>
+<!-- Bookmark CTA -->
+<div class="flex items-center gap-space-xs pt-1">
+<button class="w-full bg-primary-container text-on-primary py-2 rounded-xl font-title-md text-title-md flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 transition-all" onclick="toggleSaveModal(true, 'Rambagh Palace Estate', 'Venues &amp; Palaces', '4.9 ★ (184 reviews)', 'Bhawani Singh Rd, Jaipur, Rajasthan 302005', 'Independent Rajasthan Wedding Index #RAJ-882')" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>+ Save to My Vendors</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 2: Devika Narain & Co (Floral & Scenography) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col justify-between hover:shadow-xl transition-shadow group">
+<div>
+<!-- Media Preview (Placeholder) -->
+<div class="relative w-full h-48 rounded-lg overflow-hidden mb-space-sm bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Luxurious wedding mandap set over an ancient water palace pavilion in Rajasthan, overflowing with fresh Indian tuberoses, cascading marigolds, brass urlis with floating lotuses, and architectural sheer ivory draping softly illuminated by amber candlelight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzzmylBrYMh2lEaG8il5WIxdxM4cPSgbv2yYuPU8_CP2R2r8u5zeNl6FPO2YL5v8TUfc--233c10yNlzOZHTJoHP6z2lVKV5RM96OFt_iR__SMhUBNwdwvJmRBpTzWMs7-Hy6UZwyELIYv-qSEz33i5KMItbGMXo5wWQujRzJXd-VWcDS-Ar2CmauExCzcpOh-UmPd2ZqOOb8b6kDkHGfzTWyVtyn9W7515Gv1I_vcqtTiEpARhOKf"/>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-primary/90 text-on-primary backdrop-blur-md px-2.5 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+<span>Premier Atelier</span>
+</div>
+<div class="absolute bottom-2.5 right-2.5 bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded font-label-sm text-label-sm text-primary">
+              Travels to Samode
+            </div>
+</div>
+<!-- Metadata & Title -->
+<div class="flex items-start justify-between gap-space-xs mb-1">
+<h3 class="font-headline-sm text-headline-sm text-primary leading-tight">Devika Narain &amp; Co</h3>
+<div class="flex items-center gap-1 text-secondary shrink-0 pt-0.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">5.0</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(92)</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-0.5 rounded">Floral &amp; Scenography</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Studio C-Scheme, Jaipur</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
+            World-renowned Indian scenographers specializing in sustainable botanicals, bespoke brass structures, and intimate high-heritage mandaps.
+          </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs border-t-0">
+<!-- Availability & Links -->
+<div class="flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>View Map</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+<span class="opacity-20">•</span>
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>Website</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+<span class="text-on-surface-variant font-label-sm">+91 98202 44310</span>
+</div>
+<!-- Provider Attribution Subtext -->
+<div class="flex items-center justify-between text-label-sm text-label-sm text-on-surface-variant/70">
+<span>Source: Delhi &amp; Jaipur Bridal Guild</span>
+<span>Read-Only External Data</span>
+</div>
+<!-- Bookmark CTA -->
+<div class="flex items-center gap-space-xs pt-1">
+<button class="w-full bg-primary-container text-on-primary py-2 rounded-xl font-title-md text-title-md flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 transition-all" onclick="toggleSaveModal(true, 'Devika Narain &amp; Co', 'Floral Decor &amp; Scenography', '5.0 ★ (92 reviews)', 'Studio C-Scheme, Subhash Marg, Jaipur, Rajasthan 302001', 'Delhi &amp; Jaipur Bridal Guild #DBG-104')" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>+ Save to My Vendors</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 3: Stories by Joseph Radhik (Cinematography) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col justify-between hover:shadow-xl transition-shadow group">
+<div>
+<!-- Media Preview (Placeholder) -->
+<div class="relative w-full h-48 rounded-lg overflow-hidden mb-space-sm bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High-fashion bridal portrait in a dimly lit palatial mirror room Sheesh Mahal with royal chandeliers, rich red banarasi silk saree, antique polki jewelry, dramatic cinematic rim lighting and natural joyful expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALea6pOZLqIRWYlkU_qEam30wqf0TiJW5u9VKLGpN55cnkk5jd0rXh2cKPmI-tHLwITrc2b4rcS_4-s4CSNKXI9IVCrtu2o7nagb2R3TcGrJr_KMBifRYPmIEDgMEj7n_UG8C-D2pRwzJOjBBNUYTwLChsSFrK3RWaqV1_2YGWtPSUMTTNSumaz0mJk1Mv4Rb2hnkf40vEofe-FAJx72AYfRQg3q46kVPQNxfVvb8HIgMNe6f2PP7S"/>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-primary/90 text-on-primary backdrop-blur-md px-2.5 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+<span>Awarded Master</span>
+</div>
+<div class="absolute bottom-2.5 right-2.5 bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded font-label-sm text-label-sm text-primary">
+              Destination Specialist
+            </div>
+</div>
+<!-- Metadata & Title -->
+<div class="flex items-start justify-between gap-space-xs mb-1">
+<h3 class="font-headline-sm text-headline-sm text-primary leading-tight">Stories by Joseph Radhik</h3>
+<div class="flex items-center gap-1 text-secondary shrink-0 pt-0.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">4.9</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(142)</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded">Visual Storytelling</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Pan-India &amp; Global</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
+            Pioneers of Indian wedding editorial photojournalism. Celebrated for iconic royal imagery and unobtrusive ceremonial documentary.
+          </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs border-t-0">
+<!-- Availability & Links -->
+<div class="flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>View Map</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+<span class="opacity-20">•</span>
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>Website</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+<span class="text-on-surface-variant font-label-sm">+91 99300 12099</span>
+</div>
+<!-- Provider Attribution Subtext -->
+<div class="flex items-center justify-between text-label-sm text-label-sm text-on-surface-variant/70">
+<span>Source: Partner Index #IMG-049</span>
+<span>Read-Only External Data</span>
+</div>
+<!-- Bookmark CTA -->
+<div class="flex items-center gap-space-xs pt-1">
+<button class="w-full bg-primary-container text-on-primary py-2 rounded-xl font-title-md text-title-md flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 transition-all" onclick="toggleSaveModal(true, 'Stories by Joseph Radhik', 'Cinematography &amp; Photography', '4.9 ★ (142 reviews)', 'Mumbai Studio &amp; Jaipur Operations Field Base', 'Partner Places Index #IMG-049')" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>+ Save to My Vendors</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 4: DJ Khushi Live Production -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col justify-between hover:shadow-xl transition-shadow group">
+<div>
+<!-- Media Preview (Placeholder) -->
+<div class="relative w-full h-48 rounded-lg overflow-hidden mb-space-sm bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Vibrant luxury Sangeet stage lit with warm amber uplighting, sophisticated haze effect, custom gold DJ console, Indian classical instrumentalists blended with modern sound consoles under starry night sky." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtzC50hCumdA5h1aU9h1OfsgqCdlsOLodmGGHXW_y4CvqoDDzWuaCfcjnJfZl-Akq8wiRfClj95G4IgxgDUydRuc2peBj1d19vwvxL40YV4gYw_gnoX0KAgn1RTHUlEVXj1CVeTORZYxiCV-d3eyKK_DYPkGdXMCXYyT4krLuF5a8rO6glsE61KF5TIEnJO1pwUlehlzflDESt5K3uq1G-zTuUjBtJSi4WGDBKKPJHZtqb4In1mIJr"/>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-primary/90 text-on-primary backdrop-blur-md px-2.5 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+<span>Sound &amp; Light</span>
+</div>
+<div class="absolute bottom-2.5 right-2.5 bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded font-label-sm text-label-sm text-primary">
+              Full Acoustic Rider
+            </div>
+</div>
+<!-- Metadata & Title -->
+<div class="flex items-start justify-between gap-space-xs mb-1">
+<h3 class="font-headline-sm text-headline-sm text-primary leading-tight">DJ Khushi Live Production</h3>
+<div class="flex items-center gap-1 text-secondary shrink-0 pt-0.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">4.8</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(110)</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider bg-surface-container text-on-surface px-2 py-0.5 rounded">Music &amp; Entertainment</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Delhi &amp; Jaipur Base</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
+            India's foremost Bollywood and international wedding DJ. Known for seamless Sangeet programming, live percussionists, and heritage acoustic balance.
+          </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs border-t-0">
+<!-- Availability & Links -->
+<div class="flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>View Map</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+<span class="opacity-20">•</span>
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>Website</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+<span class="text-on-surface-variant font-label-sm">+91 98110 55410</span>
+</div>
+<!-- Provider Attribution Subtext -->
+<div class="flex items-center justify-between text-label-sm text-label-sm text-on-surface-variant/70">
+<span>Source: Partner Index #SND-318</span>
+<span>Read-Only External Data</span>
+</div>
+<!-- Bookmark CTA -->
+<div class="flex items-center gap-space-xs pt-1">
+<button class="w-full bg-primary-container text-on-primary py-2 rounded-xl font-title-md text-title-md flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 transition-all" onclick="toggleSaveModal(true, 'DJ Khushi Live Production', 'Sound &amp; Live Production', '4.8 ★ (110 reviews)', 'Vasant Vihar Studio &amp; Jaipur Operational Base', 'Partner Places Index #SND-318')" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>+ Save to My Vendors</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 5: Jaipur Mehendi Studio by Neha (Graceful Missing Website) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col justify-between hover:shadow-xl transition-shadow group">
+<div>
+<!-- Media Preview (Placeholder) -->
+<div class="relative w-full h-48 rounded-lg overflow-hidden mb-space-sm bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Delicate dark henna stains on bride's hands showcasing intricate Rajasthani jaali work, peacocks, miniature elephant motifs, resting on emerald green raw silk cushion with marigold flower accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-lLKRVZBro6uCyEF97mWnNUM_Y8jGmFyJ_ITyEjK5NXZGad5NRbuN1ja5TsAwRkfYr5NdqvovBgKAQZKMknI7MP4IHGPxzKwzX5VH5D0p8V7pwaHTyptWYhx-qaxJKriVt7CEfU0rG6SV2zVh4adjgo-hIpxOEWWH5hwUOPWdELTUPMHTMVzcKeDQE9wA1HjbrYlmOwgToAip0qvsMLDFbwa2BECgmbACI3eeJPfhid_R6s_p6OcG"/>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-primary/90 text-on-primary backdrop-blur-md px-2.5 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+<span>Artisanal Guild</span>
+</div>
+<div class="absolute bottom-2.5 right-2.5 bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded font-label-sm text-label-sm text-primary">
+              Local Artisan Master
+            </div>
+</div>
+<!-- Metadata & Title -->
+<div class="flex items-start justify-between gap-space-xs mb-1">
+<h3 class="font-headline-sm text-headline-sm text-primary leading-tight">Jaipur Mehendi Studio by Neha</h3>
+<div class="flex items-center gap-1 text-secondary shrink-0 pt-0.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">4.7</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(64)</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-0.5 rounded">Bridal Mehendi</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Johari Bazaar, Jaipur Old City</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
+            Third-generation Marwari bridal mehendi family crafting slow-steeped organic Sojat henna paste with bespoke portrait etchings.
+          </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs border-t-0">
+<!-- Availability & Links (Graceful Missing Website) -->
+<div class="flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>View Map</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+<span class="opacity-20">•</span>
+<!-- Graceful fallback for missing website -->
+<span class="text-on-surface-variant/50 font-label-md italic">Website not registered</span>
+</div>
+<span class="text-on-surface-variant font-label-sm">+91 94140 28212</span>
+</div>
+<!-- Provider Attribution Subtext -->
+<div class="flex items-center justify-between text-label-sm text-label-sm text-on-surface-variant/70">
+<span>Source: Old City Guild Registry</span>
+<span>Read-Only External Data</span>
+</div>
+<!-- Bookmark CTA (Showing Saved State) -->
+<div class="flex items-center gap-space-xs pt-1">
+<button class="w-full bg-surface-container-highest text-on-surface-variant py-2 rounded-xl font-title-md text-title-md flex items-center justify-center gap-1.5 cursor-default" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">check_circle</span>
+<span>✓ Saved to Workspace</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 6: Rajmahal Palace Garden Pavilion -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col justify-between hover:shadow-xl transition-shadow group">
+<div>
+<!-- Media Preview (Placeholder) -->
+<div class="relative w-full h-48 rounded-lg overflow-hidden mb-space-sm bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Chic art deco pink and turquoise salon in Rajmahal Palace with high ceilings, delicate floral wallpaper, vintage crystal chandeliers and curated cocktail reception table setups in twilight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLuVcENPx172lDLGwoTZTUsLg53f8e9SMaJbnBQurkv8rG2_-M9q19J-Yd6SOIuC1-X3KVMbNnHJzHZ9eMjJN7Yg21EKF-xsHuhUmIq08cxwPLtPS9MOl0MGubkQc0q2KagsKb2drmKat7NeRnL8pLWmPpFoAfP6d_eDe3X2Nxr4D5uLCasyjDo_XdlFWbwxptH5xwZGvHHs6rI5aljfnnNVK63jzJGSbm1YIG-21ROPtJ0mk66FUP"/>
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-primary/90 text-on-primary backdrop-blur-md px-2.5 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+<span>Relais &amp; Châteaux</span>
+</div>
+<div class="absolute bottom-2.5 right-2.5 bg-surface-container-lowest/90 backdrop-blur-md px-2 py-0.5 rounded font-label-sm text-label-sm text-primary">
+              Intimate Haldi / Welcome
+            </div>
+</div>
+<!-- Metadata & Title -->
+<div class="flex items-start justify-between gap-space-xs mb-1">
+<h3 class="font-headline-sm text-headline-sm text-primary leading-tight">Sujan Rajmahal Palace</h3>
+<div class="flex items-center gap-1 text-secondary shrink-0 pt-0.5">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">4.9</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(98)</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded">Palace &amp; Lawn</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">· Sardar Patel Marg, Jaipur</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
+            Iconic boutique royal palace known for eclectic pink decor, private royal lawns, and high-security intimate guest gatherings.
+          </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs border-t-0">
+<!-- Availability & Links (Graceful phone handling) -->
+<div class="flex items-center justify-between text-body-sm text-body-sm">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>View Map</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+<span class="opacity-20">•</span>
+<a class="inline-flex items-center gap-0.5 text-primary hover:underline font-label-md" href="#">
+<span>Website</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+<span class="text-on-surface-variant font-label-sm">+91 141 409 9999</span>
+</div>
+<!-- Provider Attribution Subtext -->
+<div class="flex items-center justify-between text-label-sm text-label-sm text-on-surface-variant/70">
+<span>Source: Rajasthan Heritage Index #RHI-551</span>
+<span>Read-Only External Data</span>
+</div>
+<!-- Bookmark CTA -->
+<div class="flex items-center gap-space-xs pt-1">
+<button class="w-full bg-primary-container text-on-primary py-2 rounded-xl font-title-md text-title-md flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 transition-all" onclick="toggleSaveModal(true, 'Sujan Rajmahal Palace', 'Palace &amp; Lawn', '4.9 ★ (98 reviews)', 'Sardar Patel Marg, C Scheme, Jaipur, Rajasthan 302001', 'Rajasthan Heritage Index #RHI-551')" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>+ Save to My Vendors</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination & Federation Status Footer -->
+<div class="flex flex-col md:flex-row items-center justify-between gap-space-sm bg-surface-container-low px-space-md py-space-sm rounded-xl mt-space-md">
+<div class="flex items-center gap-space-sm text-body-sm text-body-sm text-on-surface-variant">
+<span>Federated Partner Index: <strong>6 of 48 artisans</strong> matching search parameters</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="w-9 h-9 rounded-xl bg-surface-container flex items-center justify-center text-on-surface-variant/40" disabled="">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+</button>
+<span class="px-space-sm py-1 font-label-md text-label-md text-primary">Page 1 of 8</span>
+<button class="w-9 h-9 rounded-xl bg-surface-container-highest hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- STATE 2: ZERO RESULTS FOUND (HIDDEN BY DEFAULT) -->
+<div class="hidden px-gutter pb-space-xl" id="state-empty">
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-md flex flex-col items-center justify-center text-center max-w-2xl mx-auto my-space-lg">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-secondary mb-space-md">
+<span class="material-symbols-outlined text-[32px]">travel_explore</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-space-xs">No Providers Found for Query</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-lg">
+        The partner directories have no records matching these exact keywords in the selected geographical boundary (<strong class="text-on-surface">Jaipur, Rajasthan</strong>).
+      </p>
+<div class="w-full bg-surface-container-low p-space-md rounded-xl text-left mb-space-lg flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Recommended Solutions:</span>
+<div class="flex items-center gap-2 text-body-sm text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Expand destination radius to <em>Delhi NCR</em> or <em>Udaipur &amp; Mewar</em> for traveling artists.</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Remove specific styling tags like “Art Deco” or “Candid Documentary”.</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Add a private custom vendor directly into your wedding workspace without directory sync.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-title-md text-title-md shadow-sm" onclick="switchState('populated')" type="button">
+          Reset Filter Parameters
+        </button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface px-space-md py-2.5 rounded-xl font-title-md text-title-md transition-colors" type="button">
+          + Add Custom Private Vendor
+        </button>
+</div>
+</div>
+</div>
+<!-- STATE 3: PROVIDER SERVICE OFFLINE (HIDDEN BY DEFAULT) -->
+<div class="hidden px-gutter pb-space-xl" id="state-offline">
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-md flex flex-col items-center justify-center text-center max-w-2xl mx-auto my-space-lg">
+<div class="w-16 h-16 rounded-full bg-error-container text-on-error-container flex items-center justify-center mb-space-md">
+<span class="material-symbols-outlined text-[32px]">cloud_off</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-space-xs">Partner Directory Service Temporarily Unreachable</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md">
+        The remote directory lookup API (Independent Wedding Index) is currently undergoing scheduled synchronization or network maintenance.
+      </p>
+<div class="bg-surface-container p-space-md rounded-xl text-left w-full mb-space-lg flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-secondary mt-0.5">verified_user</span>
+<div class="flex flex-col text-body-sm text-body-sm text-on-surface-variant">
+<strong class="text-on-surface font-semibold">Your Saved Wedding Workspace is Safe</strong>
+<span>All previously saved vendors, private negotiations, contracts, and wedding timeline assignments at Samode Palace remain fully operational and locally cached.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-title-md text-title-md shadow-sm flex items-center gap-1.5" onclick="switchState('populated')" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Retry Connection</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface px-space-md py-2.5 rounded-xl font-title-md text-title-md transition-colors" type="button">
+          Switch to Saved Vendors
+        </button>
+</div>
+</div>
+</div>
+<!-- STATE 4: RATE LIMIT / THROTTLE (HIDDEN BY DEFAULT) -->
+<div class="hidden px-gutter pb-space-xl" id="state-ratelimit">
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-md flex flex-col items-center justify-center text-center max-w-2xl mx-auto my-space-lg">
+<div class="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mb-space-md">
+<span class="material-symbols-outlined text-[32px]">speed</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-space-xs">External Directory Rate-Limit Reached</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md">
+        Partner Places query quota (60 queries/hour for multi-user family planning sessions) has been temporarily reached.
+      </p>
+<!-- Cool-down progress bar -->
+<div class="w-full bg-surface-container-high rounded-full h-2 mb-space-xs overflow-hidden">
+<div class="bg-secondary h-full rounded-full w-3/4"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-space-lg">Quota resets in 14 minutes (18:00 IST)</span>
+<div class="flex items-center gap-space-sm">
+<button class="bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-title-md text-title-md shadow-sm" onclick="switchState('populated')" type="button">
+          Browse Cached Directory Results
+        </button>
+<button class="bg-surface-container text-on-surface px-space-md py-2.5 rounded-xl font-title-md text-title-md" type="button">
+          Upgrade API Capacity
+        </button>
+</div>
+</div>
+</div>
+<!-- DETAIL & "SAVE TO MY VENDORS" MODAL (TWO DISTINCT CONTAINERS) -->
+<div class="hidden fixed inset-0 z-50 bg-primary/40 backdrop-blur-sm items-center justify-center p-space-md" id="save-vendor-modal">
+<div class="bg-surface-container-lowest rounded-xl shadow-2xl w-full max-w-4xl max-h-[921px] flex flex-col overflow-hidden">
+<!-- Modal Header -->
+<div class="px-space-lg py-space-md bg-surface-container flex items-center justify-between border-b-0">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Bookmark External Listing to Event</span>
+<h3 class="font-headline-md text-headline-md text-primary" id="modal-vendor-title">Devika Narain &amp; Co</h3>
+</div>
+<button class="w-9 h-9 rounded-xl bg-surface-container-lowest hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors" onclick="toggleSaveModal(false)" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Modal Body (Two Distinct Containers for Architecture Separation) -->
+<div class="p-space-lg overflow-y-auto flex flex-col gap-space-lg">
+<!-- Architectural Notice -->
+<div class="bg-surface-container-low px-space-md py-space-sm rounded-xl flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[18px] text-secondary">security</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+<strong>Strict Data Isolation:</strong> External directory content on the left is immutable reference data. Your notes and ceremonial allocations on the right are private to your wedding workspace.
+          </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md">
+<!-- CONTAINER 1: EXTERNAL PROVIDER LISTING DATA (READ-ONLY REFERENCE) -->
+<div class="md:col-span-6 bg-surface-container p-space-md rounded-xl flex flex-col justify-between">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/80">External Provider Listing</span>
+<span class="font-label-sm text-label-sm bg-surface-container-highest px-2 py-0.5 rounded text-on-surface">Read-Only</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider" id="modal-vendor-category">Floral Decor &amp; Scenography</span>
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-title-md text-title-md font-bold" id="modal-vendor-rating">5.0 ★ (92 verified reviews)</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 pt-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Listed Operational Address</span>
+<p class="font-body-sm text-body-sm text-on-surface" id="modal-vendor-address">
+                  Studio C-Scheme, Subhash Marg, Jaipur, Rajasthan 302001
+                </p>
+</div>
+<div class="flex flex-col gap-1 pt-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Public Contact Points</span>
+<span class="font-body-sm text-body-sm text-on-surface">+91 98202 44310 · team@devikanarain.com</span>
+</div>
+</div>
+<!-- Licensing Metadata Badge -->
+<div class="mt-space-md pt-space-sm bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-0.5">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant/70">Provider Attribution Token</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-mono" id="modal-vendor-source">Delhi &amp; Jaipur Bridal Guild #DBG-104</span>
+<span class="text-[10px] text-on-surface-variant/60 leading-tight">Subject to provider syndication agreement. Media content not permanently stored.</span>
+</div>
+</div>
+<!-- CONTAINER 2: PRIVATE ORGANIZER NOTES & CEREMONIAL CONTEXT -->
+<div class="md:col-span-6 bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Private Organizer Notes</span>
+<span class="font-label-sm text-label-sm bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded">Confidential</span>
+</div>
+<!-- Ceremony Assignment -->
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm uppercase text-on-surface-variant">Assign to Ceremony / Sub-Event</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-xl px-space-sm py-2 outline-none appearance-none cursor-pointer">
+<option selected="" value="sangeet">Sangeet Night (Courtyard Mandap &amp; Stage)</option>
+<option value="varmala">Royal Varmala &amp; Pheras (Main Lawn)</option>
+<option value="mehendi">Poolside Mehendi Fiesta</option>
+<option value="unassigned">General Event Consideration</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-[18px] text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Private Notes Textarea -->
+<div class="flex flex-col gap-1 pt-1">
+<label class="font-label-sm text-label-sm uppercase text-on-surface-variant">Private Negotiation &amp; Team Notes</label>
+<textarea class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm rounded-xl p-space-sm outline-none placeholder:text-on-surface-variant/50 focus:bg-surface-container transition-colors resize-none" placeholder="e.g. Spoke with Devika's senior associate on 12 Feb; initial budget quote is ₹18.5L for Sangeet floral setup. Need to verify floral transport timeline to Samode by March 15th." rows="4">Spoke with studio team on 12 Feb; preliminary quote estimated at ₹18,50,000 for Sangeet stage and floating lotus installation. Follow-up meeting scheduled with Ananya's family next Tuesday.</textarea>
+</div>
+<!-- Status Tag in Pipeline -->
+<div class="flex items-center gap-space-sm pt-1">
+<label class="font-label-sm text-label-sm uppercase text-on-surface-variant">Pipeline Stage:</label>
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">In Review / Outreach</span>
+</div>
+</div>
+<div class="mt-space-md text-label-sm text-label-sm text-on-surface-variant">
+<span>* Notes will be saved exclusively into Aarav &amp; Ananya's encrypted workspace.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-space-lg py-space-md bg-surface-container flex items-center justify-between border-t-0">
+<button class="px-space-md py-2 rounded-xl text-on-surface font-title-md text-title-md hover:bg-surface-container-high transition-colors" onclick="toggleSaveModal(false)" type="button">
+          Cancel
+        </button>
+<button class="bg-primary-container text-on-primary px-space-xl py-2 rounded-xl font-title-md text-title-md shadow-sm hover:opacity-95 transition-opacity flex items-center gap-1.5" onclick="toggleSaveModal(false); bookmarkVendor(null);" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>Save to My Vendors</span>
+</button>
+</div>
+</div>
+</div>
+</div></div></main></div></body></html>

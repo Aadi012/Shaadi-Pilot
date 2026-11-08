@@ -1,6 +1,6 @@
 # ShaadiPilot project status
 
-Last updated: 4 November 2026 (Asia/Kolkata).
+Last updated: 8 November 2026 (Asia/Kolkata).
 
 This is the implementation progress record. The [PRD](prd.md) defines product
 scope; [architecture decisions](architecture-decisions.md) record accepted
@@ -926,6 +926,35 @@ Guest retry/pagination corrections — 29 October:
 - 3 November: user confirmed successful sign-in; browser inspection confirmed
   authenticated Functions and Vendors pages on localhost:3000. The local login
   recovery is now verified through actual user sign-in and workspace access.
+
+## 18. Google vendor discovery and reference saving
+
+- Started: 4 November 2026. Status: In progress — implementation/verification.
+- User approved mocked Google verification first. Live key/policy settings are
+  absent. Implemented explicit category/location search, safe attributed provider
+  results, organizer-labelled Place-ID saves, duplicate protection and on-demand
+  details. Manual contact management remains independent. See [setup and contract](places-setup.md).
+- Inspected and exported the approved desktop discovery screen alongside the
+  existing mobile reference. Documented source conflicts around coordinates and
+  provider caching rather than storing Google snapshots or guessing location.
+- On 4 November the approved Google Place-ID duplicate-protection index was
+  applied; existing records were preserved. Three focused mocked-provider database
+  tests and all 122 unit/render tests passed. The interrupted build/full-suite
+  processes had no final recoverable results and were not counted as passes.
+- On 8 November npm run check again passes all 122 tests plus formatting/lint/types,
+  and npm run build completes successfully. Turbopack printed a cache-compaction
+  shutdown warning; build exited zero and generated all routes. All 15 running-
+  server HTTP tests pass, including discovery authentication/context/query checks,
+  save CSRF and missing-Google failure with manual vendors still available.
+  All 112 integration tests also pass. Automated verification is complete for this
+  increment; live provider and browser verification remain outstanding.
+- Browser inspection was not executed: automatic approval review hit a usage
+  limit, rather than declaring the action unsafe. Live Google requests remain
+  unverified under the approved mocked-first approach; the local key/policy URLs
+  remain empty. No real Google request, deployment or external configuration change.
+- User authorized commit/push on 8 November. See the owner-facing
+  [service setup checklist](service-setup-checklist.md) for R2, Places, Resend,
+  production environment and scheduler responsibilities.
 
 ## Keeping this record current
 

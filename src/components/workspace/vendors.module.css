@@ -68,6 +68,7 @@
   font-size: 13px;
 }
 .filterFields input,
+.filterFields select,
 .dialog input,
 .dialog textarea {
   width: 100%;
@@ -79,6 +80,47 @@
   color: var(--foreground);
   border-radius: 8px;
   font: inherit;
+}
+.discovery {
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.discovery > h2 {
+  font:
+    400 32px var(--font-heading),
+    serif;
+}
+.discovery > p {
+  line-height: 1.8;
+}
+.provider {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+.provider h3 {
+  font:
+    400 25px var(--font-heading),
+    serif;
+  margin: 12px 0;
+}
+.provider p {
+  line-height: 1.7;
+  font-size: 13px;
+}
+.provider .googleAttribution {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  color: #5e5e5e;
+  letter-spacing: normal;
+  white-space: nowrap;
+  margin: 0 0 12px;
 }
 .filterFields input:focus-visible,
 .dialog input:focus-visible,
@@ -256,6 +298,13 @@
   .dialog textarea,
   .filterFields input {
     font-size: 16px;
+  }
+  .filterFields select {
+    font-size: 16px;
+  }
+  .heading > .actions {
+    width: 100%;
+    margin-top: 0;
   }
   .card {
     padding: 20px;

@@ -42,7 +42,12 @@ Saved Vendor Management is available at `/account/vendors`: manual contacts,
 name/category filters, versioned editing and archived removal. Apply the additive
 indexes with `npm run db:vendors:indexes` in each approved environment before use.
 See [vendor scope and verification](docs/vendors-plan.md). Google Places search
-is a separate increment; manual contacts require no Places key.
+uses an explicit Discover vendors panel; manual contacts require no Places key.
+Google results can be saved as Place-ID references with your own labels/notes;
+fresh provider details load on request. Configure the server-only Places key and
+public policy URLs before live use. See [Google setup](docs/places-setup.md).
+For the ordered owner/developer setup tasks across R2, Places, Resend and Vercel,
+see the [service setup checklist](docs/service-setup-checklist.md).
 
 ## Commands
 

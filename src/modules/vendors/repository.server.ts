@@ -8,9 +8,10 @@ import mongoose, {
 import { connectDatabase } from '@/lib/db/mongoose.server';
 import { ApiError } from '@/lib/api/errors';
 import type { VendorInput, VendorQuery } from './contracts';
-import { vendorIndexes } from './indexes';
+import { vendorIndexes, vendorPlaceIndexes } from './indexes';
 export interface VendorRecord extends VendorInput {
-  source: 'manual';
+  source: 'manual' | 'google';
+  googlePlaceId?: string | null;
   _id: Types.ObjectId;
   weddingId: Types.ObjectId;
   archivedAt: Date | null;
@@ -28,7 +29,8 @@ const schema = new Schema<VendorRecord>(
     website: String,
     address: String,
     notes: String,
-    source: { type: String, enum: ['manual'], default: 'manual' },
+    source: { type: String, enum: ['manual', 'google'], default: 'manual' },
+    googlePlaceId: { type: String, default: null },
     archivedAt: { type: Date, default: null },
     createdBy: Schema.Types.ObjectId,
     updatedBy: Schema.Types.ObjectId,
@@ -97,8 +99,10 @@ export const find = (
   Vendor.findOne({ weddingId, _id, archivedAt: null })
     .session(session ?? null)
     .lean();
-export const receipt = (_id: string, session: ClientSession) =>
-  Receipt.findById(_id).session(session).lean();
+export const receipt = (_id: string, session?: ClientSession) =>
+  Receipt.findById(_id)
+    .session(session ?? null)
+    .lean();
 export const saveReceipt = (
   data: {
     _id: string;
@@ -151,3 +155,42 @@ export const list = (
     .lean();
 export const count = (weddingId: Types.ObjectId, query: VendorQuery) =>
   Vendor.countDocuments(filter(weddingId, query));
+
+export const findPlace = (
+  weddingId: Types.ObjectId,
+  googlePlaceId: string,
+  session?: ClientSession,
+) =>
+  Vendor.findOne({ weddingId, googlePlaceId, archivedAt: null })
+    .session(session ?? null)
+    .lean();
+export const savedPlaces = (weddingId: Types.ObjectId, ids: string[]) =>
+  Vendor.find({ weddingId, googlePlaceId: { $in: ids }, archivedAt: null })
+    .select('_id googlePlaceId')
+    .lean();
+
+export async function placeDatabase() {
+  const db = await database();
+  const indexes = await db.connection
+    .collection('vendors')
+    .listIndexes()
+    .toArray();
+  const spec = vendorPlaceIndexes[0];
+  if (
+    !indexes.some(
+      (i) =>
+        i.name === spec.name &&
+        i.unique === true &&
+        JSON.stringify(i.key) === JSON.stringify(spec.key) &&
+        JSON.stringify(i.partialFilterExpression) ===
+          JSON.stringify(spec.partialFilterExpression),
+    )
+  )
+    throw new ApiError({
+      status: 503,
+      code: 'SERVICE_UNAVAILABLE',
+      message:
+        'Google vendor saving requires database setup. Manual vendors remain available.',
+    });
+  return db;
+}

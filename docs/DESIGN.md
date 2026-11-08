@@ -119,6 +119,15 @@ no looping decorative animation or new animation dependency.
 
 ## 7. Content and anti-patterns
 
+Vendor discovery uses the inspected Discover Vendors & Provider Search desktop
+reference 2ea891737eb04e0db56e109dc0c00dea and the existing vendor mobile export.
+Keep explicit category/location controls, responsive result cards and clear
+provider/source separation. Remove prototype state selectors, partner-index
+fiction, photos, curated/verified badges, offline cache claims and fake distances.
+Compact Google Maps text attribution and actual third-party credits stay inside
+each provider result; organizer labels/notes occupy a separate saved-data surface.
+No automatic copying of provider details into the manual contact form.
+
 Retain layouts while correcting generated source copy: no encryption guarantees,
 billing, concierge, public join codes, offline cache, budgets or custom roles.
 Do not expose design state inspectors in the product. No sample records in the

@@ -1,6 +1,9 @@
 import nextEnv from '@next/env';
 import mongoose from 'mongoose';
-import { vendorIndexes } from '../src/modules/vendors/indexes.ts';
+import {
+  vendorIndexes,
+  vendorPlaceIndexes,
+} from '../src/modules/vendors/indexes.ts';
 nextEnv.loadEnvConfig(process.cwd(), true, { info() {}, error() {} });
 try {
   if (
@@ -13,7 +16,10 @@ try {
     autoIndex: false,
     serverSelectionTimeoutMS: 8000,
   });
-  for (const { collection, key, ...options } of vendorIndexes)
+  for (const { collection, key, ...options } of [
+    ...vendorIndexes,
+    ...vendorPlaceIndexes,
+  ])
     await mongoose.connection.collection(collection).createIndex(key, options);
   console.info('Vendor indexes applied. Existing records were not changed.');
 } catch {

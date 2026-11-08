@@ -21,7 +21,7 @@ import * as repo from './repository.server';
 const fail = (status: number, code: string, message: string) =>
   new ApiError({ status, code, message });
 const oid = (id: string) => new Types.ObjectId(objectIdSchema.parse(id));
-async function tenant(
+export async function vendorContext(
   userId: string,
   expected?: string,
   session?: ClientSession,
@@ -40,7 +40,7 @@ async function tenant(
     throw fail(404, 'NOT_FOUND', 'Wedding not found.');
   return user.weddingId;
 }
-function dto(row: repo.VendorRecord): VendorDto {
+export function vendorDto(row: repo.VendorRecord): VendorDto {
   return {
     id: row._id.toString(),
     name: row.name,
@@ -50,13 +50,14 @@ function dto(row: repo.VendorRecord): VendorDto {
     website: row.website,
     address: row.address,
     notes: row.notes,
-    source: 'manual',
+    source: row.source ?? 'manual',
+    googlePlaceId: row.googlePlaceId ?? null,
     version: row.__v,
   };
 }
 export async function listVendors(userId: string, input: unknown = {}) {
   await repo.database();
-  const weddingId = await tenant(userId),
+  const weddingId = await vendorContext(userId),
     query = vendorQuery.parse(input);
   const { cursor, ...filters } = query;
   const fingerprint = hashSecret(JSON.stringify({ weddingId, ...filters }));
@@ -70,17 +71,17 @@ export async function listVendors(userId: string, input: unknown = {}) {
   const rows = await repo.list(weddingId, query, before);
   return {
     weddingId: weddingId.toString(),
-    vendors: rows.slice(0, 25).map(dto),
+    vendors: rows.slice(0, 25).map(vendorDto),
     nextCursor: rows.length > 25 ? fingerprint + ':' + rows[24]._id : null,
     total: await repo.count(weddingId, query),
   };
 }
 export async function readVendor(userId: string, id: string) {
   await repo.database();
-  const weddingId = await tenant(userId),
+  const weddingId = await vendorContext(userId),
     row = await repo.find(weddingId, oid(id));
   if (!row) throw fail(404, 'NOT_FOUND', 'Vendor not found.');
-  return { weddingId: weddingId.toString(), vendor: dto(row) };
+  return { weddingId: weddingId.toString(), vendor: vendorDto(row) };
 }
 export const trustedVendorCount = (weddingId: string) =>
   repo.count(oid(weddingId), vendorQuery.parse({}));
@@ -113,7 +114,7 @@ export async function writeVendor(
   const hash = hashSecret(JSON.stringify(data ?? null));
   const db = await repo.database();
   return db.connection.transaction(async (session) => {
-    const weddingId = await tenant(userId, expected, session);
+    const weddingId = await vendorContext(userId, expected, session);
     await lockWeddingMembership(weddingId, session);
     if (key) {
       const receipt = await repo.receipt(key, session);
@@ -131,7 +132,7 @@ export async function writeVendor(
             'VENDOR_ARCHIVED',
             'The original vendor was removed. Refresh before starting another.',
           );
-        return { weddingId: expected, vendor: dto(row) };
+        return { weddingId: expected, vendor: vendorDto(row) };
       }
     }
     let row = options.id
@@ -184,6 +185,6 @@ export async function writeVendor(
           'Vendor changed. Refresh before saving.',
         );
     }
-    return { weddingId: expected, vendor: dto(row) };
+    return { weddingId: expected, vendor: vendorDto(row) };
   });
 }

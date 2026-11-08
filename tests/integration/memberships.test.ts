@@ -1,3 +1,9 @@
+import {
+  discoverVendors,
+  savedPlaceDetails,
+  saveGoogleVendor,
+} from '@/modules/vendors/discovery.server';
+import type { PlacesProvider } from '@/modules/vendors/places.server';
 import nextEnv from '@next/env';
 import mongoose, { Types } from 'mongoose';
 import { randomBytes, randomUUID } from 'node:crypto';
@@ -85,7 +91,7 @@ import {
 import { guestIndexes } from '@/modules/guests/indexes';
 import sharp from 'sharp';
 import { expenseIndexes } from '@/modules/expenses/indexes';
-import { vendorIndexes } from '@/modules/vendors/indexes';
+import { vendorIndexes, vendorPlaceIndexes } from '@/modules/vendors/indexes';
 import {
   writeExpense,
   listExpenses,
@@ -223,6 +229,7 @@ beforeAll(async () => {
       ...galleryIndexes,
       ...expenseIndexes,
       ...vendorIndexes,
+      ...vendorPlaceIndexes,
     ])
       await mongoose.connection
         .collection(collection)
@@ -3090,6 +3097,245 @@ describe('Organizer private gallery with mocked R2', () => {
         fake.storage,
       ),
     ).rejects.toMatchObject({ status: 409 });
+  });
+});
+
+describe('Google vendor discovery with mocked provider', () => {
+  const providerData = {
+    id: 'Place_one',
+    name: 'Provider-only studio name',
+    address: 'Provider-only address',
+    rating: 4.6,
+    ratingCount: 22,
+    phone: '+91 99999 99999',
+    website: 'https://provider.example.test',
+    mapsUrl: 'https://www.google.com/maps',
+    attributions: [],
+  };
+  function fake() {
+    const search = vi.fn().mockResolvedValue([providerData]),
+      details = vi.fn().mockResolvedValue(providerData),
+      verify = vi.fn().mockResolvedValue(undefined);
+    const provider: PlacesProvider = {
+      ready: () => true,
+      search,
+      details,
+      verify,
+    };
+    return { provider, search, details, verify };
+  }
+  const input = {
+    googlePlaceId: 'Place_one',
+    name: 'Family photo option',
+    category: 'Photographer',
+    notes: 'Ask family first',
+  };
+  it('searches explicit wedding/function/custom locations, scopes references and rechecks membership after provider calls', async () => {
+    const scope = await wedding(),
+      other = await wedding(),
+      f = fake();
+    const event = await writeEvent(
+      scope.adminId,
+      scope.weddingId,
+      {
+        title: 'Discovery function',
+        startsAt: '2027-03-13T14:00:00Z',
+        endsAt: '2027-03-13T20:00:00Z',
+        timezone: 'Asia/Kolkata',
+        venue: { name: 'Local Hall', address: 'Jaipur' },
+      },
+      undefined,
+      undefined,
+      false,
+      randomUUID(),
+    );
+    await discoverVendors(
+      scope.adminId,
+      scope.weddingId,
+      {
+        category: 'Photographer',
+        locationSource: 'function',
+        eventId: event.id,
+      },
+      f.provider,
+    );
+    expect(f.search).toHaveBeenLastCalledWith(
+      'Photographer',
+      'Local Hall, Jaipur',
+    );
+    await discoverVendors(
+      scope.adminId,
+      scope.weddingId,
+      { category: 'DJ', locationSource: 'custom', location: 'Udaipur, India' },
+      f.provider,
+    );
+    expect(f.search).toHaveBeenLastCalledWith('DJ', 'Udaipur, India');
+    const before = f.search.mock.calls.length;
+    await expect(
+      discoverVendors(
+        other.adminId,
+        other.weddingId,
+        { category: 'DJ', locationSource: 'function', eventId: event.id },
+        f.provider,
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      discoverVendors(
+        scope.adminId,
+        other.weddingId,
+        { category: 'DJ', locationSource: 'wedding' },
+        f.provider,
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+    expect(f.search).toHaveBeenCalledTimes(before);
+    f.search.mockImplementationOnce(async () => {
+      await User.updateOne(
+        { _id: scope.admin._id },
+        { $set: { weddingId: null, role: null } },
+      );
+      return [providerData];
+    });
+    await expect(
+      discoverVendors(
+        scope.adminId,
+        scope.weddingId,
+        { category: 'DJ', locationSource: 'wedding' },
+        f.provider,
+      ),
+    ).rejects.toMatchObject({ status: 403 });
+  });
+  it('saves only Place ID and organizer data, deduplicates concurrent saves and preserves notes across retries/outages', async () => {
+    const scope = await wedding(),
+      other = await wedding(),
+      f = fake(),
+      key = randomUUID();
+    const [one, two] = await Promise.all([
+      saveGoogleVendor(scope.adminId, scope.weddingId, input, key, f.provider),
+      saveGoogleVendor(
+        scope.adminId,
+        scope.weddingId,
+        { ...input, notes: 'Do not overwrite' },
+        randomUUID(),
+        f.provider,
+      ),
+    ]);
+    expect(one.vendor.id).toBe(two.vendor.id);
+    expect(one.vendor.source).toBe('google');
+    const stored = await mongoose.connection
+      .collection('vendors')
+      .findOne({ _id: new Types.ObjectId(one.vendor.id) });
+    expect(JSON.stringify(stored)).not.toContain('Provider-only');
+    expect(stored!.phone).toBe('');
+    expect(stored!.website).toBe('');
+    expect(stored!.address).toBe('');
+    expect(stored!.googlePlaceId).toBe('Place_one');
+    f.provider.ready = () => false;
+    const replay = await saveGoogleVendor(
+      scope.adminId,
+      scope.weddingId,
+      input,
+      key,
+      f.provider,
+    );
+    expect(replay.vendor.id).toBe(one.vendor.id);
+    await expect(
+      saveGoogleVendor(
+        scope.adminId,
+        scope.weddingId,
+        { ...input, notes: 'changed' },
+        key,
+        f.provider,
+      ),
+    ).rejects.toMatchObject({ status: 409 });
+    f.provider.ready = () => true;
+    expect(
+      (
+        await discoverVendors(
+          scope.adminId,
+          scope.weddingId,
+          { category: 'Photographer', locationSource: 'wedding' },
+          f.provider,
+        )
+      ).places[0].savedVendorId,
+    ).toBe(one.vendor.id);
+    await expect(
+      savedPlaceDetails(
+        other.adminId,
+        other.weddingId,
+        one.vendor.id,
+        f.provider,
+      ),
+    ).rejects.toMatchObject({ status: 404 });
+    expect(
+      (
+        await savedPlaceDetails(
+          scope.adminId,
+          scope.weddingId,
+          one.vendor.id,
+          f.provider,
+        )
+      ).place.name,
+    ).toBe(providerData.name);
+    await writeVendor(scope.adminId, scope.weddingId, undefined, {
+      id: one.vendor.id,
+      version: 0,
+      archive: true,
+    });
+    await expect(
+      saveGoogleVendor(scope.adminId, scope.weddingId, input, key, f.provider),
+    ).rejects.toMatchObject({ code: 'VENDOR_ARCHIVED' });
+    const fresh = await saveGoogleVendor(
+      scope.adminId,
+      scope.weddingId,
+      input,
+      randomUUID(),
+      f.provider,
+    );
+    expect(fresh.vendor.id).not.toBe(one.vendor.id);
+    expect((await listVendors(scope.adminId)).total).toBe(1);
+  });
+  it('keeps manual vendors usable during provider failure and denies a revoked Manager save before commit', async () => {
+    const scope = await wedding(),
+      f = fake(),
+      manager = await user();
+    await User.updateOne(
+      { _id: manager._id },
+      { $set: { weddingId: scope.wedding._id, role: 'manager' } },
+    );
+    const manual = await writeVendor(
+      scope.adminId,
+      scope.weddingId,
+      { name: 'Manual contact', category: 'Other' },
+      { key: randomUUID() },
+    );
+    f.search.mockRejectedValueOnce(new Error('test provider unavailable'));
+    await expect(
+      discoverVendors(
+        scope.adminId,
+        scope.weddingId,
+        { category: 'DJ', locationSource: 'wedding' },
+        f.provider,
+      ),
+    ).rejects.toThrow();
+    expect(
+      (await readVendor(scope.adminId, manual.vendor.id)).vendor.name,
+    ).toBe('Manual contact');
+    f.verify.mockImplementationOnce(async () => {
+      await User.updateOne(
+        { _id: manager._id },
+        { $set: { weddingId: null, role: null } },
+      );
+    });
+    await expect(
+      saveGoogleVendor(
+        manager._id.toString(),
+        scope.weddingId,
+        input,
+        randomUUID(),
+        f.provider,
+      ),
+    ).rejects.toMatchObject({ status: 403 });
+    expect((await listVendors(scope.adminId)).total).toBe(1);
   });
 });
 

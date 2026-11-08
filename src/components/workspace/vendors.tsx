@@ -1,6 +1,9 @@
 'use client';
 import { useRef, useState } from 'react';
 import type { WeddingDto } from '@/modules/weddings/contracts';
+import type { EventDto } from '@/modules/events/contracts';
+import { VendorDiscovery, type DiscoverySetup } from './vendor-discovery';
+import { GoogleReference } from './google-listing';
 import {
   vendorInput,
   type VendorDto,
@@ -32,14 +35,19 @@ export function Vendors({
   role,
   userId,
   initial,
+  discoverySetup = { ready: false, termsUrl: null, privacyUrl: null },
+  initialEvents = { events: [], nextCursor: null },
 }: {
   wedding: WeddingDto;
   name: string;
   role: 'admin' | 'manager';
   userId: string;
   initial: VendorPage;
+  discoverySetup?: DiscoverySetup;
+  initialEvents?: { events: EventDto[]; nextCursor: string | null };
 }) {
   const [page, setPage] = useState(initial),
+    [discoveryOpen, setDiscoveryOpen] = useState(false),
     [query, setQuery] = useState(''),
     [filters, setFilters] = useState({ search: '', category: '' }),
     [loading, setLoading] = useState(false),
@@ -224,10 +232,31 @@ export function Vendors({
             <h1>Saved wedding vendors</h1>
             <p>Keep trusted contacts and planning notes together.</p>
           </div>
-          <button className={form.primaryButton} onClick={() => open(null)}>
-            Add manual vendor
-          </button>
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={form.textButton}
+              aria-expanded={discoveryOpen}
+              aria-controls="vendor-discovery-panel"
+              onClick={() => setDiscoveryOpen((v) => !v)}
+            >
+              {discoveryOpen ? 'Hide discovery' : 'Discover vendors'}
+            </button>
+            <button className={form.primaryButton} onClick={() => open(null)}>
+              Add manual vendor
+            </button>
+          </div>
         </header>
+        <div id="vendor-discovery-panel" hidden={!discoveryOpen}>
+          <VendorDiscovery
+            weddingId={wedding.id}
+            userId={userId}
+            weddingLocation={wedding.location}
+            setup={discoverySetup}
+            initialEvents={initialEvents}
+            onSaved={() => void load()}
+          />
+        </div>
         {notice && (
           <p role="status" className={styles.notice}>
             {notice}
@@ -351,7 +380,11 @@ export function Vendors({
                 <article className={styles.card} key={row.id}>
                   <div className={styles.cardTop}>
                     <span className={styles.category}>{row.category}</span>
-                    <small>Manual record</small>
+                    <small>
+                      {row.source === 'google'
+                        ? 'Google reference · your label'
+                        : 'Manual record'}
+                    </small>
                   </div>
                   <h2>{row.name}</h2>
                   {row.address && (
@@ -385,6 +418,9 @@ export function Vendors({
                       <small>Team notes</small>
                       <p>{row.notes}</p>
                     </div>
+                  )}
+                  {row.source === 'google' && (
+                    <GoogleReference vendorId={row.id} weddingId={wedding.id} />
                   )}
                   <button
                     className={form.textButton}

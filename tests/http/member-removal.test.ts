@@ -11,7 +11,7 @@ import { authIndexes } from '@/modules/auth/indexes';
 import { weddingIndexes } from '@/modules/weddings/indexes';
 import { membershipIndexes } from '@/modules/memberships/indexes';
 import { expenseIndexes } from '@/modules/expenses/indexes';
-import { vendorIndexes } from '@/modules/vendors/indexes';
+import { vendorIndexes, vendorPlaceIndexes } from '@/modules/vendors/indexes';
 import { galleryIndexes } from '@/modules/gallery/indexes';
 import { invitationIndexes } from '@/modules/invitations/indexes';
 
@@ -113,6 +113,7 @@ beforeAll(async () => {
       ...galleryIndexes,
       ...expenseIndexes,
       ...vendorIndexes,
+      ...vendorPlaceIndexes,
     ])
       await connection.collection(collection).createIndex(key, options);
     admin = new Types.ObjectId();
@@ -161,6 +162,9 @@ beforeAll(async () => {
           NODE_ENV: 'production',
           MONGODB_DB_NAME: database,
           APP_BASE_URL: origin,
+          GOOGLE_PLACES_API_KEY: '',
+          GOOGLE_MAPS_TERMS_URL: '',
+          GOOGLE_MAPS_PRIVACY_URL: '',
           RESEND_API_KEY: '',
           RESEND_FROM_EMAIL: '',
           EMAIL_FROM: '',
@@ -909,6 +913,59 @@ describe('Private gallery through running Next HTTP', () => {
 });
 
 describe('Manual vendor directory through running Next HTTP', () => {
+  it('protects discovery/save routes and fails closed without Google configuration', async () => {
+    const query =
+      '/api/v1/vendors/discover?category=Photographer&locationSource=wedding';
+    expect((await fetch(base + query)).status).toBe(401);
+    const h = {
+      ...headers(adminSecret),
+      'Content-Type': 'application/json',
+      'Idempotency-Key': randomUUID(),
+    };
+    expect((await fetch(base + query, { headers: h })).status).toBe(503);
+    expect(
+      (await fetch(base + query + '&category=DJ', { headers: h })).status,
+    ).toBe(400);
+    expect((await fetch(base + query + '&lat=1', { headers: h })).status).toBe(
+      422,
+    );
+    expect(
+      (
+        await fetch(base + query, {
+          headers: {
+            ...h,
+            'X-Wedding-Context': new Types.ObjectId().toString(),
+          },
+        })
+      ).status,
+    ).toBe(409);
+    const body = JSON.stringify({
+      googlePlaceId: 'Place_test',
+      name: 'Our label',
+      category: 'Photographer',
+    });
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors/from-google', {
+          method: 'POST',
+          headers: { ...h, 'X-CSRF-Token': '' },
+          body,
+        })
+      ).status,
+    ).toBe(403);
+    expect(
+      (
+        await fetch(base + '/api/v1/vendors/from-google', {
+          method: 'POST',
+          headers: h,
+          body,
+        })
+      ).status,
+    ).toBe(503);
+    const list = await fetch(base + '/api/v1/vendors', { headers: h });
+    expect(list.status).toBe(200);
+    expect(list.headers.get('Cache-Control')).toBe('no-store');
+  });
   it('enforces session/Origin/CSRF/context/versions and supports safe CRUD retries', async () => {
     const body = {
       name: 'HTTP Vendor [A]',
